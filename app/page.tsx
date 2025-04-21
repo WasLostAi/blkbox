@@ -21,7 +21,6 @@ import MobileNav from "@/components/mobile-nav"
 import CyberButton from "@/components/cyber-button"
 import DigitalRain from "@/components/digital-rain"
 import WalletModal from "@/components/wallet-modal"
-import DevBypass from "@/components/dev-bypass"
 import { useWallet } from "@/context/wallet-context"
 
 export default function Home() {
@@ -711,7 +710,6 @@ async function extractMEV(mempool) {
         </div>
       </footer>
       <WalletModal isOpen={walletModalOpen} onClose={() => setWalletModalOpen(false)} />
-      <DevBypass />
     </div>
   )
 }

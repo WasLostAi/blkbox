@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Wallet, ChevronDown, RefreshCw, LogOut, Shield } from "lucide-react"
+import { Wallet, ChevronDown, RefreshCw, LogOut } from "lucide-react"
 import WalletModal from "./wallet-modal"
 import CyberButton from "./cyber-button"
 import { useWallet } from "@/context/wallet-context"
@@ -34,7 +34,7 @@ export default function WalletConnector({
   showBalance = false,
 }: WalletConnectorProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { connected, address, balance, tier, isAdmin, disconnect, refreshBalance } = useWallet()
+  const { connected, address, balance, tier, disconnect, refreshBalance } = useWallet()
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const openModal = () => {
@@ -76,16 +76,10 @@ export default function WalletConnector({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center gap-2 cursor-pointer">
-            <CyberButton
-              size={buttonSize}
-              variant="outline"
-              glowColor={isAdmin ? "pink" : "cyan"}
-              className={className}
-            >
+            <CyberButton size={buttonSize} variant="outline" glowColor="cyan" className={className}>
               <div className="flex items-center gap-2">
-                {isAdmin && <Shield size={14} className="text-neon-pink" />}
                 <span className="text-zinc-300 font-tech-mono text-sm">
-                  {isAdmin ? "ADMIN" : `${address.slice(0, 4)}...${address.slice(-4)}`}
+                  {address.slice(0, 4)}...{address.slice(-4)}
                 </span>
                 <ChevronDown size={14} />
               </div>
@@ -93,9 +87,7 @@ export default function WalletConnector({
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="bg-black border border-neon-cyan/30 text-white">
-          <DropdownMenuLabel className="font-tech-mono text-xs text-zinc-500">
-            {isAdmin ? "ADMIN ACCOUNT" : "WALLET"}
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="font-tech-mono text-xs text-zinc-500">WALLET</DropdownMenuLabel>
           <DropdownMenuSeparator className="bg-zinc-800" />
 
           <div className="px-2 py-1.5">
@@ -110,15 +102,7 @@ export default function WalletConnector({
 
           <div className="px-2 py-1.5">
             <div className="text-xs font-tech-mono text-zinc-400">Tier</div>
-            <div className={cn("text-sm font-tech-mono", getTierColor(tier))}>
-              {isAdmin ? (
-                <span className="flex items-center">
-                  <Shield size={12} className="mr-1 text-neon-pink" /> ADMIN OVERRIDE
-                </span>
-              ) : (
-                tier.replace("_", " ")
-              )}
-            </div>
+            <div className={cn("text-sm font-tech-mono", getTierColor(tier))}>{tier.replace("_", " ")}</div>
           </div>
 
           <DropdownMenuSeparator className="bg-zinc-800" />
