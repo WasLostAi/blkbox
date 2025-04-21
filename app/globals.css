@@ -1,0 +1,322 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --card: 240 17% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 322 100% 60%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 175 100% 50%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 322 100% 60%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --radius: 0.25rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-color: #000000;
+    background-image: radial-gradient(rgba(20, 20, 30, 0.5) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-rajdhani font-bold;
+  }
+
+  .font-tech {
+    font-family: var(--font-tech-mono);
+  }
+
+  .font-rajdhani {
+    font-family: var(--font-rajdhani);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ff00aa;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00e5ff;
+}
+
+/* Neon text effects */
+.neon-text-pink {
+  color: #fff;
+  text-shadow: 0 0 5px #ff00aa, 0 0 10px #ff00aa, 0 0 15px #ff00aa;
+}
+
+.neon-text-cyan {
+  color: #fff;
+  text-shadow: 0 0 5px #00e5ff, 0 0 10px #00e5ff, 0 0 15px #00e5ff;
+}
+
+.neon-border {
+  position: relative;
+}
+
+.neon-border::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid #ff00aa;
+  box-shadow: 0 0 5px #ff00aa, inset 0 0 5px #ff00aa;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.neon-border-cyan::after {
+  border-color: #00e5ff;
+  box-shadow: 0 0 5px #00e5ff, inset 0 0 5px #00e5ff;
+}
+
+/* Terminal text effect */
+.terminal-text {
+  font-family: var(--font-tech-mono);
+  color: #00e5ff;
+  position: relative;
+  display: inline-block;
+}
+
+.terminal-text::after {
+  content: "|";
+  position: absolute;
+  right: -0.5em;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Glitch effect */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -1px 0 #ff00aa;
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -1px 0 #00e5ff;
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-anim-2 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+  0% {
+    clip: rect(134px, 550px, 25px, 0);
+  }
+  20% {
+    clip: rect(80px, 550px, 73px, 0);
+  }
+  40% {
+    clip: rect(96px, 550px, 61px, 0);
+  }
+  60% {
+    clip: rect(3px, 550px, 25px, 0);
+  }
+  80% {
+    clip: rect(115px, 550px, 73px, 0);
+  }
+  100% {
+    clip: rect(26px, 550px, 97px, 0);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip: rect(12px, 550px, 7px, 0);
+  }
+  20% {
+    clip: rect(60px, 550px, 37px, 0);
+  }
+  40% {
+    clip: rect(119px, 550px, 11px, 0);
+  }
+  60% {
+    clip: rect(52px, 550px, 35px, 0);
+  }
+  80% {
+    clip: rect(133px, 550px, 120px, 0);
+  }
+  100% {
+    clip: rect(61px, 550px, 77px, 0);
+  }
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Dashboard grid background */
+.dashboard-bg {
+  background-color: rgba(0, 0, 0, 0.8);
+  background-image: linear-gradient(rgba(255, 0, 170, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 170, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+}
+
+/* Data visualization elements */
+.data-line {
+  height: 2px;
+  background: linear-gradient(90deg, #ff00aa, #00e5ff);
+  position: relative;
+  overflow: hidden;
+}
+
+.data-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
+  animation: data-pulse 2s infinite;
+}
+
+@keyframes data-pulse {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Cyberpunk card styling */
+.cyber-card {
+  background: rgba(10, 10, 15, 0.8);
+  border: 1px solid rgba(255, 0, 170, 0.3);
+  box-shadow: 0 0 15px rgba(255, 0, 170, 0.2);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.cyber-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #ff00aa, #00e5ff);
+}
+
+.cyber-card-cyan {
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+}
+
+.cyber-card-cyan::before {
+  background: linear-gradient(90deg, #00e5ff, #ff00aa);
+}
+
+/* HUD elements */
+.hud-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.hud-corner-tl {
+  top: 0;
+  left: 0;
+  border-top-color: #ff00aa;
+  border-left-color: #ff00aa;
+}
+
+.hud-corner-tr {
+  top: 0;
+  right: 0;
+  border-top-color: #00e5ff;
+  border-right-color: #00e5ff;
+}
+
+.hud-corner-bl {
+}
+
+/* Now let's create a mobile navigation component: */
