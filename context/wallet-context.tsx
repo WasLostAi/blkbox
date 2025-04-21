@@ -19,9 +19,12 @@ type WalletContextType = {
   address: string | null
   balance: number
   tier: WalletTier
+  isAdmin: boolean
   connect: (walletType: string) => Promise<void>
+  adminLogin: () => Promise<void>
   disconnect: () => void
   updateBalance: (newBalance: number) => void
+  refreshBalance: () => Promise<number>
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined)
@@ -32,6 +35,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [address, setAddress] = useState<string | null>(null)
   const [balance, setBalance] = useState(0)
   const [tier, setTier] = useState<WalletTier>("UNAUTHORIZED")
+  const [isAdmin, setIsAdmin] = useState(false)
 
   // Calculate tier based on balance
   const calculateTier = (balance: number): WalletTier => {
@@ -47,16 +51,51 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     if (typeof window !== "undefined") {
       const storedAddress = localStorage.getItem("walletAddress")
       const storedBalance = localStorage.getItem("walletBalance")
+      const storedIsAdmin = localStorage.getItem("isAdmin") === "true"
 
-      if (storedAddress) {
+      if (storedAddress || storedIsAdmin) {
         setConnected(true)
         setAddress(storedAddress)
         const balanceNum = storedBalance ? Number.parseInt(storedBalance) : 0
         setBalance(balanceNum)
         setTier(calculateTier(balanceNum))
+        setIsAdmin(storedIsAdmin)
       }
     }
   }, [])
+
+  // Admin login function
+  const adminLogin = async () => {
+    setConnecting(true)
+
+    try {
+      // Simulate login delay
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
+      // Set admin address and highest tier
+      const adminAddress = "0xADMIN" + Math.random().toString(16).slice(2, 8)
+      const adminBalance = 2000000 // Ensure PHANTOM_COUNCIL tier
+
+      // Update state
+      setAddress(adminAddress)
+      setBalance(adminBalance)
+      setTier("PHANTOM_COUNCIL")
+      setIsAdmin(true)
+      setConnected(true)
+
+      // Store in localStorage
+      localStorage.setItem("walletAddress", adminAddress)
+      localStorage.setItem("walletBalance", adminBalance.toString())
+      localStorage.setItem("isAdmin", "true")
+
+      return Promise.resolve()
+    } catch (error) {
+      console.error("Error during admin login:", error)
+      return Promise.reject(error)
+    } finally {
+      setConnecting(false)
+    }
+  }
 
   const connect = async (walletType: string) => {
     setConnecting(true)
@@ -65,33 +104,43 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       // Simulate wallet connection delay
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
-      // Generate random wallet address and balance
+      // Generate random wallet address
       const randomAddress = "0x" + Math.random().toString(16).slice(2, 14)
 
-      // For demo purposes, assign a random balance that corresponds to a tier
-      // In a real app, this would be fetched from the blockchain
-      const tiers = [
-        { min: 0, max: 9999, tier: "UNAUTHORIZED" },
-        { min: 10000, max: 49999, tier: "ENTRY_LEVEL" },
-        { min: 50000, max: 249999, tier: "OPERATOR" },
-        { min: 250000, max: 999999, tier: "SHADOW_ELITE" },
-        { min: 1000000, max: 2000000, tier: "PHANTOM_COUNCIL" },
-      ]
+      let randomBalance
 
-      // Randomly select a tier for demo purposes
-      const selectedTierIndex = Math.floor(Math.random() * tiers.length)
-      const selectedTier = tiers[selectedTierIndex]
-      const randomBalance = Math.floor(Math.random() * (selectedTier.max - selectedTier.min) + selectedTier.min)
+      // If this is a dev access connection, always give the highest tier
+      if (walletType === "phantom") {
+        // Set to a high balance that guarantees PHANTOM_COUNCIL tier
+        randomBalance = 1500000 // Well above the 1,000,000 threshold for PHANTOM_COUNCIL
+      } else {
+        // For demo purposes, assign a random balance that corresponds to a tier
+        // In a real app, this would be fetched from the blockchain
+        const tiers = [
+          { min: 0, max: 9999, tier: "UNAUTHORIZED" },
+          { min: 10000, max: 49999, tier: "ENTRY_LEVEL" },
+          { min: 50000, max: 249999, tier: "OPERATOR" },
+          { min: 250000, max: 999999, tier: "SHADOW_ELITE" },
+          { min: 1000000, max: 2000000, tier: "PHANTOM_COUNCIL" },
+        ]
+
+        // Randomly select a tier for demo purposes
+        const selectedTierIndex = Math.floor(Math.random() * tiers.length)
+        const selectedTier = tiers[selectedTierIndex]
+        randomBalance = Math.floor(Math.random() * (selectedTier.max - selectedTier.min) + selectedTier.min)
+      }
 
       // Update state
       setAddress(randomAddress)
       setBalance(randomBalance)
       setTier(calculateTier(randomBalance))
+      setIsAdmin(false)
       setConnected(true)
 
       // Store in localStorage
       localStorage.setItem("walletAddress", randomAddress)
       localStorage.setItem("walletBalance", randomBalance.toString())
+      localStorage.removeItem("isAdmin")
 
       return Promise.resolve()
     } catch (error) {
@@ -110,15 +159,24 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("walletBalance", newBalance.toString())
   }
 
+  // Add refreshBalance function
+  const refreshBalance = async () => {
+    // In a real app, this would fetch the latest balance from the blockchain
+    // For demo purposes, we'll just return the current balance
+    return Promise.resolve(balance)
+  }
+
   const disconnect = () => {
     setConnected(false)
     setAddress(null)
     setBalance(0)
     setTier("UNAUTHORIZED")
+    setIsAdmin(false)
 
     // Clear localStorage
     localStorage.removeItem("walletAddress")
     localStorage.removeItem("walletBalance")
+    localStorage.removeItem("isAdmin")
   }
 
   return (
@@ -129,9 +187,12 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         address,
         balance,
         tier,
+        isAdmin,
         connect,
+        adminLogin,
         disconnect,
         updateBalance,
+        refreshBalance,
       }}
     >
       {children}

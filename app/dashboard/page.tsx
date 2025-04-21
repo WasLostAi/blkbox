@@ -17,6 +17,8 @@ import {
   Shuffle,
   Target,
   Lightbulb,
+  Crosshair,
+  Rocket,
 } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CyberButton from "@/components/cyber-button"
@@ -82,23 +84,42 @@ export default function DashboardPage() {
       description: "Private, zero-slippage token swaps",
       icon: Shuffle,
       href: "/dashboard/tools/shadow-swap",
+      tier: "ENTRY_LEVEL",
+    },
+    {
+      name: "Sniper Bot",
+      description: "Microsecond-precision execution for token launches",
+      icon: Crosshair,
+      href: "/dashboard/tools/sniper-bot",
       tier: "OPERATOR",
+    },
+    {
+      name: "Dark Launch Toolkit",
+      description: "Deploy tokens with perfect liquidity curves",
+      icon: Rocket,
+      href: "/dashboard/tools/dark-launch",
+      tier: "SHADOW_ELITE",
     },
     {
       name: "Liquidation Hunter",
       description: "Profit from market volatility",
       icon: Target,
-      href: "#",
-      tier: "SHADOW_COUNCIL",
-      comingSoon: true,
+      href: "/dashboard/tools/liquidation-hunter",
+      tier: "SHADOW_ELITE",
+    },
+    {
+      name: "Stealth Router",
+      description: "Conceal transaction routes and minimize footprint",
+      icon: Eye,
+      href: "/dashboard/tools/stealth-router",
+      tier: "SHADOW_ELITE",
     },
     {
       name: "Flashloan Lab",
       description: "Create and test flashloan strategies",
       icon: Lightbulb,
-      href: "#",
+      href: "/dashboard/tools/flashloan-lab",
       tier: "SHADOW_COUNCIL",
-      comingSoon: true,
     },
   ]
 
