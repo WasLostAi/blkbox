@@ -16,6 +16,10 @@ import {
   Sparkles,
   Layers,
   Bot,
+  Crosshair,
+  Rocket,
+  Target,
+  Lightbulb,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import CyberButton from "./cyber-button"
@@ -174,6 +178,58 @@ export default function GatedFeatures({ userTier = "UNAUTHORIZED" }: GatedFeatur
         "Strategic liquidation monitoring and execution",
         "Transaction timing optimization engine",
         "Block space priority acquisition mechanisms",
+      ],
+    },
+    {
+      id: "sniper-tools",
+      name: "Sniper Bot Tools",
+      icon: <Crosshair className="h-5 w-5" />,
+      requiredTier: tierLevels.OPERATOR,
+      features: [
+        "Microsecond-precision execution for token launches",
+        "Multi-wallet sniping coordination",
+        "Gas optimization for frontrunning competition",
+        "Automatic slippage adjustment based on liquidity",
+        "Configurable buy/sell strategies with trailing stops",
+      ],
+    },
+    {
+      id: "dark-launch",
+      name: "Dark Launch Toolkit",
+      icon: <Rocket className="h-5 w-5" />,
+      requiredTier: tierLevels.SHADOW_ELITE,
+      features: [
+        "Custom token contract generation with advanced tokenomics",
+        "Liquidity curve design and optimization",
+        "Stealth launch coordination across multiple pools",
+        "Anti-bot measures and trading limitations",
+        "Marketing wallet configuration and vesting schedules",
+      ],
+    },
+    {
+      id: "liquidation-tools",
+      name: "Liquidation Hunter Tools",
+      icon: <Target className="h-5 w-5" />,
+      requiredTier: tierLevels.SHADOW_ELITE,
+      features: [
+        "Real-time monitoring of at-risk positions",
+        "Automated liquidation execution with priority gas",
+        "Multi-protocol liquidation opportunity scanning",
+        "Risk assessment and profitability calculation",
+        "Historical liquidation data analysis and pattern recognition",
+      ],
+    },
+    {
+      id: "flashloan-tools",
+      name: "Flashloan Laboratory",
+      icon: <Lightbulb className="h-5 w-5" />,
+      requiredTier: tierLevels.PHANTOM_COUNCIL,
+      features: [
+        "No-code flashloan strategy builder",
+        "Multi-protocol arbitrage opportunity scanner",
+        "Simulation environment for strategy testing",
+        "Profit calculation and gas optimization",
+        "One-click deployment to mainnet with safety checks",
       ],
     },
   ]

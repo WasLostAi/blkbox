@@ -10,7 +10,6 @@ import {
   Users,
   Zap,
   Lock,
-  AlertCircle,
   Eye,
   Brain,
   Loader2,
@@ -66,11 +65,11 @@ export default function DashboardPage() {
       tier: "ENTRY_LEVEL",
     },
     {
-      name: "MEV Extraction",
-      description: "Capture value from the mempool",
-      icon: Zap,
-      href: "/dashboard/tools/mev-extraction",
-      tier: "OPERATOR",
+      name: "Shadow Swap",
+      description: "Private, zero-slippage token swaps",
+      icon: Shuffle,
+      href: "/dashboard/tools/shadow-swap",
+      tier: "ENTRY_LEVEL",
     },
     {
       name: "AI Strategy Lab",
@@ -80,11 +79,11 @@ export default function DashboardPage() {
       tier: "ENTRY_LEVEL",
     },
     {
-      name: "Shadow Swap",
-      description: "Private, zero-slippage token swaps",
-      icon: Shuffle,
-      href: "/dashboard/tools/shadow-swap",
-      tier: "ENTRY_LEVEL",
+      name: "MEV Extraction",
+      description: "Capture value from the mempool",
+      icon: Zap,
+      href: "/dashboard/tools/mev-extraction",
+      tier: "OPERATOR",
     },
     {
       name: "Sniper Bot",
@@ -119,7 +118,7 @@ export default function DashboardPage() {
       description: "Create and test flashloan strategies",
       icon: Lightbulb,
       href: "/dashboard/tools/flashloan-lab",
-      tier: "SHADOW_COUNCIL",
+      tier: "PHANTOM_COUNCIL",
     },
   ]
 
@@ -219,7 +218,7 @@ export default function DashboardPage() {
                 </TabsList>
 
                 <TabsContent value="tools">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <CyberCard className="bg-black/60">
                       <div className="flex items-start gap-4">
                         <div className="p-3 rounded-full bg-neon-pink/10">
@@ -261,6 +260,30 @@ export default function DashboardPage() {
                               </CyberButton>
                             </Link>
                             <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
+                              ENTRY LEVEL
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CyberCard>
+
+                    <CyberCard className="bg-black/60">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 rounded-full bg-neon-pink/10">
+                          <Brain className="h-6 w-6 text-neon-pink" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold text-neon-pink mb-1">AI Strategy Lab</h3>
+                          <p className="text-zinc-400 font-tech-mono text-sm mb-4">
+                            Generate custom trading algorithms tuned to your risk profile.
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <Link href="/dashboard/tools/ai-strategy">
+                              <CyberButton size="sm" glowColor="pink">
+                                LAUNCH
+                              </CyberButton>
+                            </Link>
+                            <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
                               ENTRY LEVEL
                             </div>
                           </div>
@@ -331,12 +354,130 @@ export default function DashboardPage() {
                       <div className="flex items-start gap-4">
                         <div
                           className={
+                            tier === "OPERATOR" || tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                              ? "p-3 rounded-full bg-neon-cyan/10"
+                              : "p-3 rounded-full bg-zinc-800"
+                          }
+                        >
+                          <Crosshair
+                            className={
+                              tier === "OPERATOR" || tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "h-6 w-6 text-neon-cyan"
+                                : "h-6 w-6 text-zinc-400"
+                            }
+                          />
+                        </div>
+                        <div>
+                          <h3
+                            className={
+                              tier === "OPERATOR" || tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "text-lg font-bold text-neon-cyan mb-1"
+                                : "text-lg font-bold text-zinc-400 mb-1"
+                            }
+                          >
+                            Sniper Bot
+                          </h3>
+                          <p
+                            className={
+                              tier === "OPERATOR" || tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "text-zinc-400 font-tech-mono text-sm mb-4"
+                                : "text-zinc-500 font-tech-mono text-sm mb-4"
+                            }
+                          >
+                            Microsecond-precision execution for token launches.
+                          </p>
+                          <div className="flex items-center gap-2">
+                            {tier === "OPERATOR" || tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL" ? (
+                              <>
+                                <Link href="/dashboard/tools/sniper-bot">
+                                  <CyberButton size="sm" glowColor="cyan">
+                                    LAUNCH
+                                  </CyberButton>
+                                </Link>
+                                <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
+                                  OPERATOR+
+                                </div>
+                              </>
+                            ) : (
+                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
+                                <Lock size={14} />
+                                <span className="font-tech-mono">OPERATOR TIER REQUIRED</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </CyberCard>
+
+                    <CyberCard className="bg-black/60">
+                      <div className="flex items-start gap-4">
+                        <div
+                          className={
+                            tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                              ? "p-3 rounded-full bg-neon-pink/10"
+                              : "p-3 rounded-full bg-zinc-800"
+                          }
+                        >
+                          <Rocket
+                            className={
+                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "h-6 w-6 text-neon-pink"
+                                : "h-6 w-6 text-zinc-400"
+                            }
+                          />
+                        </div>
+                        <div>
+                          <h3
+                            className={
+                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "text-lg font-bold text-neon-pink mb-1"
+                                : "text-lg font-bold text-zinc-400 mb-1"
+                            }
+                          >
+                            Dark Launch Toolkit
+                          </h3>
+                          <p
+                            className={
+                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "text-zinc-400 font-tech-mono text-sm mb-4"
+                                : "text-zinc-500 font-tech-mono text-sm mb-4"
+                            }
+                          >
+                            Deploy tokens with perfect liquidity curves.
+                          </p>
+                          <div className="flex items-center gap-2">
+                            {tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL" ? (
+                              <>
+                                <Link href="/dashboard/tools/dark-launch">
+                                  <CyberButton size="sm" glowColor="pink">
+                                    LAUNCH
+                                  </CyberButton>
+                                </Link>
+                                <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
+                                  SHADOW ELITE+
+                                </div>
+                              </>
+                            ) : (
+                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
+                                <Lock size={14} />
+                                <span className="font-tech-mono">SHADOW ELITE TIER REQUIRED</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </CyberCard>
+
+                    <CyberCard className="bg-black/60">
+                      <div className="flex items-start gap-4">
+                        <div
+                          className={
                             tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
                               ? "p-3 rounded-full bg-neon-cyan/10"
                               : "p-3 rounded-full bg-zinc-800"
                           }
                         >
-                          <AlertCircle
+                          <Target
                             className={
                               tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
                                 ? "h-6 w-6 text-neon-cyan"
@@ -352,7 +493,7 @@ export default function DashboardPage() {
                                 : "text-lg font-bold text-zinc-400 mb-1"
                             }
                           >
-                            Liquidation Engine
+                            Liquidation Hunter
                           </h3>
                           <p
                             className={
@@ -361,18 +502,18 @@ export default function DashboardPage() {
                                 : "text-zinc-500 font-tech-mono text-sm mb-4"
                             }
                           >
-                            Target vulnerable positions before they collapse.
+                            Profit from market volatility and liquidations.
                           </p>
                           <div className="flex items-center gap-2">
                             {tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL" ? (
                               <>
-                                <Link href="/dashboard/tools/liquidation-engine">
+                                <Link href="/dashboard/tools/liquidation-hunter">
                                   <CyberButton size="sm" glowColor="cyan">
                                     LAUNCH
                                   </CyberButton>
                                 </Link>
                                 <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
-                                  {tier.replace("_", " ")}
+                                  SHADOW ELITE+
                                 </div>
                               </>
                             ) : (
@@ -386,44 +527,19 @@ export default function DashboardPage() {
                       </div>
                     </CyberCard>
 
-                    {/* New Tool Cards */}
-                    <CyberCard className="bg-black/60">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 rounded-full bg-neon-pink/10">
-                          <Brain className="h-6 w-6 text-neon-pink" />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-bold text-neon-pink mb-1">AI Strategy Lab</h3>
-                          <p className="text-zinc-400 font-tech-mono text-sm mb-4">
-                            Generate custom trading algorithms tuned to your risk profile.
-                          </p>
-                          <div className="flex items-center gap-2">
-                            <Link href="/dashboard/tools/ai-strategy">
-                              <CyberButton size="sm" glowColor="pink">
-                                LAUNCH
-                              </CyberButton>
-                            </Link>
-                            <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
-                              ENTRY LEVEL
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CyberCard>
-
                     <CyberCard className="bg-black/60">
                       <div className="flex items-start gap-4">
                         <div
                           className={
                             tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                              ? "p-3 rounded-full bg-neon-cyan/10"
+                              ? "p-3 rounded-full bg-neon-pink/10"
                               : "p-3 rounded-full bg-zinc-800"
                           }
                         >
                           <Eye
                             className={
                               tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "h-6 w-6 text-neon-cyan"
+                                ? "h-6 w-6 text-neon-pink"
                                 : "h-6 w-6 text-zinc-400"
                             }
                           />
@@ -432,7 +548,7 @@ export default function DashboardPage() {
                           <h3
                             className={
                               tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "text-lg font-bold text-neon-cyan mb-1"
+                                ? "text-lg font-bold text-neon-pink mb-1"
                                 : "text-lg font-bold text-zinc-400 mb-1"
                             }
                           >
@@ -451,18 +567,73 @@ export default function DashboardPage() {
                             {tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL" ? (
                               <>
                                 <Link href="/dashboard/tools/stealth-router">
-                                  <CyberButton size="sm" glowColor="cyan">
+                                  <CyberButton size="sm" glowColor="pink">
                                     LAUNCH
                                   </CyberButton>
                                 </Link>
-                                <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
-                                  {tier.replace("_", " ")}
+                                <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
+                                  SHADOW ELITE+
                                 </div>
                               </>
                             ) : (
                               <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
                                 <Lock size={14} />
                                 <span className="font-tech-mono">SHADOW ELITE TIER REQUIRED</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </CyberCard>
+
+                    <CyberCard className="bg-black/60">
+                      <div className="flex items-start gap-4">
+                        <div
+                          className={
+                            tier === "PHANTOM_COUNCIL"
+                              ? "p-3 rounded-full bg-neon-cyan/10"
+                              : "p-3 rounded-full bg-zinc-800"
+                          }
+                        >
+                          <Lightbulb
+                            className={tier === "PHANTOM_COUNCIL" ? "h-6 w-6 text-neon-cyan" : "h-6 w-6 text-zinc-400"}
+                          />
+                        </div>
+                        <div>
+                          <h3
+                            className={
+                              tier === "PHANTOM_COUNCIL"
+                                ? "text-lg font-bold text-neon-cyan mb-1"
+                                : "text-lg font-bold text-zinc-400 mb-1"
+                            }
+                          >
+                            Flashloan Lab
+                          </h3>
+                          <p
+                            className={
+                              tier === "PHANTOM_COUNCIL"
+                                ? "text-zinc-400 font-tech-mono text-sm mb-4"
+                                : "text-zinc-500 font-tech-mono text-sm mb-4"
+                            }
+                          >
+                            Create and test flashloan strategies.
+                          </p>
+                          <div className="flex items-center gap-2">
+                            {tier === "PHANTOM_COUNCIL" ? (
+                              <>
+                                <Link href="/dashboard/tools/flashloan-lab">
+                                  <CyberButton size="sm" glowColor="cyan">
+                                    LAUNCH
+                                  </CyberButton>
+                                </Link>
+                                <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
+                                  PHANTOM COUNCIL
+                                </div>
+                              </>
+                            ) : (
+                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
+                                <Lock size={14} />
+                                <span className="font-tech-mono">PHANTOM COUNCIL TIER REQUIRED</span>
                               </div>
                             )}
                           </div>
