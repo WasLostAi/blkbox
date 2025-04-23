@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -28,7 +29,8 @@ export default function MobileNav() {
           isOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
-        <div className="flex justify-end p-4">
+        <div className="flex justify-between items-center p-4">
+          <Image src="/blkbox-logo-stacked.png" alt="$BLKBOX" width={100} height={50} className="h-10 w-auto" />
           <button
             onClick={toggleMenu}
             className="p-2 text-neon-pink hover:text-neon-cyan transition-colors"
