@@ -480,14 +480,14 @@ async function executeBuy(tokenAddress, amount, filters) {
 
 async function monitorPriceForSell(tokenAddress, buyTx, thresholds) {
   const initialPrice = await getTokenPrice(tokenAddress);
-  console.log(\`Initial price: $\${initialPrice}\`);
+  console.log(\`Initial price: \${initialPrice}\`);
   
   // Start price monitoring
   const interval = setInterval(async () => {
     const currentPrice = await getTokenPrice(tokenAddress);
     const priceChange = ((currentPrice - initialPrice) / initialPrice) * 100;
     
-    console.log(\`Current price: $\${currentPrice} (${priceChange.toFixed(2)}%)\`);
+    console.log(\`Current price: $\${currentPrice} (\${priceChange.toFixed(2)}%)\`);
     
     // Check take profit
     if (priceChange >= thresholds.takeProfit) {
