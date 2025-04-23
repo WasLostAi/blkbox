@@ -4,6 +4,7 @@ import { Rajdhani, Share_Tech_Mono } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { WalletProvider } from "@/context/wallet-context"
+import { RealWalletContextProvider } from "@/context/real-wallet-context"
 
 // Main font - Rajdhani for headings and most text
 const rajdhani = Rajdhani({
@@ -35,7 +36,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${rajdhani.variable} ${shareTechMono.variable} font-rajdhani bg-black`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <WalletProvider>{children}</WalletProvider>
+          <RealWalletContextProvider>
+            <WalletProvider>{children}</WalletProvider>
+          </RealWalletContextProvider>
         </ThemeProvider>
       </body>
     </html>

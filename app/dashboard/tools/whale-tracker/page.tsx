@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, Users, Search, Filter, RefreshCw, ExternalLink, AlertCircle } from "lucide-react"
+import { ArrowLeft, Users, Search, Filter, RefreshCw, ExternalLink, AlertCircle } from 'lucide-react'
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -33,7 +33,8 @@ export default function WhaleTrackerPage() {
       try {
         // Simulate API call delay
         await new Promise((resolve) => setTimeout(resolve, 1500))
-        const activities = generateWhaleActivities(20)
+        // Replace with actual data fetching logic
+        const activities = await fetchWhaleActivities()
         setWhaleActivities(activities)
       } finally {
         setIsLoading(false)
@@ -51,7 +52,8 @@ export default function WhaleTrackerPage() {
     try {
       // Simulate API call delay
       await new Promise((resolve) => setTimeout(resolve, 1000))
-      const activities = generateWhaleActivities(20)
+      // Replace with actual data fetching logic
+      const activities = await fetchWhaleActivities()
       setWhaleActivities(activities)
     } finally {
       setIsRefreshing(false)
@@ -119,6 +121,14 @@ export default function WhaleTrackerPage() {
       default:
         return "text-white"
     }
+  }
+
+  // Mock function to fetch whale activities
+  async function fetchWhaleActivities(): Promise<WhaleActivity[]> {
+    // Replace with actual data fetching logic from a data source
+    // This could be an API call to a backend server or a direct connection to a blockchain indexer
+    // For this demo, we'll use mock data
+    return generateWhaleActivities(20)
   }
 
   return (

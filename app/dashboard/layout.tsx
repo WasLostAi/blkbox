@@ -31,6 +31,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return pathname === path || pathname.startsWith(`${path}/`)
   }
 
+  // Check if we're on a sub-page that needs the back arrow
+  const isSubPage = pathname !== "/dashboard" && pathname !== "/"
+
   const navItems = [
     {
       name: "", // Empty name for icon-only
@@ -176,14 +179,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </header>
 
-      {/* Back arrow only - removed all other sub-navigation elements */}
-      {pathname !== "/dashboard" && (
-        <div className="bg-black border-b border-zinc-800">
-          <div className="container px-4 py-2">
-            <Link href="/dashboard" className="text-zinc-400 hover:text-white transition-colors">
-              <ChevronLeft className="h-5 w-5" />
-            </Link>
-          </div>
+      {/* Simplified sub-navigation - only arrow shown if on a sub-page */}
+      {isSubPage && (
+        <div className="py-2 px-4 border-b border-zinc-800">
+          <Link href="/dashboard" className="text-zinc-400 hover:text-white">
+            <ChevronLeft className="h-5 w-5" />
+            <span className="sr-only">Back to Dashboard</span>
+          </Link>
         </div>
       )}
 

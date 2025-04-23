@@ -16,6 +16,7 @@ import TierGate from "@/components/tier-gate"
 import { useWallet } from "@/context/wallet-context"
 import WalletConnector from "@/components/wallet-connector"
 import TerminalCode from "@/components/terminal-code"
+import { scanMempool, executeMevStrategy, type MevOpportunity } from "@/utils/mev-detection"
 
 export default function MevExtractionPage() {
   const { connected } = useWallet()
@@ -30,6 +31,9 @@ export default function MevExtractionPage() {
   const [totalExtracted, setTotalExtracted] = useState(0)
   const [logs, setLogs] = useState<string[]>([])
   const [expandedSection, setExpandedSection] = useState<string | null>("settings")
+  const [opportunities, setOpportunities] = useState<MevOpportunity[]>([])
+  const [scanInterval, setScanInterval] = useState<NodeJS.Timeout | null>(null)
+  const [executionInterval, setExecutionInterval] = useState<NodeJS.Timeout | null>(null)
 
   // Load initial data
   useEffect(() => {
@@ -55,19 +59,125 @@ export default function MevExtractionPage() {
     }
 
     loadData()
+
+    // Cleanup function
+    return () => {
+      if (scanInterval) clearInterval(scanInterval)
+      if (executionInterval) clearInterval(executionInterval)
+    }
   }, [])
 
   // Handle start/stop extraction
   const toggleExtraction = () => {
     if (isRunning) {
-      setIsRunning(false)
-      addLog("MEV extraction paused.")
+      stopExtraction()
     } else {
-      setIsRunning(true)
-      addLog("MEV extraction started.")
+      startExtraction()
+    }
+  }
 
-      // Simulate extraction process
-      simulateExtraction()
+  // Start MEV extraction
+  const startExtraction = () => {
+    setIsRunning(true)
+    addLog("MEV extraction started.")
+
+    // Start scanning mempool for opportunities
+    const interval = setInterval(
+      async () => {
+        try {
+          // Scan mempool for opportunities
+          const newOpportunities = await scanMempool()
+
+          // Filter opportunities based on profit threshold
+          const filteredOpportunities = newOpportunities.filter(
+            (op) => op.expectedProfit >= profitThreshold && op.successProbability > 0.5,
+          )
+
+          if (filteredOpportunities.length > 0) {
+            setOpportunities((prev) => [...filteredOpportunities, ...prev].slice(0, 10))
+
+            // Log new opportunities
+            filteredOpportunities.forEach((op) => {
+              addLog(`MEV opportunity detected: ${op.type} with expected profit of $${op.expectedProfit.toFixed(2)}`)
+            })
+          }
+        } catch (error) {
+          console.error("Error scanning mempool:", error)
+          addLog(`Error scanning mempool: ${error instanceof Error ? error.message : "Unknown error"}`)
+        }
+      },
+      10000 / (extractionSpeed / 50),
+    ) // Adjust scan frequency based on extraction speed
+
+    setScanInterval(interval)
+
+    // Start executing MEV strategies
+    const execInterval = setInterval(
+      async () => {
+        if (opportunities.length === 0) return
+
+        try {
+          // Take the most profitable opportunity
+          const opportunity = opportunities[0]
+
+          // Remove the opportunity from the list
+          setOpportunities((prev) => prev.slice(1))
+
+          // Add to pending value
+          setPendingValue((prev) => prev + opportunity.expectedProfit)
+          addLog(
+            `Executing ${opportunity.type} strategy with expected profit of $${opportunity.expectedProfit.toFixed(2)}...`,
+          )
+
+          // Execute the MEV strategy
+          const result = await executeMevStrategy(opportunity)
+
+          if (result.success) {
+            // Update extracted value
+            setExtractedValue((prev) => prev + result.profit)
+            setTotalExtracted((prev) => prev + result.profit)
+            setPendingValue((prev) => prev - opportunity.expectedProfit)
+
+            addLog(`MEV extraction successful! Profit: $${result.profit.toFixed(2)}`)
+
+            if (result.txId) {
+              addLog(`Transaction ID: ${result.txId}`)
+            }
+
+            // Auto-reinvest if enabled
+            if (autoReinvest) {
+              addLog(`Auto-reinvesting profit of $${result.profit.toFixed(2)}...`)
+            }
+          } else {
+            // Failed execution
+            setPendingValue((prev) => prev - opportunity.expectedProfit)
+            addLog(`MEV extraction failed. No profit realized.`)
+          }
+        } catch (error) {
+          console.error("Error executing MEV strategy:", error)
+          addLog(`Error executing MEV strategy: ${error instanceof Error ? error.message : "Unknown error"}`)
+        }
+      },
+      15000 / (extractionSpeed / 50),
+    ) // Adjust execution frequency based on extraction speed
+
+    setExecutionInterval(execInterval)
+  }
+
+  // Stop MEV extraction
+  const stopExtraction = () => {
+    setIsRunning(false)
+    addLog("MEV extraction stopped.")
+
+    // Clear intervals
+    if (scanInterval) {
+      clearInterval(scanInterval)
+      setScanInterval(null)
+    }
+
+    if (executionInterval) {
+      clearInterval(executionInterval)
+      setExecutionInterval(null)
     }
   }
 
@@ -77,37 +187,6 @@ export default function MevExtractionPage() {
       const timestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
       return [`[${timestamp}] ${message}`, ...prev.slice(0, 99)]
     })
-  }
-
-  // Simulate MEV extraction
-  const simulateExtraction = () => {
-    if (!isRunning) return
-
-    const extractionInterval = setInterval(() => {
-      if (!isRunning) {
-        clearInterval(extractionInterval)
-        return
-      }
-
-      // Random chance to find MEV opportunity
-      if (Math.random() > 0.7) {
-        const amount = Math.random() * 5 + 0.1
-        setPendingValue((prev) => prev + amount)
-        addLog(`MEV opportunity detected: +${amount.toFixed(4)} USDC`)
-
-        // Simulate transaction confirmation delay
-        setTimeout(() => {
-          if (isRunning) {
-            setExtractedValue((prev) => prev + amount)
-            setPendingValue((prev) => prev - amount)
-            setTotalExtracted((prev) => prev + amount)
-            addLog(`MEV extraction confirmed: +${amount.toFixed(4)} USDC`)
-          }
-        }, 3000)
-      }
-    }, 2000)
-
-    return () => clearInterval(extractionInterval)
   }
 
   // Toggle section expansion

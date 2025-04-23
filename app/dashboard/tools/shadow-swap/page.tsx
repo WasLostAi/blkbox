@@ -24,6 +24,7 @@ export default function ShadowSwapPage() {
   const [amount, setAmount] = useState("")
   const [isProcessing, setIsProcessing] = useState(false)
   const [isComplete, setIsComplete] = useState(false)
+  const [estimatedOutput, setEstimatedOutput] = useState("0.0")
 
   const handleSwap = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,12 +37,17 @@ export default function ShadowSwapPage() {
       // Simulate transaction delay
       await new Promise((resolve) => setTimeout(resolve, 3000))
 
+      // Simulate swap execution and calculate output
+      const output = Number.parseFloat(amount) * 0.95 // Simulate 5% slippage
+      setEstimatedOutput(output.toFixed(4))
+
       setIsComplete(true)
 
       // Reset after a few seconds
       setTimeout(() => {
         setIsComplete(false)
         setAmount("")
+        setEstimatedOutput("0.0")
       }, 5000)
     } catch (error) {
       console.error("Swap failed:", error)
@@ -155,7 +161,7 @@ export default function ShadowSwapPage() {
                         </Select>
                         <Input
                           type="text"
-                          value={amount ? (Number.parseFloat(amount) * 0.95).toFixed(4) : ""}
+                          value={estimatedOutput}
                           readOnly
                           className="flex-1 bg-black border-zinc-800 text-white font-tech-mono"
                           placeholder="0.0"
