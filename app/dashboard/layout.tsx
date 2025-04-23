@@ -19,6 +19,7 @@ import {
   ArrowUpRight,
   Settings,
   Shield,
+  ChevronLeft,
 } from "lucide-react"
 import WalletConnector from "@/components/wallet-connector"
 
@@ -174,6 +175,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </div>
       </header>
+
+      {/* Back arrow only - removed all other sub-navigation elements */}
+      {pathname !== "/dashboard" && (
+        <div className="bg-black border-b border-zinc-800">
+          <div className="container px-4 py-2">
+            <Link href="/dashboard" className="text-zinc-400 hover:text-white transition-colors">
+              <ChevronLeft className="h-5 w-5" />
+            </Link>
+          </div>
+        </div>
+      )}
+
       <main className="flex-1">{children}</main>
     </div>
   )
