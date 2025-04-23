@@ -18,6 +18,7 @@ import {
   Lightbulb,
   Crosshair,
   Rocket,
+  Settings,
 } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CyberButton from "@/components/cyber-button"
@@ -37,7 +38,7 @@ import WalletConnector from "@/components/wallet-connector"
 export default function DashboardPage() {
   const [walletModalOpen, setWalletModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const { connected, address, balance, tier } = useWallet()
+  const { connected, address, balance, tier, isAdmin } = useWallet()
   const router = useRouter()
 
   // Simulate loading state
@@ -163,6 +164,17 @@ export default function DashboardPage() {
             <p className="text-neon-cyan font-tech-mono">SHADOW PROTOCOL CONTROL CENTER</p>
             <DataPulse className="my-6" />
           </div>
+
+          {isAdmin && (
+            <div className="mb-6">
+              <Link href="/dashboard/settings">
+                <CyberButton glowColor="pink" className="gap-2">
+                  <Settings className="h-4 w-4" />
+                  ADMIN SETTINGS
+                </CyberButton>
+              </Link>
+            </div>
+          )}
 
           {!connected ? (
             <div className="bg-black/60 border border-neon-pink p-8 rounded-lg text-center">
@@ -743,7 +755,7 @@ export default function DashboardPage() {
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-zinc-400 font-tech-mono">Payout Address</span>
-                            <span className="text-white font-tech-mono">Same as wallet</span>
+                            <span className="text-white font-tech-mono">Same as connected wallet</span>
                           </div>
                         </div>
                       </CyberCard>

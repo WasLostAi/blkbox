@@ -39,6 +39,13 @@ type WalletContextType = {
   addToWhitelist: (address: string) => void
   removeFromWhitelist: (address: string) => void
   getWhitelistedAddresses: () => string[]
+  // New admin features
+  killSwitchActive: boolean
+  setKillSwitchActive: (active: boolean) => void
+  blockAllConnections: boolean
+  setBlockAllConnections: (block: boolean) => void
+  whitelistOnly: boolean
+  setWhitelistOnly: (whitelistOnly: boolean) => void
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined)
@@ -53,6 +60,10 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false)
   const [accessMode, setAccessMode] = useState<AccessMode>("NORMAL")
   const [whitelist, setWhitelist] = useState<string[]>([...ADMIN_WHITELIST])
+  // Add these new state variables to the WalletProvider
+  const [killSwitchActive, setKillSwitchActive] = useState(false)
+  const [blockAllConnections, setBlockAllConnections] = useState(false)
+  const [whitelistOnly, setWhitelistOnly] = useState(false)
 
   // Calculate tier based on balance
   const calculateTier = (balance: number): WalletTier => {
@@ -114,45 +125,23 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
     try {
       // In a real implementation, this would connect to an actual wallet
-      // For now, we'll simulate it with a delay and the provided admin address
+      // For now, we'll simulate it with a delay and always use the admin address
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
-      // For demo purposes, we'll use the admin address 20% of the time
-      // In a real app, this would be the actual connected wallet address
-      const useAdminAddress = Math.random() < 0.2
-      const connectedAddress = useAdminAddress
-        ? "AuwUfiwsXA6VibDjR579HWLhDUUoa5s6T7i7KPyLUa9F"
-        : "0x" + Math.random().toString(16).slice(2, 14)
+      // Always use the admin address for testing
+      const connectedAddress = "AuwUfiwsXA6VibDjR579HWLhDUUoa5s6T7i7KPyLUa9F"
 
       // Check if the address is admin
       const adminStatus = checkIsAdmin(connectedAddress)
 
-      // For demo purposes, assign a random balance that corresponds to a tier
-      // In a real app, this would be fetched from the blockchain
-      const tiers = [
-        { min: 0, max: 9999, tier: "UNAUTHORIZED" },
-        { min: 10000, max: 49999, tier: "ENTRY_LEVEL" },
-        { min: 50000, max: 249999, tier: "OPERATOR" },
-        { min: 250000, max: 999999, tier: "SHADOW_ELITE" },
-        { min: 1000000, max: 2000000, tier: "PHANTOM_COUNCIL" },
-      ]
-
-      // If admin, always give highest tier
-      let randomBalance = 0
-      if (adminStatus) {
-        randomBalance = 1500000 // Phantom Council tier for admin
-      } else {
-        // Randomly select a tier for demo purposes
-        const selectedTierIndex = Math.floor(Math.random() * tiers.length)
-        const selectedTier = tiers[selectedTierIndex]
-        randomBalance = Math.floor(Math.random() * (selectedTier.max - selectedTier.min) + selectedTier.min)
-      }
+      // For admin, always give highest tier
+      const randomBalance = 1500000 // Phantom Council tier for admin
 
       // Update state
       setAddress(connectedAddress)
       setBalance(randomBalance)
       setTier(calculateTier(randomBalance))
-      setIsAdmin(adminStatus)
+      setIsAdmin(true) // Force admin status to true
       setConnected(true)
 
       // Store in localStorage
@@ -226,6 +215,22 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     return [...whitelist]
   }
 
+  const updateKillSwitchActive = (active: boolean) => {
+    if (!isAdmin) return
+    setKillSwitchActive(active)
+  }
+
+  const updateBlockAllConnections = (block: boolean) => {
+    if (!isAdmin) return
+    setBlockAllConnections(block)
+  }
+
+  const updateWhitelistOnly = (whitelistOnly: boolean) => {
+    if (!isAdmin) return
+    setWhitelistOnly(whitelistOnly)
+  }
+
+  // Add the new admin features to the context value
   return (
     <WalletContext.Provider
       value={{
@@ -246,6 +251,13 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         addToWhitelist,
         removeFromWhitelist,
         getWhitelistedAddresses,
+        // New admin features
+        killSwitchActive,
+        setKillSwitchActive: updateKillSwitchActive,
+        blockAllConnections,
+        setBlockAllConnections: updateBlockAllConnections,
+        whitelistOnly,
+        setWhitelistOnly: updateWhitelistOnly,
       }}
     >
       {children}
