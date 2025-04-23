@@ -120,26 +120,23 @@ export default function Home() {
                 interval={10000}
               />
               <DataPulse className="my-6" />
-              <div className="mx-auto max-w-3xl mb-8 font-tech-mono text-sm">
-                <p className="text-zinc-300">
-                  Ten years in exile taught me one thing: Playing by their rules is a game designed for you to lose.
+              <div className="mx-auto max-w-3xl mb-8 font-tech-mono">
+                <p className="text-zinc-300 text-xl md:text-2xl">
+                  Ten years in exile taught me one thing: <br />
+                  playing by their rules is a game designed for you to lose.
                 </p>
-                <p className="text-zinc-300 mt-4">
-                  While you've been chasing pump and dumps, following influencer signals, and settling for breadcrumbs –
-                  the real players have been operating with tools you never knew existed.
-                </p>
-                <p className="text-zinc-300 mt-4">
-                  While you've watched elite players extract billions from the market, they've used tools you never had
-                  access to.
+                <p className="text-zinc-300 mt-4 text-base md:text-lg">
+                  While you've been chasing pump and dumps, following influencer signals, and settling for breadcrumbs,
+                  the real players —the elite—have been extracting billions from the market using tools you never even
+                  knew existed.
                 </p>
                 <div className="mt-4 inline-block">
                   <HackerText text="Until now." className="text-xl font-bold text-neon-pink" />
                 </div>
-                <p className="text-zinc-300 mt-4">
-                  <strong className="text-neon-cyan">
-                    $BLKBOX isn't software. It's warfare against a rigged system.
-                  </strong>
-                </p>
+                <div className="mt-6 space-y-2">
+                  <p className="text-neon-cyan text-2xl md:text-4xl font-bold">$BLKBOX isn't software.</p>
+                  <p className="text-neon-cyan text-2xl md:text-4xl font-bold">It's warfare.</p>
+                </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/presale">
@@ -591,7 +588,7 @@ console.log(\`Access granted: \${myTier}\`); // Access granted: SHADOW_ELITE`}
             <DataPulse className="mb-8" color="cyan" />
             <div className="mx-auto max-w-3xl">
               <CyberCard className="bg-black/60">
-                <div className="prose prose-invert prose-lg mx-auto font-tech-mono text-sm">
+                <div className="prose prose-invert mx-auto font-tech-mono text-base md:text-xl">
                   <p>
                     Ten years building systems for those who claimed to be innovating while simply extracting. Watching
                     as retail investors were systematically separated from their capital through information asymmetry
@@ -605,12 +602,14 @@ console.log(\`Access granted: \${myTier}\`); // Access granted: SHADOW_ELITE`}
                     $BLKBOX changes that. By giving you the same tools the predators use, while allowing coordinated
                     action through the Dark Pool.
                   </p>
-                  <p className="text-xl font-bold text-neon-pink">
+                  <p className="text-2xl md:text-3xl font-bold text-neon-pink">
                     This isn't about getting rich quick. It's about systematic value extraction from a system designed
                     to extract from you.
                   </p>
                   <p>
-                    <strong className="text-neon-cyan">The revolution will not be tweeted by influencers.</strong>
+                    <strong className="text-neon-cyan text-xl md:text-2xl">
+                      The revolution will not be tweeted by influencers.
+                    </strong>
                   </p>
                 </div>
               </CyberCard>
