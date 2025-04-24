@@ -12,10 +12,10 @@ interface DividendCardProps {
 export default function DividendCard({ percentage, title, description, icon }: DividendCardProps) {
   return (
     <Card className="bg-black/50 border-zinc-700 overflow-hidden relative cyber-card">
-      <div className="hud-corner hud-corner-tl"></div>
-      <div className="hud-corner hud-corner-tr"></div>
-      <div className="hud-corner hud-corner-bl"></div>
-      <div className="hud-corner hud-corner-br"></div>
+      <div className="hud-corner hud-corner-tl">{"<"}</div>
+      <div className="hud-corner hud-corner-tr">{">"}</div>
+      <div className="hud-corner hud-corner-bl">{"<"}</div>
+      <div className="hud-corner hud-corner-br">{">"}</div>
 
       <DataPulse height={2} color={title.includes("MEV") ? "cyan" : "pink"} />
       <div className="p-6">

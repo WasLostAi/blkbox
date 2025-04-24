@@ -69,7 +69,6 @@ export default function StealthRouterPage() {
       addRouteLog("Routing complete. Transaction successfully obfuscated.")
     } catch (error) {
       console.error("Routing error:", error)
-      setRouteStatus("failed")
       addRouteLog("Routing failed. Please try again.")
     } finally {
       setIsRouting(false)
@@ -438,25 +437,25 @@ export default function StealthRouterPage() {
                             <TerminalCode
                               code={`// Stealth routing algorithm configuration
 {
-  "algorithm": "shadow_path_v2",
-  "parameters": {
-    "minHops": ${routeHops},
-    "maxHops": ${routeHops + 2},
-    "privacyLevel": ${privacyLevel},
-    "usePrivateRPC": ${usePrivateRPC},
-    "obfuscateMetadata": ${obfuscateMetadata},
-    "network": "${selectedNetwork}",
-    "routeType": "${routeType}",
-    "timeoutMs": 30000,
-    "retryCount": 3,
-    "gasMultiplier": 1.2
-  },
-  "securityFeatures": {
-    "antiFingerprinting": true,
-    "timeShuffling": true,
-    "dummyTransactions": ${privacyLevel > 70},
-    "metadataScrubbing": true
-  }
+"algorithm": "shadow_path_v2",
+"parameters": {
+  "minHops": ${routeHops},
+  "maxHops": ${routeHops + 2},
+  "privacyLevel": ${privacyLevel},
+  "usePrivateRPC": ${usePrivateRPC},
+  "obfuscateMetadata": ${obfuscateMetadata},
+  "network": "${selectedNetwork}",
+  "routeType": "${routeType}",
+  "timeoutMs": 30000,
+  "retryCount": 3,
+  "gasMultiplier": 1.2
+},
+"securityFeatures": {
+  "antiFingerprinting": true,
+  "timeShuffling": true,
+  "dummyTransactions": ${privacyLevel > 70},
+  "metadataScrubbing": true
+}
 }`}
                             />
                           </div>
@@ -492,12 +491,6 @@ export default function StealthRouterPage() {
           </div>
         </TierGate>
       </main>
-
-      <footer className="border-t border-neon-pink/30 py-6 bg-black">
-        <div className="container text-center">
-          <p className="text-sm text-zinc-500 font-tech-mono">© 2025 $BLKBOX. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   )
 }

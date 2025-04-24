@@ -57,17 +57,15 @@ export default function SettingsPage() {
   const [showEmergencyConfirm, setShowEmergencyConfirm] = useState(false)
 
   // Confirmation dialogs
-  const [showKillSwitchConfirm, setShowBlockAllConfirm, setShowDeleteConfirm] = useState<{
+  const [showKillSwitchConfirm, setShowBlockAllConfirm, showDeleteConfirm] = useState<{
     type: "whitelist" | "blacklist"
     address: string
   } | null>(null)
 
-  const [setShowKillSwitchConfirmState] = useState(false);
-  const [showBlockAllConfirmState, setShowBlockAllConfirmStateState] = useState(false);
-  const [showDeleteConfirmState, setShowDeleteConfirmStateState] = useState<{
+  const [setShowKillSwitchConfirmState, setShowBlockAllConfirmStateState, setShowDeleteConfirmStateState] = useState<{
     type: "whitelist" | "blacklist"
     address: string
-  } | null>(null);
+  } | null>(null)
 
   // Check if the user is authorized (admin status)
   useEffect(() => {
@@ -95,13 +93,13 @@ export default function SettingsPage() {
       // In a real app, you would call an API to disable the kill switch
     } else {
       // If not active, show confirmation dialog
-      setShowKillSwitchConfirmState(true)
+      setShowKillSwitchConfirm(true)
     }
   }
 
   const confirmKillSwitch = () => {
     setKillSwitchActive(true)
-    setShowKillSwitchConfirmState(false)
+    setShowKillSwitchConfirm(false)
     // In a real app, you would call an API to enable the kill switch
   }
 
@@ -112,13 +110,13 @@ export default function SettingsPage() {
       // In a real app, you would call an API to disable blocking
     } else {
       // If not active, show confirmation dialog
-      setShowBlockAllConfirmStateState(true)
+      setShowBlockAllConfirm(true)
     }
   }
 
   const confirmBlockAll = () => {
     setBlockAllConnections(true)
-    setShowBlockAllConfirmStateState(false)
+    setShowBlockAllConfirm(false)
     // In a real app, you would call an API to enable blocking
   }
 
@@ -231,7 +229,7 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <DataPulse className="mb-8" />
+        <DataPulse className="mb-8" color="cyan" />
 
         {killSwitchActive && (
           <CyberCard className="mb-8 bg-red-900/20 border-red-500/50">
@@ -368,7 +366,7 @@ export default function SettingsPage() {
                       <div className="flex items-center gap-3">
                         <div className="p-2 rounded-full bg-neon-cyan/20">
                           <Eye className="h-5 w-5 text-neon-cyan" />
-                          </div>
+                        </div>
                         <div>
                           <h4 className="font-bold text-white">Log All Transactions</h4>
                           <p className="text-zinc-400 text-sm">Record all system transactions for auditing</p>
@@ -491,10 +489,10 @@ export default function SettingsPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {whitelistedAddresses.map((addr) => (
-                        <TableRow key={addr} className="border-zinc-800 hover:bg-zinc-900">
+                      {whitelistedAddresses.map((address, index) => (
+                        <TableRow key={index} className="border-zinc-800 hover:bg-zinc-900">
                           <TableCell className="font-tech-mono text-white">
-                            {addr.slice(0, 6)}...{addr.slice(-6)}
+                            {address.slice(0, 6)}...{address.slice(-6)}
                           </TableCell>
                           <TableCell>
                             <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-900/20 text-green-400">
@@ -504,14 +502,14 @@ export default function SettingsPage() {
                           <TableCell className="text-zinc-400">2025-04-23</TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-2">
-                              {addr === "AuwUfiwsXA6VibDjR579HWLhDUUoa5s6T7i7KPyLUa9F" ? (
+                              {address === "AuwUfiwsXA6VibDjR579HWLhDUUoa5s6T7i7KPyLUa9F" ? (
                                 <span className="text-xs text-zinc-500 font-tech-mono">ADMIN (PROTECTED)</span>
                               ) : (
                                 <CyberButton
                                   size="sm"
                                   variant="outline"
                                   glowColor="pink"
-                                  onClick={() => removeFromWhitelist(addr)}
+                                  onClick={() => removeFromWhitelist(address)}
                                 >
                                   REMOVE
                                 </CyberButton>
@@ -580,8 +578,8 @@ export default function SettingsPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {blacklistedAddresses.map((address) => (
-                        <TableRow key={address} className="border-zinc-800 hover:bg-zinc-900">
+                      {blacklistedAddresses.map((address, index) => (
+                        <TableRow key={index} className="border-zinc-800 hover:bg-zinc-900">
                           <TableCell className="font-tech-mono text-white">
                             {address.slice(0, 6)}...{address.slice(-6)}
                           </TableCell>
@@ -670,13 +668,14 @@ export default function SettingsPage() {
                     </div>
                   </div>
                 </div>
-              </CyberCard>
+              </div>
+            </CyberCard>
           </TabsContent>
         </Tabs>
       </div>
 
       {/* Confirmation Dialogs */}
-      <Dialog open={showKillSwitchConfirm} onOpenChange={setShowKillSwitchConfirmState}>
+      <Dialog open={showKillSwitchConfirm} onOpenChange={() => setShowKillSwitchConfirm(false)}>
         <DialogContent className="bg-black border border-red-500/50">
           <DialogHeader>
             <DialogTitle className="text-red-500">Confirm Kill Switch Activation</DialogTitle>
@@ -692,7 +691,7 @@ export default function SettingsPage() {
             </p>
           </div>
           <DialogFooter>
-            <CyberButton variant="outline" glowColor="cyan" onClick={() => setShowKillSwitchConfirmState(false)}>
+            <CyberButton variant="outline" glowColor="cyan" onClick={() => setShowKillSwitchConfirm(false)}>
               CANCEL
             </CyberButton>
             <CyberButton glowColor="pink" onClick={confirmKillSwitch}>
@@ -702,7 +701,7 @@ export default function SettingsPage() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={showBlockAllConfirm} onOpenChange={setShowBlockAllConfirmStateState}>
+      <Dialog open={showBlockAllConfirm} onOpenChange={() => setShowBlockAllConfirm(false)}>
         <DialogContent className="bg-black border border-red-500/50">
           <DialogHeader>
             <DialogTitle className="text-red-500">Confirm Connection Blocking</DialogTitle>
@@ -712,7 +711,7 @@ export default function SettingsPage() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <CyberButton variant="outline" glowColor="cyan" onClick={() => setShowBlockAllConfirmStateState(false)}>
+            <CyberButton variant="outline" glowColor="cyan" onClick={() => setShowBlockAllConfirm(false)}>
               CANCEL
             </CyberButton>
             <CyberButton glowColor="pink" onClick={confirmBlockAll}>
@@ -746,7 +745,7 @@ export default function SettingsPage() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={showEmergencyConfirm} onOpenChange={setShowEmergencyConfirm}>
+      <Dialog open={showEmergencyConfirm} onOpenChange={() => setShowEmergencyConfirm(false)}>
         <DialogContent className="bg-black border border-red-500/50">
           <DialogHeader>
             <DialogTitle className="text-red-500">Confirm Emergency Broadcast</DialogTitle>

@@ -1,29 +1,14 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Rajdhani, Share_Tech_Mono } from "next/font/google"
+import { Inter } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
 import { WalletProvider } from "@/context/wallet-context"
-import { RealWalletContextProvider } from "@/context/real-wallet-context"
 
-// Main font - Rajdhani for headings and most text
-const rajdhani = Rajdhani({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-rajdhani",
-})
-
-// Monospace font for code-like elements and accents
-const shareTechMono = Share_Tech_Mono({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-tech-mono",
-})
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "$BLKBOX | The Shadow Protocol",
-  description:
-    "Access the darkest toolbox ever built for Solana. A system that gives you what the whales, insiders, and shadow teams have been using.",
+  title: "$BLKBOX: The Shadow Protocol",
+  description: "They tried to erase me. Now I'm erasing the rules.",
     generator: 'v0.dev'
 }
 
@@ -33,27 +18,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${rajdhani.variable} ${shareTechMono.variable} font-rajdhani bg-black`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <RealWalletContextProvider>
-            <WalletProvider>{children}</WalletProvider>
-          </RealWalletContextProvider>
-        </ThemeProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        <WalletProvider>{children}</WalletProvider>
       </body>
     </html>
   )
-}
-
-// Helper function to check if user tier is high enough
-function tierLevelCheck(userTier: string, requiredTier: string) {
-  const tierLevels = {
-    UNAUTHORIZED: 0,
-    ENTRY_LEVEL: 1,
-    OPERATOR: 2,
-    SHADOW_ELITE: 3,
-    PHANTOM_COUNCIL: 4,
-  }
-
-  return tierLevels[userTier as keyof typeof tierLevels] >= tierLevels[requiredTier as keyof typeof tierLevels]
 }

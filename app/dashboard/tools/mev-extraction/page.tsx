@@ -306,7 +306,7 @@ export default function MevExtractionPage() {
                         <h3 className="text-lg font-bold text-neon-cyan">Extraction Analytics</h3>
                       </div>
                       <div className="flex flex-col items-center justify-center h-[340px]">
-                        <AlertCircle className="h-12 w-12 text-zinc-500 mb-4" />
+                        <AlertCircle className="h-8 w-8 text-zinc-500 mb-4" />
                         <p className="text-zinc-400 font-tech-mono">
                           Analytics will be available after 24 hours of extraction
                         </p>
@@ -323,72 +323,72 @@ export default function MevExtractionPage() {
                         <TerminalCode
                           code={`// MEV Extraction Core Algorithm
 async function scanMempool(mempool) {
-  const opportunities = [];
+const opportunities = [];
 
-  for (const tx of mempool.pendingTransactions) {
-    // Skip small transactions
-    if (tx.value < MIN_TRANSACTION_VALUE) continue;
-    
-    // Check for arbitrage opportunities
-    const arbOpportunity = await checkArbitrage(tx);
-    if (arbOpportunity) {
-      opportunities.push({
-        type: 'arbitrage',
-        expectedValue: arbOpportunity.profit,
-        successProbability: arbOpportunity.probability,
-        transaction: buildArbitrageTransaction(arbOpportunity)
-      });
-    }
-    
-    // Check for sandwich opportunities
-    const sandwichOpportunity = await checkSandwich(tx);
-    if (sandwichOpportunity) {
-      opportunities.push({
-        type: 'sandwich',
-        expectedValue: sandwichOpportunity.profit,
-        successProbability: sandwichOpportunity.probability,
-        transaction: buildSandwichTransaction(sandwichOpportunity)
-      });
-    }
-    
-    // Check for liquidation opportunities
-    const liquidationOpportunity = await checkLiquidation(tx);
-    if (liquidationOpportunity) {
-      opportunities.push({
-        type: 'liquidation',
-        expectedValue: liquidationOpportunity.profit,
-        successProbability: liquidationOpportunity.probability,
-        transaction: buildLiquidationTransaction(liquidationOpportunity)
-      });
-    }
+for (const tx of mempool.pendingTransactions) {
+  // Skip small transactions
+  if (tx.value < MIN_TRANSACTION_VALUE) continue;
+  
+  // Check for arbitrage opportunities
+  const arbOpportunity = await checkArbitrage(tx);
+  if (arbOpportunity) {
+    opportunities.push({
+      type: 'arbitrage',
+      expectedValue: arbOpportunity.profit,
+      successProbability: arbOpportunity.probability,
+      transaction: buildArbitrageTransaction(arbOpportunity)
+    });
   }
+  
+  // Check for sandwich opportunities
+  const sandwichOpportunity = await checkSandwich(tx);
+  if (sandwichOpportunity) {
+    opportunities.push({
+      type: 'sandwich',
+      expectedValue: sandwichOpportunity.profit,
+      successProbability: sandwichOpportunity.probability,
+      transaction: buildSandwichTransaction(sandwichOpportunity)
+    });
+  }
+  
+  // Check for liquidation opportunities
+  const liquidationOpportunity = await checkLiquidation(tx);
+  if (liquidationOpportunity) {
+    opportunities.push({
+      type: 'liquidation',
+      expectedValue: liquidationOpportunity.profit,
+      successProbability: liquidationOpportunity.probability,
+      transaction: buildLiquidationTransaction(liquidationOpportunity)
+    });
+  }
+}
 
-  return opportunities;
+return opportunities;
 }
 
 async function extractMEV() {
-  const mempool = await getMempool();
-  const opportunities = await scanMempool(mempool);
+const mempool = await getMempool();
+const opportunities = await scanMempool(mempool);
 
-  // Filter for high-value opportunities
-  const highValueOps = opportunities.filter(op => {
-    return op.expectedValue > PROFIT_THRESHOLD && 
-           op.successProbability > SUCCESS_PROBABILITY_THRESHOLD;
+// Filter for high-value opportunities
+const highValueOps = opportunities.filter(op => {
+  return op.expectedValue > PROFIT_THRESHOLD && 
+         op.successProbability > SUCCESS_PROBABILITY_THRESHOLD;
+});
+
+if (highValueOps.length > 0) {
+  // Sort by expected value
+  const bestOp = highValueOps.sort((a, b) => 
+    b.expectedValue - a.expectedValue
+  )[0];
+  
+  // Execute with priority gas
+  return executeTransaction(bestOp.transaction, {
+    priority: PRIORITY_FEE_LEVEL
   });
+}
 
-  if (highValueOps.length > 0) {
-    // Sort by expected value
-    const bestOp = highValueOps.sort((a, b) => 
-      b.expectedValue - a.expectedValue
-    )[0];
-    
-    // Execute with priority gas
-    return executeTransaction(bestOp.transaction, {
-      priority: PRIORITY_FEE_LEVEL
-    });
-  }
-
-  return null;
+return null;
 }`}
                         />
                       </div>
