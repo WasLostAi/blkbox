@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, Target, RefreshCw, AlertCircle, ChevronDown, ChevronUp, Zap, Crosshair, Shield } from "lucide-react"
+import { ArrowLeft, Target, RefreshCw, AlertCircle, ChevronDown, ChevronUp, Zap, Crosshair } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Slider } from "@/components/ui/slider"
@@ -164,7 +164,7 @@ export default function LiquidationHunterPage() {
       </header>
 
       <main className="flex-1 container py-12">
-        <TierGate requiredTier="SHADOW_COUNCIL">
+        <TierGate requiredTier="SHADOW_ELITE">
           <div className="max-w-6xl mx-auto">
             <div className="mb-8 text-center">
               <GlitchText
@@ -656,11 +656,11 @@ const liquidationTx = {
                     className="flex items-center justify-between cursor-pointer"
                     onClick={() => toggleSection("protocols")}
                   >
-                    <h3 className="text-lg font-bold text-neon-pink">Protocol Filters</h3>
+                    <h3 className="text-lg font-bold text-neon-cyan">Protocol Filters</h3>
                     {expandedSection === "protocols" ? (
-                      <ChevronUp className="h-5 w-5 text-neon-cyan" />
+                      <ChevronUp className="h-5 w-5 text-neon-pink" />
                     ) : (
-                      <ChevronDown className="h-5 w-5 text-neon-cyan" />
+                      <ChevronDown className="h-5 w-5 text-neon-pink" />
                     )}
                   </div>
 
@@ -729,33 +729,11 @@ const liquidationTx = {
                     </div>
                   )}
                 </CyberCard>
-
-                <CyberCard className="bg-black/60">
-                  <h3 className="text-lg font-bold text-neon-pink mb-4">Liquidation Protection</h3>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 rounded-full bg-neon-cyan/10">
-                      <Shield className="h-5 w-5 text-neon-cyan" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-tech-mono text-white">Shadow Council Protection</p>
-                      <p className="text-xs text-zinc-400">Your positions are protected from liquidation</p>
-                    </div>
-                  </div>
-                  <CyberButton variant="outline" glowColor="cyan" size="sm" className="w-full">
-                    MANAGE PROTECTION
-                  </CyberButton>
-                </CyberCard>
               </div>
             </div>
           </div>
         </TierGate>
       </main>
-
-      <footer className="border-t border-neon-pink/30 py-6 bg-black">
-        <div className="container text-center">
-          <p className="text-sm text-zinc-500 font-tech-mono">© 2025 $BLKBOX. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   )
 }

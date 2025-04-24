@@ -10,13 +10,13 @@ import {
   Zap,
   Eye,
   Brain,
-  Loader2,
   Shuffle,
   Target,
   Lightbulb,
   Crosshair,
   Rocket,
   Settings,
+  Shield,
 } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CyberButton from "@/components/cyber-button"
@@ -120,26 +120,103 @@ export default function DashboardPage() {
       tier: "PHANTOM_COUNCIL",
     },
     {
+      name: "Wash Trading Engine",
+      description: "Automate wash trading to inflate volume",
+      icon: Shuffle,
+      href: "/dashboard/tools/wash-trading-engine",
+      tier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Market Manipulation Detection",
+      description: "Identify and exploit market manipulation tactics",
+      icon: Eye,
+      href: "/dashboard/tools/market-manipulation-detection",
+      tier: "SHADOW_ELITE",
+    },
+    {
+      name: "Interoperability Hijacker",
+      description: "Exploit interoperability vulnerabilities",
+      icon: Zap,
+      href: "/dashboard/tools/shadow-protocol-interoperability-hijacker",
+      tier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Quantum Manipulator",
+      description: "Manipulate token states with quantum computing",
+      icon: Brain,
+      href: "/dashboard/tools/quantum-state-token-manipulator",
+      tier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Temporal Fragmentation",
+      description: "Fragment transactions across time",
+      icon: Target,
+      href: "/dashboard/tools/temporal-fragmentation-engine",
+      tier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Function Masquerading",
+      description: "Hide transaction intent",
+      icon: Shield,
+      href: "/dashboard/tools/function-masquerading-system",
+      tier: "SHADOW_ELITE",
+    },
+    {
+      name: "Hidden Tax Implementer",
+      description: "Implement stealth taxes on token transfers",
+      icon: Rocket,
+      href: "/dashboard/tools/hidden-tax-implementer",
+      tier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Phantom Vault Constructor",
+      description: "Create impenetrable vaults",
+      icon: Crosshair,
+      href: "/dashboard/tools/phantom-vault-constructor",
+      tier: "SHADOW_ELITE",
+    },
+    {
+      name: "Emissions Skimming",
+      description: "Skim rewards from token emissions programs",
+      icon: Lightbulb,
+      href: "/dashboard/tools/emissions-skimming-system",
+      tier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Liquidity Mirage",
+      description: "Create illusions of liquidity",
+      icon: Shuffle,
+      href: "/dashboard/tools/liquidity-mirage-creator",
+      tier: "SHADOW_ELITE",
+    },
+    {
+      name: "Sandwich Attack",
+      description: "Automate sandwich attacks",
+      icon: Eye,
+      href: "/dashboard/tools/sandwich-attack-automation",
+      tier: "OPERATOR",
+    },
+    {
+      name: "Token Creation",
+      description: "Launch custom tokens",
+      icon: Zap,
+      href: "/dashboard/tools/token-creation-wizard",
+      tier: "SHADOW_ELITE",
+    },
+    {
+      name: "Automated Arbitrage",
+      description: "Profit from price discrepancies",
+      icon: Brain,
+      href: "/dashboard/tools/automated-arbitrage",
+      tier: "OPERATOR",
+    },
+    {
       name: "Upgrade",
       href: "/dashboard/upgrade",
       icon: Zap,
       requiresAuth: true,
     },
   ]
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
-        <MatrixBackground />
-        <CircuitPattern />
-        <div className="flex flex-col items-center">
-          <Loader2 className="h-12 w-12 text-neon-pink animate-spin mb-4" />
-          <GlitchText text="LOADING DASHBOARD" className="text-xl font-tech-mono text-neon-cyan mb-2" />
-          <DataPulse className="w-48 mt-4" />
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
@@ -200,7 +277,7 @@ export default function DashboardPage() {
                 <CyberCard>
                   <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Your $BLKBOX Balance</h3>
                   <p className="text-2xl font-bold text-neon-pink">{formattedBalance}</p>
-                  <p className="text-sm text-zinc-400">Current tier: {tier.replace("_", " ")}</p>
+                  <p className="text-sm text-zinc-400">Current tier: {tier ? tier.replace("_", " ") : "Loading..."}</p>
                 </CyberCard>
                 <CyberCard variant="cyan">
                   <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Next USDC Dividend</h3>
@@ -238,9 +315,7 @@ export default function DashboardPage() {
                     {tools.map((tool, index) => (
                       <CyberCard key={index} className="bg-black/60">
                         <div className="flex items-start gap-4">
-                          <div className="p-3 rounded-full bg-neon-pink/10">
-                            <tool.icon className="h-6 w-6 text-neon-pink" />
-                          </div>
+                          <div className="p-3 rounded-full bg-neon-pink/10">{tool.icon}</div>
                           <div>
                             <h3 className="text-lg font-bold text-neon-pink mb-1">{tool.name}</h3>
                             <p className="text-zinc-400 font-tech-mono text-sm mb-4">{tool.description}</p>
@@ -407,7 +482,9 @@ export default function DashboardPage() {
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-zinc-400 font-tech-mono">Current Tier</span>
-                        <span className="text-neon-pink font-tech-mono">{tier.replace("_", " ")}</span>
+                        <span className="text-neon-pink font-tech-mono">
+                          {tier ? tier.replace("_", " ") : "Loading..."}
+                        </span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-zinc-400 font-tech-mono">$BLKBOX Balance</span>

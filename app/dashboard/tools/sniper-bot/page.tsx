@@ -26,10 +26,17 @@ import CyberCard from "@/components/cyber-card"
 import TierGate from "@/components/tier-gate"
 import { useWallet } from "@/context/wallet-context"
 import WalletConnector from "@/components/wallet-connector"
-import TerminalCode from "@/components/terminal-code"
+
+const TerminalCode = ({ code }: { code: string }) => {
+  return (
+    <pre className="bg-zinc-900 rounded-md p-4 font-mono text-xs text-green-400 overflow-x-auto">
+      <code>{code}</code>
+    </pre>
+  )
+}
 
 export default function SniperBotPage() {
-  const { connected } = useWallet()
+  const { connected, tier } = useWallet()
   const [isRunning, setIsRunning] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [targetAddress, setTargetAddress] = useState("")
@@ -447,7 +454,7 @@ async function monitorAndSnipe(targetAddress = null) {
       
       // Execute buy
       console.log(\`Executing buy for \${buyAmount} SOL\`);
-      const buyTx = await executeBuy(tokenAddress, ${buyAmount}, filters);
+      const buyTx = await executeBuy(tokenAddress, filters);
       
       // Monitor price for auto-sell if enabled
       if (${autoSell}) {
@@ -671,12 +678,6 @@ async function monitorPriceForSell(tokenAddress, buyTx, thresholds) {
           </div>
         </TierGate>
       </main>
-
-      <footer className="border-t border-neon-pink/30 py-6 bg-black">
-        <div className="container text-center">
-          <p className="text-sm text-zinc-500 font-tech-mono">© 2025 $BLKBOX. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   )
 }

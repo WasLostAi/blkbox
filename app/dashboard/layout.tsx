@@ -13,7 +13,6 @@ import {
   Zap,
   Brain,
   Target,
-  Lightbulb,
   Rocket,
   Crosshair,
   ArrowUpRight,
@@ -22,6 +21,7 @@ import {
   ChevronLeft,
 } from "lucide-react"
 import WalletConnector from "@/components/wallet-connector"
+import { Shuffle, Eye, Lightbulb } from "lucide-react"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -77,13 +77,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "SHADOW_ELITE",
     },
     {
-      name: "Lab",
-      href: "/dashboard/tools/flashloan-lab",
-      icon: <Lightbulb className="h-5 w-5" />,
-      requiresAuth: true,
-      minTier: "PHANTOM_COUNCIL",
-    },
-    {
       name: "Router",
       href: "/dashboard/tools/stealth-router",
       icon: <ArrowUpRight className="h-5 w-5" />,
@@ -105,9 +98,100 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "SHADOW_ELITE",
     },
     {
+      name: "Wash",
+      href: "/dashboard/tools/wash-trading-engine",
+      icon: Shuffle,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Detect",
+      href: "/dashboard/tools/market-manipulation-detection",
+      icon: Eye,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Hijack",
+      href: "/dashboard/tools/shadow-protocol-interoperability-hijacker",
+      icon: Zap,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Quantum",
+      href: "/dashboard/tools/quantum-state-token-manipulator",
+      icon: Brain,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Temporal",
+      href: "/dashboard/tools/temporal-fragmentation-engine",
+      icon: Target,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Masq",
+      href: "/dashboard/tools/function-masquerading-system",
+      icon: Shield,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Tax",
+      href: "/dashboard/tools/hidden-tax-implementer",
+      icon: Rocket,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Vault",
+      href: "/dashboard/tools/phantom-vault-constructor",
+      icon: Crosshair,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Skim",
+      href: "/dashboard/tools/emissions-skimming-system",
+      icon: Lightbulb,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Mirage",
+      href: "/dashboard/tools/liquidity-mirage-creator",
+      icon: Shuffle,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Sandwich",
+      href: "/dashboard/tools/sandwich-attack-automation",
+      icon: Eye,
+      requiresAuth: true,
+      minTier: "OPERATOR",
+    },
+    {
+      name: "Token",
+      href: "/dashboard/tools/token-creation-wizard",
+      icon: Zap,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Arb",
+      href: "/dashboard/tools/automated-arbitrage",
+      icon: Brain,
+      requiresAuth: true,
+      minTier: "OPERATOR",
+    },
+    {
       name: "Upgrade",
       href: "/dashboard/upgrade",
-      icon: <Zap className="h-5 w-5" />,
+      icon: Zap,
       requiresAuth: true,
     },
   ]

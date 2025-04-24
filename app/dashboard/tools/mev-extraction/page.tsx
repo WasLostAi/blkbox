@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, RefreshCw, Settings, Play, Pause, AlertCircle, ChevronDown, ChevronUp } from "lucide-react"
+import { ArrowLeft, RefreshCw, Settings, AlertCircle, ChevronDown, ChevronUp } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Slider } from "@/components/ui/slider"
@@ -20,7 +20,7 @@ import { scanMempool, executeMevStrategy, type MevOpportunity } from "@/utils/me
 import { getConnection } from "@/utils/solana-connection" // Import getConnection
 
 export default function MevExtractionPage() {
-  const { connected } = useWallet()
+  const { connected, tier } = useWallet()
   const [isRunning, setIsRunning] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [extractionSpeed, setExtractionSpeed] = useState(50)
@@ -260,39 +260,6 @@ export default function MevExtractionPage() {
                   </div>
                 </div>
               </CyberCard>
-
-              <CyberCard className="bg-black/60">
-                <h3 className="text-lg font-bold text-neon-cyan mb-4">Extraction Status</h3>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded-full ${isRunning ? "bg-green-500" : "bg-red-500"}`}></div>
-                    <p className="text-lg font-bold text-neon-pink">{isRunning ? "ACTIVE" : "INACTIVE"}</p>
-                  </div>
-                  <CyberButton
-                    onClick={toggleExtraction}
-                    glowColor={isRunning ? "pink" : "cyan"}
-                    size="sm"
-                    className="gap-2"
-                  >
-                    {isRunning ? (
-                      <>
-                        <Pause className="h-4 w-4" /> PAUSE
-                      </>
-                    ) : (
-                      <>
-                        <Play className="h-4 w-4" /> START
-                      </>
-                    )}
-                  </CyberButton>
-                </div>
-                <div className="mt-4">
-                  <p className="text-sm text-zinc-400 font-tech-mono">
-                    {isRunning
-                      ? "MEV extraction is running. Monitoring mempool for opportunities."
-                      : "MEV extraction is paused. Click START to begin monitoring."}
-                  </p>
-                </div>
-              </CyberCard>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
@@ -356,72 +323,72 @@ export default function MevExtractionPage() {
                         <TerminalCode
                           code={`// MEV Extraction Core Algorithm
 async function scanMempool(mempool) {
- const opportunities = [];
- 
- for (const tx of mempool.pendingTransactions) {
-   // Skip small transactions
-   if (tx.value < MIN_TRANSACTION_VALUE) continue;
-   
-   // Check for arbitrage opportunities
-   const arbOpportunity = await checkArbitrage(tx);
-   if (arbOpportunity) {
-     opportunities.push({
-       type: 'arbitrage',
-       expectedValue: arbOpportunity.profit,
-       successProbability: arbOpportunity.probability,
-       transaction: buildArbitrageTransaction(arbOpportunity)
-     });
-   }
-   
-   // Check for sandwich opportunities
-   const sandwichOpportunity = await checkSandwich(tx);
-   if (sandwichOpportunity) {
-     opportunities.push({
-       type: 'sandwich',
-       expectedValue: sandwichOpportunity.profit,
-       successProbability: sandwichOpportunity.probability,
-       transaction: buildSandwichTransaction(sandwichOpportunity)
-     });
-   }
-   
-   // Check for liquidation opportunities
-   const liquidationOpportunity = await checkLiquidation(tx);
-   if (liquidationOpportunity) {
-     opportunities.push({
-       type: 'liquidation',
-       expectedValue: liquidationOpportunity.profit,
-       successProbability: liquidationOpportunity.probability,
-       transaction: buildLiquidationTransaction(liquidationOpportunity)
-     });
-   }
- }
- 
- return opportunities;
+  const opportunities = [];
+
+  for (const tx of mempool.pendingTransactions) {
+    // Skip small transactions
+    if (tx.value < MIN_TRANSACTION_VALUE) continue;
+    
+    // Check for arbitrage opportunities
+    const arbOpportunity = await checkArbitrage(tx);
+    if (arbOpportunity) {
+      opportunities.push({
+        type: 'arbitrage',
+        expectedValue: arbOpportunity.profit,
+        successProbability: arbOpportunity.probability,
+        transaction: buildArbitrageTransaction(arbOpportunity)
+      });
+    }
+    
+    // Check for sandwich opportunities
+    const sandwichOpportunity = await checkSandwich(tx);
+    if (sandwichOpportunity) {
+      opportunities.push({
+        type: 'sandwich',
+        expectedValue: sandwichOpportunity.profit,
+        successProbability: sandwichOpportunity.probability,
+        transaction: buildSandwichTransaction(sandwichOpportunity)
+      });
+    }
+    
+    // Check for liquidation opportunities
+    const liquidationOpportunity = await checkLiquidation(tx);
+    if (liquidationOpportunity) {
+      opportunities.push({
+        type: 'liquidation',
+        expectedValue: liquidationOpportunity.profit,
+        successProbability: liquidationOpportunity.probability,
+        transaction: buildLiquidationTransaction(liquidationOpportunity)
+      });
+    }
+  }
+
+  return opportunities;
 }
 
 async function extractMEV() {
- const mempool = await getMempool();
- const opportunities = await scanMempool(mempool);
- 
- // Filter for high-value opportunities
- const highValueOps = opportunities.filter(op => {
-   return op.expectedValue > PROFIT_THRESHOLD && 
-          op.successProbability > SUCCESS_PROBABILITY_THRESHOLD;
- });
- 
- if (highValueOps.length > 0) {
-   // Sort by expected value
-   const bestOp = highValueOps.sort((a, b) => 
-     b.expectedValue - a.expectedValue
-   )[0];
-   
-   // Execute with priority gas
-   return executeTransaction(bestOp.transaction, {
-     priority: PRIORITY_FEE_LEVEL
-   });
- }
- 
- return null;
+  const mempool = await getMempool();
+  const opportunities = await scanMempool(mempool);
+
+  // Filter for high-value opportunities
+  const highValueOps = opportunities.filter(op => {
+    return op.expectedValue > PROFIT_THRESHOLD && 
+           op.successProbability > SUCCESS_PROBABILITY_THRESHOLD;
+  });
+
+  if (highValueOps.length > 0) {
+    // Sort by expected value
+    const bestOp = highValueOps.sort((a, b) => 
+      b.expectedValue - a.expectedValue
+    )[0];
+    
+    // Execute with priority gas
+    return executeTransaction(bestOp.transaction, {
+      priority: PRIORITY_FEE_LEVEL
+    });
+  }
+
+  return null;
 }`}
                         />
                       </div>
@@ -537,42 +504,6 @@ async function extractMEV() {
                       <div className="flex items-center justify-between">
                         <label className="text-sm font-tech-mono text-zinc-400">Backrunning</label>
                         <Switch defaultChecked className="data-[state=checked]:bg-neon-pink" />
-                      </div>
-                    </div>
-                  )}
-                </CyberCard>
-
-                <CyberCard className="bg-black/60">
-                  <div
-                    className="flex items-center justify-between cursor-pointer"
-                    onClick={() => toggleSection("advanced")}
-                  >
-                    <h3 className="text-lg font-bold text-neon-cyan">Advanced Options</h3>
-                    {expandedSection === "advanced" ? (
-                      <ChevronUp className="h-5 w-5 text-neon-pink" />
-                    ) : (
-                      <ChevronDown className="h-5 w-5 text-neon-pink" />
-                    )}
-                  </div>
-
-                  {expandedSection === "advanced" && (
-                    <div className="mt-4 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <label className="text-sm font-tech-mono text-zinc-400">Private RPC Endpoints</label>
-                        <Switch defaultChecked className="data-[state=checked]:bg-neon-cyan" />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <label className="text-sm font-tech-mono text-zinc-400">Flashbots Integration</label>
-                        <Switch className="data-[state=checked]:bg-neon-cyan" />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <label className="text-sm font-tech-mono text-zinc-400">Custom Gas Settings</label>
-                        <Switch defaultChecked className="data-[state=checked]:bg-neon-cyan" />
-                      </div>
-                      <div className="mt-4">
-                        <CyberButton variant="outline" size="sm" glowColor="pink" className="w-full">
-                          CONFIGURE ADVANCED SETTINGS
-                        </CyberButton>
                       </div>
                     </div>
                   )}

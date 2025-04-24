@@ -19,7 +19,7 @@ import WalletConnector from "@/components/wallet-connector"
 import TerminalCode from "@/components/terminal-code"
 
 export default function DarkLaunchPage() {
-  const { connected } = useWallet()
+  const { connected, tier } = useWallet()
   const [isLoading, setIsLoading] = useState(true)
   const [isGenerating, setIsGenerating] = useState(false)
   const [tokenName, setTokenName] = useState("")

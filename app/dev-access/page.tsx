@@ -125,7 +125,7 @@ export default function DevAccessPage() {
         break
       case "users":
         response = [
-          "Connected Users: 127",
+          "Connected Users:",
           "  - Phantom Council: 3",
           "  - Shadow Elite: 12",
           "  - Operator: 37",
@@ -311,11 +311,7 @@ function DevCard({
   onClick?: () => void
 }) {
   return (
-    <CyberCard
-      className="h-full transition-all duration-300 hover:scale-[1.02] cursor-pointer"
-      variant="cyan"
-      onClick={onClick}
-    >
+    <CyberCard className="h-full transition-all duration-300 hover:scale-[1.02] cursor-pointer" onClick={onClick}>
       <div className="p-6 flex flex-col h-full">
         <div className="h-12 w-12 rounded-lg bg-black/50 border border-gray-800 flex items-center justify-center text-neon-cyan mb-4">
           {icon}

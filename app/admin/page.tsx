@@ -15,6 +15,7 @@ import Link from "next/link"
 export default function AdminPage() {
   const { connected, tier, address, isAdmin, accessMode, setAccessMode } = useWallet()
   const router = useRouter()
+  const [isAuthorized, setIsAuthorized] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [lockdownConfirm, setLockdownConfirm] = useState(false)
 
@@ -79,7 +80,7 @@ export default function AdminPage() {
         <div className="mb-8">
           <div className="flex justify-between items-center">
             <div>
-              <GlitchText text="ADMIN CONTROL CENTER" className="text-3xl font-bold text-neon-pink mb-2" />
+              <GlitchText text="ADMIN CONTROL CENTER" className="text-3xl font-bold text-neon-cyan mb-2" />
               <p className="text-zinc-400 font-tech-mono">System administration and management interface</p>
             </div>
 

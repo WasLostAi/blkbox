@@ -78,7 +78,7 @@ export default function WhitelistPage() {
             </div>
             <GlitchText text="ACCESS DENIED" className="text-2xl font-bold text-neon-pink mb-4" />
             <p className="text-zinc-300 font-tech-mono mb-6">
-              This area is restricted to authorized administrators only.
+              This area is restricted to authorized administrators only. Your current access level is insufficient.
             </p>
             <CyberButton onClick={() => router.push("/")} glowColor="pink">
               RETURN TO MAIN SITE

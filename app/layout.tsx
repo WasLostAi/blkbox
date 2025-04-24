@@ -44,3 +44,16 @@ export default function RootLayout({
     </html>
   )
 }
+
+// Helper function to check if user tier is high enough
+function tierLevelCheck(userTier: string, requiredTier: string) {
+  const tierLevels = {
+    UNAUTHORIZED: 0,
+    ENTRY_LEVEL: 1,
+    OPERATOR: 2,
+    SHADOW_ELITE: 3,
+    PHANTOM_COUNCIL: 4,
+  }
+
+  return tierLevels[userTier as keyof typeof tierLevels] >= tierLevels[requiredTier as keyof typeof tierLevels]
+}
