@@ -28,10 +28,10 @@ export default function CyberCard({ children, className, variant = "pink", inter
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="hud-corner hud-corner-tl">{"<"}</div>
-      <div className="hud-corner hud-corner-tr">{">"}</div>
-      <div className="hud-corner hud-corner-bl">{"<"}</div>
-      <div className="hud-corner hud-corner-br">{">"}</div>
+      <div className="hud-corner hud-corner-tl"></div>
+      <div className="hud-corner hud-corner-tr"></div>
+      <div className="hud-corner hud-corner-bl"></div>
+      <div className="hud-corner hud-corner-br"></div>
 
       {/* Animated scan line */}
       {interactive && isHovered && (

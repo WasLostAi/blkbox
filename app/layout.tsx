@@ -1,14 +1,28 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Rajdhani, Share_Tech_Mono } from "next/font/google"
 import "./globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
 import { WalletProvider } from "@/context/wallet-context"
 
-const inter = Inter({ subsets: ["latin"] })
+// Main font - Rajdhani for headings and most text
+const rajdhani = Rajdhani({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-rajdhani",
+})
+
+// Monospace font for code-like elements and accents
+const shareTechMono = Share_Tech_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-tech-mono",
+})
 
 export const metadata: Metadata = {
-  title: "$BLKBOX: The Shadow Protocol",
-  description: "They tried to erase me. Now I'm erasing the rules.",
+  title: "$BLKBOX | The Shadow Protocol",
+  description:
+    "Access the darkest toolbox ever built for Solana. A system that gives you what the whales, insiders, and shadow teams have been using.",
     generator: 'v0.dev'
 }
 
@@ -18,9 +32,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <WalletProvider>{children}</WalletProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${rajdhani.variable} ${shareTechMono.variable} font-rajdhani bg-black`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <WalletProvider>{children}</WalletProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

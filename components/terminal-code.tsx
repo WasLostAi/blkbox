@@ -1,22 +1,40 @@
-import { cn } from "@/lib/utils"
+"use client"
+
+import { useState } from "react"
+import { Copy, Check } from "lucide-react"
 
 interface TerminalCodeProps {
   code: string
-  className?: string
+  language?: string
 }
 
-export default function TerminalCode({ code, className }: TerminalCodeProps) {
+export default function TerminalCode({ code, language = "javascript" }: TerminalCodeProps) {
+  const [copied, setCopied] = useState(false)
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error("Failed to copy text: ", err)
+    }
+  }
+
   return (
-    <div className={cn("bg-black border border-zinc-800 rounded-md overflow-hidden", className)}>
-      <div className="bg-zinc-900 px-4 py-2 border-b border-zinc-800 flex items-center">
-        <div className="flex gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
-        </div>
-        <div className="ml-4 text-xs text-zinc-400 font-tech-mono">terminal</div>
+    <div className="relative rounded-md overflow-hidden">
+      <div className="absolute right-2 top-2">
+        <button
+          onClick={copyToClipboard}
+          className="p-1.5 rounded-md bg-zinc-800/50 hover:bg-zinc-700/50 transition-colors"
+          aria-label="Copy code"
+        >
+          {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4 text-zinc-400" />}
+        </button>
       </div>
-      <pre className="p-4 text-xs text-neon-cyan font-tech-mono overflow-x-auto">{code}</pre>
+      <pre className="p-4 bg-black/80 border border-zinc-800 rounded-md overflow-x-auto text-xs font-tech-mono text-zinc-300">
+        <code>{code}</code>
+      </pre>
     </div>
   )
 }

@@ -122,13 +122,15 @@ export default function TierProgress({ currentBalance, className }: TierProgress
                     : "from-neon-cyan/50 to-neon-cyan",
           )}
           style={{ width: `${progressPercentage}%` }}
-        />
+        ></div>
       </div>
 
       <div className="flex justify-between text-xs font-tech-mono text-zinc-500">
         {tiers.map((tier, index) => (
           <div key={index} className="flex flex-col items-center">
-            <div className={cn("w-1 h-2 mb-1", currentBalance >= tier.threshold ? "bg-neon-cyan" : "bg-zinc-700")} />
+            <div
+              className={cn("w-1 h-2 mb-1", currentBalance >= tier.threshold ? "bg-neon-cyan" : "bg-zinc-700")}
+            ></div>
             <span className={cn("text-[8px]", currentBalance >= tier.threshold ? "text-neon-cyan" : "text-zinc-600")}>
               {tier.threshold.toLocaleString()}
             </span>

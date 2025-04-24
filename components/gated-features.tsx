@@ -269,11 +269,11 @@ export default function GatedFeatures({ userTier = "UNAUTHORIZED" }: GatedFeatur
         >
           {isUnlocked ? (
             <>
-              <Unlock size={16} /> {"HIDE_FEATURES"}
+              <Unlock size={16} /> HIDE_FEATURES
             </>
           ) : (
             <>
-              <Lock size={16} /> {"REVEAL_FEATURES"}
+              <Lock size={16} /> REVEAL_FEATURES
             </>
           )}
         </CyberButton>
