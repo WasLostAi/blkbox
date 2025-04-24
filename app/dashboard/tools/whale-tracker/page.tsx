@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, Users, Search, Filter, RefreshCw, ExternalLink, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Users, Search, Filter, RefreshCw, ExternalLink, AlertCircle } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -394,7 +394,7 @@ export default function WhaleTrackerPage() {
                   </div>
                 </div>
                 <div className="mt-4">
-                  <CyberButton variant="outline" glowColor="pink" size="sm" className="w-full">
+                  <CyberButton variant="outline" glowColor="cyan" size="sm" className="w-full">
                     EXPLORE CLUSTERS
                   </CyberButton>
                 </div>

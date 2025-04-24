@@ -17,6 +17,7 @@ import { useWallet } from "@/context/wallet-context"
 import WalletConnector from "@/components/wallet-connector"
 import TerminalCode from "@/components/terminal-code"
 import { scanMempool, executeMevStrategy, type MevOpportunity } from "@/utils/mev-detection"
+import { getConnection } from "@/utils/solana-connection" // Import getConnection
 
 export default function MevExtractionPage() {
   const { connected } = useWallet()
@@ -85,8 +86,9 @@ export default function MevExtractionPage() {
     const interval = setInterval(
       async () => {
         try {
+          const connection = getConnection() // Get connection from pool
           // Scan mempool for opportunities
-          const newOpportunities = await scanMempool()
+          const newOpportunities = await scanMempool(connection) // Pass connection to scanMempool
 
           // Filter opportunities based on profit threshold
           const filteredOpportunities = newOpportunities.filter(
@@ -287,7 +289,7 @@ export default function MevExtractionPage() {
                   <p className="text-sm text-zinc-400 font-tech-mono">
                     {isRunning
                       ? "MEV extraction is running. Monitoring mempool for opportunities."
-                      : "MEV extraction is paused. Click START to begin."}
+                      : "MEV extraction is paused. Click START to begin monitoring."}
                   </p>
                 </div>
               </CyberCard>
@@ -354,72 +356,72 @@ export default function MevExtractionPage() {
                         <TerminalCode
                           code={`// MEV Extraction Core Algorithm
 async function scanMempool(mempool) {
-  const opportunities = [];
-  
-  for (const tx of mempool.pendingTransactions) {
-    // Skip small transactions
-    if (tx.value < MIN_TRANSACTION_VALUE) continue;
-    
-    // Check for arbitrage opportunities
-    const arbOpportunity = await checkArbitrage(tx);
-    if (arbOpportunity) {
-      opportunities.push({
-        type: 'arbitrage',
-        expectedValue: arbOpportunity.profit,
-        successProbability: arbOpportunity.probability,
-        transaction: buildArbitrageTransaction(arbOpportunity)
-      });
-    }
-    
-    // Check for sandwich opportunities
-    const sandwichOpportunity = await checkSandwich(tx);
-    if (sandwichOpportunity) {
-      opportunities.push({
-        type: 'sandwich',
-        expectedValue: sandwichOpportunity.profit,
-        successProbability: sandwichOpportunity.probability,
-        transaction: buildSandwichTransaction(sandwichOpportunity)
-      });
-    }
-    
-    // Check for liquidation opportunities
-    const liquidationOpportunity = await checkLiquidation(tx);
-    if (liquidationOpportunity) {
-      opportunities.push({
-        type: 'liquidation',
-        expectedValue: liquidationOpportunity.profit,
-        successProbability: liquidationOpportunity.probability,
-        transaction: buildLiquidationTransaction(liquidationOpportunity)
-      });
-    }
-  }
-  
-  return opportunities;
+ const opportunities = [];
+ 
+ for (const tx of mempool.pendingTransactions) {
+   // Skip small transactions
+   if (tx.value < MIN_TRANSACTION_VALUE) continue;
+   
+   // Check for arbitrage opportunities
+   const arbOpportunity = await checkArbitrage(tx);
+   if (arbOpportunity) {
+     opportunities.push({
+       type: 'arbitrage',
+       expectedValue: arbOpportunity.profit,
+       successProbability: arbOpportunity.probability,
+       transaction: buildArbitrageTransaction(arbOpportunity)
+     });
+   }
+   
+   // Check for sandwich opportunities
+   const sandwichOpportunity = await checkSandwich(tx);
+   if (sandwichOpportunity) {
+     opportunities.push({
+       type: 'sandwich',
+       expectedValue: sandwichOpportunity.profit,
+       successProbability: sandwichOpportunity.probability,
+       transaction: buildSandwichTransaction(sandwichOpportunity)
+     });
+   }
+   
+   // Check for liquidation opportunities
+   const liquidationOpportunity = await checkLiquidation(tx);
+   if (liquidationOpportunity) {
+     opportunities.push({
+       type: 'liquidation',
+       expectedValue: liquidationOpportunity.profit,
+       successProbability: liquidationOpportunity.probability,
+       transaction: buildLiquidationTransaction(liquidationOpportunity)
+     });
+   }
+ }
+ 
+ return opportunities;
 }
 
 async function extractMEV() {
-  const mempool = await getMempool();
-  const opportunities = await scanMempool(mempool);
-  
-  // Filter for high-value opportunities
-  const highValueOps = opportunities.filter(op => {
-    return op.expectedValue > PROFIT_THRESHOLD && 
-           op.successProbability > SUCCESS_PROBABILITY_THRESHOLD;
-  });
-  
-  if (highValueOps.length > 0) {
-    // Sort by expected value
-    const bestOp = highValueOps.sort((a, b) => 
-      b.expectedValue - a.expectedValue
-    )[0];
-    
-    // Execute with priority gas
-    return executeTransaction(bestOp.transaction, {
-      priority: PRIORITY_FEE_LEVEL
-    });
-  }
-  
-  return null;
+ const mempool = await getMempool();
+ const opportunities = await scanMempool(mempool);
+ 
+ // Filter for high-value opportunities
+ const highValueOps = opportunities.filter(op => {
+   return op.expectedValue > PROFIT_THRESHOLD && 
+          op.successProbability > SUCCESS_PROBABILITY_THRESHOLD;
+ });
+ 
+ if (highValueOps.length > 0) {
+   // Sort by expected value
+   const bestOp = highValueOps.sort((a, b) => 
+     b.expectedValue - a.expectedValue
+   )[0];
+   
+   // Execute with priority gas
+   return executeTransaction(bestOp.transaction, {
+     priority: PRIORITY_FEE_LEVEL
+   });
+ }
+ 
+ return null;
 }`}
                         />
                       </div>
@@ -510,7 +512,7 @@ async function extractMEV() {
                     {expandedSection === "strategies" ? (
                       <ChevronUp className="h-5 w-5 text-neon-cyan" />
                     ) : (
-                      <ChevronDown className="h-5 w-5 text-neon-cyan" />
+                      <ChevronDown className="h-5 w-5 text-neon-pink" />
                     )}
                   </div>
 

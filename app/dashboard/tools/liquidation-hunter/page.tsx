@@ -30,6 +30,7 @@ export default function LiquidationHunterPage() {
   const [autoExecute, setAutoExecute] = useState(false)
   const [expandedSection, setExpandedSection] = useState<string | null>("settings")
   const [scanProgress, setScanProgress] = useState(0)
+  const [liquidationHistory, setLiquidationHistory] = useState<any[]>([])
 
   // Load initial data
   useEffect(() => {
@@ -113,6 +114,33 @@ export default function LiquidationHunterPage() {
     const gasCost = 0.05 * gasMultiplier // Estimated gas cost in ETH
     const gasCostUSD = gasCost * 3500 // Assuming ETH price of $3500
     return liquidationBonus - gasCostUSD
+  }
+
+  // Execute liquidation
+  const executeLiquidation = () => {
+    if (!selectedTarget) return
+
+    // Simulate liquidation execution
+    setTimeout(() => {
+      // Calculate profit
+      const profit = calculateProfit(selectedTarget)
+
+      // Add to liquidation history
+      setLiquidationHistory((prev) => [
+        ...prev,
+        {
+          ...selectedTarget,
+          profit,
+          timestamp: Date.now(),
+        },
+      ])
+
+      // Remove from liquidation targets
+      setLiquidationTargets((prev) => prev.filter((t) => t.id !== selectedTarget.id))
+
+      // Clear selected target
+      setSelectedTarget(null)
+    }, 2000)
   }
 
   return (
@@ -223,7 +251,13 @@ export default function LiquidationHunterPage() {
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <p className="text-lg font-bold text-neon-pink">READY</p>
                   </div>
-                  <CyberButton disabled={!selectedTarget} glowColor="cyan" size="sm" className="gap-2">
+                  <CyberButton
+                    disabled={!selectedTarget}
+                    glowColor="cyan"
+                    size="sm"
+                    className="gap-2"
+                    onClick={executeLiquidation}
+                  >
                     <Zap className="h-4 w-4" /> EXECUTE
                   </CyberButton>
                 </div>
@@ -358,12 +392,75 @@ export default function LiquidationHunterPage() {
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="text-lg font-bold text-neon-cyan">Liquidation History</h3>
                       </div>
-                      <div className="flex flex-col items-center justify-center h-[440px]">
-                        <AlertCircle className="h-12 w-12 text-zinc-500 mb-4" />
-                        <p className="text-zinc-400 font-tech-mono mb-2">No liquidation history yet</p>
-                        <p className="text-zinc-500 text-sm text-center max-w-md">
-                          Your executed liquidations will appear here
-                        </p>
+                      <div className="h-[440px] overflow-y-auto">
+                        {liquidationHistory.length === 0 ? (
+                          <div className="flex flex-col items-center justify-center h-full">
+                            <AlertCircle className="h-12 w-12 text-zinc-500 mb-4" />
+                            <p className="text-zinc-400 font-tech-mono mb-2">No liquidation history yet</p>
+                            <p className="text-zinc-500 text-sm text-center max-w-md">
+                              Your executed liquidations will appear here
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="space-y-4">
+                            {liquidationHistory.map((target, index) => (
+                              <div
+                                key={index}
+                                className="p-4 border rounded-md transition-colors cursor-pointer border-zinc-800"
+                              >
+                                <div className="flex justify-between items-center mb-2">
+                                  <div className="flex items-center gap-2">
+                                    <div className="p-1.5 rounded-full bg-neon-pink/10">
+                                      <Target className="h-4 w-4 text-neon-pink" />
+                                    </div>
+                                    <span className="font-tech-mono text-neon-cyan">{target.protocol}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs font-tech-mono text-zinc-400">Health Factor:</span>
+                                    <span className={`text-sm font-bold ${getHealthColor(target.healthFactor)}`}>
+                                      {target.healthFactor.toFixed(2)}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-3">
+                                  <div>
+                                    <p className="text-xs text-zinc-400 font-tech-mono">Collateral</p>
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-sm font-tech-mono text-white">
+                                        {target.collateralAmount.toFixed(4)} {target.collateralToken}
+                                      </span>
+                                      <span className="text-xs text-zinc-500">
+                                        ({formatCurrency(target.collateralValue)})
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <p className="text-xs text-zinc-400 font-tech-mono">Debt</p>
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-sm font-tech-mono text-white">
+                                        {target.debtAmount.toFixed(4)} {target.debtToken}
+                                      </span>
+                                      <span className="text-xs text-zinc-500">
+                                        ({formatCurrency(target.debtValue)})
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <p className="text-xs text-zinc-400 font-tech-mono">Liquidation Threshold</p>
+                                    <p className="text-sm font-tech-mono text-white">{target.liquidationThreshold}%</p>
+                                  </div>
+                                  <div>
+                                    <p className="text-xs text-zinc-400 font-tech-mono">Profit</p>
+                                    <p className="text-sm font-tech-mono text-neon-pink">
+                                      {formatCurrency(calculateProfit(target))}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </CyberCard>
                   </TabsContent>
