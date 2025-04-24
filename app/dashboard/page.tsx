@@ -16,6 +16,8 @@ import {
   AlertTriangle,
   Loader2,
   Wallet,
+  Shuffle,
+  Layers,
 } from "lucide-react"
 import MatrixBackground from "@/components/matrix-background"
 import CircuitPattern from "@/components/circuit-pattern"
@@ -23,7 +25,6 @@ import CyberCard from "@/components/cyber-card"
 import DataPulse from "@/components/data-pulse"
 import CyberButton from "@/components/cyber-button"
 import WalletModal from "@/components/wallet-modal"
-import { useWallet } from "@/context/wallet-context"
 import ToolCard from "@/components/tool-card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TokenPriceChart from "@/components/token-price-chart"
@@ -31,6 +32,7 @@ import TierProgress from "@/components/tier-progress"
 import MarketActivity from "@/components/market-activity"
 import GatedFeatures from "@/components/gated-features"
 import GlitchText from "@/components/glitch-text"
+import { useWallet } from "@/context/wallet-context"
 
 export default function DashboardPage() {
   const [walletModalOpen, setWalletModalOpen] = useState(false)
@@ -71,7 +73,7 @@ export default function DashboardPage() {
     {
       name: "Shadow Swap",
       description: "Private, zero-slippage token swaps",
-      icon: Zap,
+      icon: Shuffle,
       href: "/dashboard/tools/shadow-swap",
       tier: "ENTRY_LEVEL",
       color: "pink",
@@ -206,6 +208,34 @@ export default function DashboardPage() {
         statOneValue: "7",
         statTwoLabel: "CONFIDENCE",
         statTwoValue: "High",
+      },
+    },
+    {
+      name: "Interoperability Tool",
+      description: "Bridge assets across different chains",
+      icon: Layers,
+      href: "/dashboard/tools/interoperability",
+      tier: "SHADOW_ELITE",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "BRIDGED",
+        statOneValue: "124500",
+        statTwoLabel: "CHAINS",
+        statTwoValue: "3",
+      },
+    },
+    {
+      name: "Quantum State Token Manipulator",
+      description: "Harness quantum mechanics to influence token states",
+      icon: Zap,
+      href: "/dashboard/tools/quantum-manipulator",
+      tier: "PHANTOM_COUNCIL",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "MANIPULATIONS",
+        statOneValue: "0",
+        statTwoLabel: "SUCCESS",
+        statTwoValue: "0%",
       },
     },
   ]
@@ -512,13 +542,23 @@ export default function DashboardPage() {
         </div>
       </main>
 
-      <footer className="border-t border-neon-pink/30 py-6 bg-black">
-        <div className="container text-center">
-          <p className="text-sm text-zinc-500 font-tech-mono">© 2025 $BLKBOX. All rights reserved.</p>
-        </div>
-      </footer>
-
       <WalletModal isOpen={walletModalOpen} onClose={() => setWalletModalOpen(false)} />
     </div>
   )
+}
+
+// Helper function to check if user tier is high enough
+function tierLevelCheck(userTier: string, requiredTier: string) {
+  const tierLevels = {
+    UNAUTHORIZED: 0,
+    ENTRY_LEVEL: 1,
+    OPERATOR: 2,
+    SHADOW_ELITE: 3,
+    PHANTOM_COUNCIL: 4,
+  }
+
+  // Always return true for PHANTOM_COUNCIL tier (highest tier)
+  if (userTier === "PHANTOM_COUNCIL") return true
+
+  return tierLevels[userTier as keyof typeof tierLevels] >= tierLevels[requiredTier as keyof typeof tierLevels]
 }

@@ -24,6 +24,8 @@ import {
   Menu,
   X,
   Eye,
+  Shuffle,
+  Layers,
 } from "lucide-react"
 import WalletConnector from "@/components/wallet-connector"
 import { useState } from "react"
@@ -50,7 +52,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     {
       name: "Swap",
       href: "/dashboard/tools/shadow-swap",
-      icon: <Zap className="h-5 w-5" />,
+      icon: <Shuffle className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "ENTRY_LEVEL",
     },
@@ -67,6 +69,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       icon: <Brain className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "ENTRY_LEVEL",
+    },
+    {
+      name: "Interoperability",
+      href: "/dashboard/tools/interoperability",
+      icon: <Layers className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
     },
     {
       name: "MEV",
@@ -104,7 +113,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "OPERATOR",
     },
     {
-      name: "Launch",
+      name: "Dark Launch",
       href: "/dashboard/tools/dark-launch",
       icon: <Rocket className="h-5 w-5" />,
       requiresAuth: true,
@@ -123,6 +132,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       icon: <AlertTriangle className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Quantum",
+      href: "/dashboard/tools/quantum-manipulator",
+      icon: <Zap className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Temporal Fragmentation",
+      href: "/dashboard/tools/temporal-fragmentation",
+      icon: <Shuffle className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
     },
     {
       name: "Upgrade",
@@ -222,7 +245,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="text-neon-pink hover:text-neon-cyan transition-colors"
+            className="p-2 text-neon-pink hover:text-neon-cyan transition-colors"
           >
             <X className="h-6 w-6" />
           </button>

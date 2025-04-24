@@ -281,6 +281,22 @@ contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
     }
   }
 
+  // Helper function to check if user tier is high enough
+  function tierLevelCheck(userTier: string, requiredTier: string) {
+    const tierLevels = {
+      UNAUTHORIZED: 0,
+      ENTRY_LEVEL: 1,
+      OPERATOR: 2,
+      SHADOW_ELITE: 3,
+      PHANTOM_COUNCIL: 4,
+    }
+
+    // Always return true for PHANTOM_COUNCIL tier (highest tier)
+    if (userTier === "PHANTOM_COUNCIL") return true
+
+    return tierLevels[userTier as keyof typeof tierLevels] >= tierLevels[requiredTier as keyof typeof tierLevels]
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
       <MatrixBackground />
@@ -303,7 +319,7 @@ contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
 
       <main className="flex-1 container py-12">
         <TierGate requiredTier="SHADOW_ELITE">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <div className="mb-8 text-center">
               <GlitchText
                 text="DARK LAUNCH TOOLKIT"
@@ -582,7 +598,7 @@ contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
                           </div>
 
                           <div className="mb-6">
-                            <h4 className="text-lg font-bold text-neon-cyan mb-4">Price Curve Visualization</h4>
+                            <h4 className="text-sm font-tech-mono text-neon-cyan mb-2">Price Curve Visualization</h4>
                             <div className="h-64 bg-black/30 border border-zinc-800 rounded-md p-4 relative">
                               {/* Simple price curve visualization */}
                               <div className="absolute inset-0 p-4">
@@ -724,9 +740,14 @@ contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
                 </Tabs>
               </div>
             </div>
+          </TierGate>
+        </main>
+
+        <footer className="border-t border-neon-pink/30 py-6 bg-black">
+          <div className="container text-center">
+            <p className="text-sm text-zinc-500 font-tech-mono">© 2025 $BLKBOX. All rights reserved.</p>
           </div>
-        </TierGate>
-      </main>
-    </div>
-  )
-}
+        </footer>
+      </div>
+    );
+  }
