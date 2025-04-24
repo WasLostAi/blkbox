@@ -76,6 +76,13 @@ export default function MobileNav() {
           >
             <span className="font-tech-mono">05.</span> LAUNCH
           </Link>
+          <Link
+            href="/roadmap"
+            className="text-xl font-medium text-neon-pink hover:text-neon-cyan transition-colors"
+            onClick={toggleMenu}
+          >
+            <span className="font-tech-mono">06.</span> ROADMAP
+          </Link>
           <div className="border-t border-zinc-800 w-16 my-2"></div>
           <Link
             href="/whitepaper"

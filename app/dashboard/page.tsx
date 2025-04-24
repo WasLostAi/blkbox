@@ -1,45 +1,41 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 import {
-  ArrowLeft,
-  BarChart3,
-  Wallet,
-  Users,
   Zap,
   Lock,
-  Eye,
+  Users,
   Brain,
-  Loader2,
-  Shuffle,
-  Target,
-  Lightbulb,
   Crosshair,
   Rocket,
-  Settings,
+  Target,
+  Eye,
+  RefreshCw,
+  Lightbulb,
+  AlertTriangle,
+  Loader2,
+  Wallet,
 } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import CyberButton from "@/components/cyber-button"
 import MatrixBackground from "@/components/matrix-background"
 import CircuitPattern from "@/components/circuit-pattern"
-import DataPulse from "@/components/data-pulse"
-import GlitchText from "@/components/glitch-text"
 import CyberCard from "@/components/cyber-card"
+import DataPulse from "@/components/data-pulse"
+import CyberButton from "@/components/cyber-button"
 import WalletModal from "@/components/wallet-modal"
-import GatedFeatures from "@/components/gated-features"
-import TokenPriceChart from "@/components/token-price-chart"
-import MarketActivity from "@/components/market-activity"
-import TierProgress from "@/components/tier-progress"
 import { useWallet } from "@/context/wallet-context"
-import WalletConnector from "@/components/wallet-connector"
+import ToolCard from "@/components/tool-card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import TokenPriceChart from "@/components/token-price-chart"
+import TierProgress from "@/components/tier-progress"
+import MarketActivity from "@/components/market-activity"
+import GatedFeatures from "@/components/gated-features"
+import GlitchText from "@/components/glitch-text"
 
 export default function DashboardPage() {
   const [walletModalOpen, setWalletModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const { connected, address, balance, tier, isAdmin } = useWallet()
-  const router = useRouter()
 
   // Simulate loading state
   useEffect(() => {
@@ -64,13 +60,27 @@ export default function DashboardPage() {
       icon: Users,
       href: "/dashboard/tools/whale-tracker",
       tier: "ENTRY_LEVEL",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "WHALES TRACKED",
+        statOneValue: "247",
+        statTwoLabel: "ALERTS",
+        statTwoValue: "12",
+      },
     },
     {
       name: "Shadow Swap",
       description: "Private, zero-slippage token swaps",
-      icon: Shuffle,
+      icon: Zap,
       href: "/dashboard/tools/shadow-swap",
       tier: "ENTRY_LEVEL",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "VOLUME (24H)",
+        statOneValue: 89750,
+        statTwoLabel: "ROUTES",
+        statTwoValue: "8",
+      },
     },
     {
       name: "AI Strategy Lab",
@@ -78,6 +88,13 @@ export default function DashboardPage() {
       icon: Brain,
       href: "/dashboard/tools/ai-strategy",
       tier: "ENTRY_LEVEL",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "STRATEGIES",
+        statOneValue: "3",
+        statTwoLabel: "WIN RATE",
+        statTwoValue: "68%",
+      },
     },
     {
       name: "MEV Extraction",
@@ -85,6 +102,13 @@ export default function DashboardPage() {
       icon: Zap,
       href: "/dashboard/tools/mev-extraction",
       tier: "OPERATOR",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "EXTRACTED",
+        statOneValue: 12450,
+        statTwoLabel: "PENDING",
+        statTwoValue: "$3,200",
+      },
     },
     {
       name: "Sniper Bot",
@@ -92,6 +116,13 @@ export default function DashboardPage() {
       icon: Crosshair,
       href: "/dashboard/tools/sniper-bot",
       tier: "OPERATOR",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "TARGETS",
+        statOneValue: "5",
+        statTwoLabel: "SUCCESS RATE",
+        statTwoValue: "92%",
+      },
     },
     {
       name: "Dark Launch Toolkit",
@@ -99,6 +130,13 @@ export default function DashboardPage() {
       icon: Rocket,
       href: "/dashboard/tools/dark-launch",
       tier: "SHADOW_ELITE",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "PROJECTS",
+        statOneValue: "2",
+        statTwoLabel: "LIQUIDITY",
+        statTwoValue: "$215K",
+      },
     },
     {
       name: "Liquidation Hunter",
@@ -106,13 +144,41 @@ export default function DashboardPage() {
       icon: Target,
       href: "/dashboard/tools/liquidation-hunter",
       tier: "SHADOW_ELITE",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "POSITIONS",
+        statOneValue: "8",
+        statTwoLabel: "PROFIT",
+        statTwoValue: "$5,320",
+      },
     },
     {
       name: "Stealth Router",
       description: "Conceal transaction routes and minimize footprint",
       icon: Eye,
       href: "/dashboard/tools/stealth-router",
+      tier: "OPERATOR",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "ROUTES",
+        statOneValue: "12",
+        statTwoLabel: "OBFUSCATION",
+        statTwoValue: "97%",
+      },
+    },
+    {
+      name: "Wash Trading Engine",
+      description: "Volume simulation with anti-detection algorithms",
+      icon: RefreshCw,
+      href: "/dashboard/tools/wash-trading",
       tier: "SHADOW_ELITE",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "VOLUME (24H)",
+        statOneValue: 124500,
+        statTwoLabel: "DETECTION RISK",
+        statTwoValue: "Low",
+      },
     },
     {
       name: "Flashloan Lab",
@@ -120,6 +186,27 @@ export default function DashboardPage() {
       icon: Lightbulb,
       href: "/dashboard/tools/flashloan-lab",
       tier: "PHANTOM_COUNCIL",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "CAPITAL",
+        statOneValue: "$1.2M",
+        statTwoLabel: "STRATEGIES",
+        statTwoValue: "4",
+      },
+    },
+    {
+      name: "Market Manipulation Detection",
+      description: "Identify and analyze market manipulation patterns",
+      icon: AlertTriangle,
+      href: "/dashboard/tools/manipulation-detection",
+      tier: "SHADOW_ELITE",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "ALERTS",
+        statOneValue: "7",
+        statTwoLabel: "CONFIDENCE",
+        statTwoValue: "High",
+      },
     },
   ]
 
@@ -142,19 +229,7 @@ export default function DashboardPage() {
       <MatrixBackground />
       <CircuitPattern />
 
-      {/* Navigation */}
-      <header className="sticky top-0 z-50 border-b border-neon-pink/30 bg-black/80 backdrop-blur-md">
-        <div className="container flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-neon-cyan hover:text-neon-pink transition-colors">
-            <ArrowLeft size={16} />
-            <span className="font-tech-mono">BACK_TO_HOME</span>
-          </Link>
-
-          <WalletConnector buttonSize="sm" glowColor="cyan" />
-        </div>
-      </header>
-
-      <main className="flex-1 container py-12">
+      <main className="flex-1 px-4 py-6 md:py-12">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8 text-center">
             <GlitchText
@@ -164,17 +239,6 @@ export default function DashboardPage() {
             <p className="text-neon-cyan font-tech-mono">SHADOW PROTOCOL CONTROL CENTER</p>
             <DataPulse className="my-6" />
           </div>
-
-          {isAdmin && (
-            <div className="mb-6">
-              <Link href="/dashboard/settings">
-                <CyberButton glowColor="pink" className="gap-2">
-                  <Settings className="h-4 w-4" />
-                  ADMIN SETTINGS
-                </CyberButton>
-              </Link>
-            </div>
-          )}
 
           {!connected ? (
             <div className="bg-black/60 border border-neon-pink p-8 rounded-lg text-center">
@@ -211,7 +275,7 @@ export default function DashboardPage() {
               </div>
 
               <Tabs defaultValue="tools" className="w-full">
-                <TabsList className="grid grid-cols-5 mb-8">
+                <TabsList className="grid grid-cols-2 sm:grid-cols-5 mb-8">
                   <TabsTrigger value="tools" className="font-tech-mono">
                     TOOLS
                   </TabsTrigger>
@@ -230,428 +294,56 @@ export default function DashboardPage() {
                 </TabsList>
 
                 <TabsContent value="tools">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <CyberCard className="bg-black/60">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 rounded-full bg-neon-pink/10">
-                          <Zap className="h-6 w-6 text-neon-pink" />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-bold text-neon-pink mb-1">Shadow Swap</h3>
-                          <p className="text-zinc-400 font-tech-mono text-sm mb-4">
-                            Route transactions through obfuscation layers to hide intent.
-                          </p>
-                          <div className="flex items-center gap-2">
-                            <Link href="/dashboard/tools/shadow-swap">
-                              <CyberButton size="sm" glowColor="pink">
-                                LAUNCH
-                              </CyberButton>
-                            </Link>
-                            <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
-                              ENTRY LEVEL
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Render tool cards based on user's tier */}
+                    {tools.map((tool, index) => {
+                      // Define tier levels for comparison
+                      const tierLevels = {
+                        UNAUTHORIZED: 0,
+                        ENTRY_LEVEL: 1,
+                        OPERATOR: 2,
+                        SHADOW_ELITE: 3,
+                        PHANTOM_COUNCIL: 4,
+                      }
+
+                      const userTierLevel = tierLevels[tier] || 0
+                      const toolTierLevel = tierLevels[tool.tier] || 0
+
+                      // For tools that require higher tier than user has
+                      if (toolTierLevel > userTierLevel) {
+                        return (
+                          <CyberCard key={index} className="bg-black/60">
+                            <div className="flex items-start gap-4">
+                              <div className="p-3 rounded-full bg-zinc-800">
+                                <tool.icon className="h-6 w-6 text-zinc-400" />
+                              </div>
+                              <div>
+                                <h3 className="text-lg font-bold text-zinc-400 mb-1">{tool.name}</h3>
+                                <p className="text-zinc-500 font-tech-mono text-sm mb-4">{tool.description}</p>
+                                <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
+                                  <Lock size={14} />
+                                  <span className="font-tech-mono">{tool.tier.replace("_", " ")} TIER REQUIRED</span>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CyberCard>
+                          </CyberCard>
+                        )
+                      }
 
-                    <CyberCard className="bg-black/60">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 rounded-full bg-neon-cyan/10">
-                          <Users className="h-6 w-6 text-neon-cyan" />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-bold text-neon-cyan mb-1">Whale Tracker</h3>
-                          <p className="text-zinc-400 font-tech-mono text-sm mb-4">
-                            Track the movements of those who move markets.
-                          </p>
-                          <div className="flex items-center gap-2">
-                            <Link href="/dashboard/tools/whale-tracker">
-                              <CyberButton size="sm" glowColor="cyan">
-                                LAUNCH
-                              </CyberButton>
-                            </Link>
-                            <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
-                              ENTRY LEVEL
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CyberCard>
-
-                    <CyberCard className="bg-black/60">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 rounded-full bg-neon-pink/10">
-                          <Brain className="h-6 w-6 text-neon-pink" />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-bold text-neon-pink mb-1">AI Strategy Lab</h3>
-                          <p className="text-zinc-400 font-tech-mono text-sm mb-4">
-                            Generate custom trading algorithms tuned to your risk profile.
-                          </p>
-                          <div className="flex items-center gap-2">
-                            <Link href="/dashboard/tools/ai-strategy">
-                              <CyberButton size="sm" glowColor="pink">
-                                LAUNCH
-                              </CyberButton>
-                            </Link>
-                            <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
-                              ENTRY LEVEL
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CyberCard>
-
-                    <CyberCard className="bg-black/60">
-                      <div className="flex items-start gap-4">
-                        <div
-                          className={
-                            tier === "UNAUTHORIZED" || tier === "ENTRY_LEVEL"
-                              ? "p-3 rounded-full bg-zinc-800"
-                              : "p-3 rounded-full bg-neon-pink/10"
-                          }
-                        >
-                          <BarChart3
-                            className={
-                              tier === "UNAUTHORIZED" || tier === "ENTRY_LEVEL"
-                                ? "h-6 w-6 text-zinc-400"
-                                : "h-6 w-6 text-neon-pink"
-                            }
-                          />
-                        </div>
-                        <div>
-                          <h3
-                            className={
-                              tier === "UNAUTHORIZED" || tier === "ENTRY_LEVEL"
-                                ? "text-lg font-bold text-zinc-400 mb-1"
-                                : "text-lg font-bold text-neon-pink mb-1"
-                            }
-                          >
-                            MEV Extraction
-                          </h3>
-                          <p
-                            className={
-                              tier === "UNAUTHORIZED" || tier === "ENTRY_LEVEL"
-                                ? "text-zinc-500 font-tech-mono text-sm mb-4"
-                                : "text-zinc-400 font-tech-mono text-sm mb-4"
-                            }
-                          >
-                            Capture value before others even see the opportunity.
-                          </p>
-                          <div className="flex items-center gap-2">
-                            {tier === "UNAUTHORIZED" || tier === "ENTRY_LEVEL" ? (
-                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
-                                <Lock size={14} />
-                                <span className="font-tech-mono">OPERATOR TIER REQUIRED</span>
-                              </div>
-                            ) : (
-                              <>
-                                <Link href="/dashboard/tools/mev-extraction">
-                                  <CyberButton size="sm" glowColor="pink">
-                                    LAUNCH
-                                  </CyberButton>
-                                </Link>
-                                <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
-                                  {tier.replace("_", " ")}
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </CyberCard>
-
-                    <CyberCard className="bg-black/60">
-                      <div className="flex items-start gap-4">
-                        <div
-                          className={
-                            tier === "OPERATOR" || tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                              ? "p-3 rounded-full bg-neon-cyan/10"
-                              : "p-3 rounded-full bg-zinc-800"
-                          }
-                        >
-                          <Crosshair
-                            className={
-                              tier === "OPERATOR" || tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "h-6 w-6 text-neon-cyan"
-                                : "h-6 w-6 text-zinc-400"
-                            }
-                          />
-                        </div>
-                        <div>
-                          <h3
-                            className={
-                              tier === "OPERATOR" || tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "text-lg font-bold text-neon-cyan mb-1"
-                                : "text-lg font-bold text-zinc-400 mb-1"
-                            }
-                          >
-                            Sniper Bot
-                          </h3>
-                          <p
-                            className={
-                              tier === "OPERATOR" || tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "text-zinc-400 font-tech-mono text-sm mb-4"
-                                : "text-zinc-500 font-tech-mono text-sm mb-4"
-                            }
-                          >
-                            Microsecond-precision execution for token launches.
-                          </p>
-                          <div className="flex items-center gap-2">
-                            {tier === "OPERATOR" || tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL" ? (
-                              <>
-                                <Link href="/dashboard/tools/sniper-bot">
-                                  <CyberButton size="sm" glowColor="cyan">
-                                    LAUNCH
-                                  </CyberButton>
-                                </Link>
-                                <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
-                                  OPERATOR+
-                                </div>
-                              </>
-                            ) : (
-                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
-                                <Lock size={14} />
-                                <span className="font-tech-mono">OPERATOR TIER REQUIRED</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </CyberCard>
-
-                    <CyberCard className="bg-black/60">
-                      <div className="flex items-start gap-4">
-                        <div
-                          className={
-                            tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                              ? "p-3 rounded-full bg-neon-pink/10"
-                              : "p-3 rounded-full bg-zinc-800"
-                          }
-                        >
-                          <Rocket
-                            className={
-                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "h-6 w-6 text-neon-pink"
-                                : "h-6 w-6 text-zinc-400"
-                            }
-                          />
-                        </div>
-                        <div>
-                          <h3
-                            className={
-                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "text-lg font-bold text-neon-pink mb-1"
-                                : "text-lg font-bold text-zinc-400 mb-1"
-                            }
-                          >
-                            Dark Launch Toolkit
-                          </h3>
-                          <p
-                            className={
-                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "text-zinc-400 font-tech-mono text-sm mb-4"
-                                : "text-zinc-500 font-tech-mono text-sm mb-4"
-                            }
-                          >
-                            Deploy tokens with perfect liquidity curves.
-                          </p>
-                          <div className="flex items-center gap-2">
-                            {tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL" ? (
-                              <>
-                                <Link href="/dashboard/tools/dark-launch">
-                                  <CyberButton size="sm" glowColor="pink">
-                                    LAUNCH
-                                  </CyberButton>
-                                </Link>
-                                <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
-                                  SHADOW ELITE+
-                                </div>
-                              </>
-                            ) : (
-                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
-                                <Lock size={14} />
-                                <span className="font-tech-mono">SHADOW ELITE TIER REQUIRED</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </CyberCard>
-
-                    <CyberCard className="bg-black/60">
-                      <div className="flex items-start gap-4">
-                        <div
-                          className={
-                            tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                              ? "p-3 rounded-full bg-neon-cyan/10"
-                              : "p-3 rounded-full bg-zinc-800"
-                          }
-                        >
-                          <Target
-                            className={
-                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "h-6 w-6 text-neon-cyan"
-                                : "h-6 w-6 text-zinc-400"
-                            }
-                          />
-                        </div>
-                        <div>
-                          <h3
-                            className={
-                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "text-lg font-bold text-neon-cyan mb-1"
-                                : "text-lg font-bold text-zinc-400 mb-1"
-                            }
-                          >
-                            Liquidation Hunter
-                          </h3>
-                          <p
-                            className={
-                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "text-zinc-400 font-tech-mono text-sm mb-4"
-                                : "text-zinc-500 font-tech-mono text-sm mb-4"
-                            }
-                          >
-                            Profit from market volatility and liquidations.
-                          </p>
-                          <div className="flex items-center gap-2">
-                            {tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL" ? (
-                              <>
-                                <Link href="/dashboard/tools/liquidation-hunter">
-                                  <CyberButton size="sm" glowColor="cyan">
-                                    LAUNCH
-                                  </CyberButton>
-                                </Link>
-                                <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
-                                  SHADOW ELITE+
-                                </div>
-                              </>
-                            ) : (
-                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
-                                <Lock size={14} />
-                                <span className="font-tech-mono">SHADOW ELITE TIER REQUIRED</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </CyberCard>
-
-                    <CyberCard className="bg-black/60">
-                      <div className="flex items-start gap-4">
-                        <div
-                          className={
-                            tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                              ? "p-3 rounded-full bg-neon-pink/10"
-                              : "p-3 rounded-full bg-zinc-800"
-                          }
-                        >
-                          <Eye
-                            className={
-                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "h-6 w-6 text-neon-pink"
-                                : "h-6 w-6 text-zinc-400"
-                            }
-                          />
-                        </div>
-                        <div>
-                          <h3
-                            className={
-                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "text-lg font-bold text-neon-pink mb-1"
-                                : "text-lg font-bold text-zinc-400 mb-1"
-                            }
-                          >
-                            Stealth Router
-                          </h3>
-                          <p
-                            className={
-                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
-                                ? "text-zinc-400 font-tech-mono text-sm mb-4"
-                                : "text-zinc-500 font-tech-mono text-sm mb-4"
-                            }
-                          >
-                            Conceal transaction routes and minimize footprint.
-                          </p>
-                          <div className="flex items-center gap-2">
-                            {tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL" ? (
-                              <>
-                                <Link href="/dashboard/tools/stealth-router">
-                                  <CyberButton size="sm" glowColor="pink">
-                                    LAUNCH
-                                  </CyberButton>
-                                </Link>
-                                <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
-                                  SHADOW ELITE+
-                                </div>
-                              </>
-                            ) : (
-                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
-                                <Lock size={14} />
-                                <span className="font-tech-mono">SHADOW ELITE TIER REQUIRED</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </CyberCard>
-
-                    <CyberCard className="bg-black/60">
-                      <div className="flex items-start gap-4">
-                        <div
-                          className={
-                            tier === "PHANTOM_COUNCIL"
-                              ? "p-3 rounded-full bg-neon-cyan/10"
-                              : "p-3 rounded-full bg-zinc-800"
-                          }
-                        >
-                          <Lightbulb
-                            className={tier === "PHANTOM_COUNCIL" ? "h-6 w-6 text-neon-cyan" : "h-6 w-6 text-zinc-400"}
-                          />
-                        </div>
-                        <div>
-                          <h3
-                            className={
-                              tier === "PHANTOM_COUNCIL"
-                                ? "text-lg font-bold text-neon-cyan mb-1"
-                                : "text-lg font-bold text-zinc-400 mb-1"
-                            }
-                          >
-                            Flashloan Lab
-                          </h3>
-                          <p
-                            className={
-                              tier === "PHANTOM_COUNCIL"
-                                ? "text-zinc-400 font-tech-mono text-sm mb-4"
-                                : "text-zinc-500 font-tech-mono text-sm mb-4"
-                            }
-                          >
-                            Create and test flashloan strategies.
-                          </p>
-                          <div className="flex items-center gap-2">
-                            {tier === "PHANTOM_COUNCIL" ? (
-                              <>
-                                <Link href="/dashboard/tools/flashloan-lab">
-                                  <CyberButton size="sm" glowColor="cyan">
-                                    LAUNCH
-                                  </CyberButton>
-                                </Link>
-                                <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
-                                  PHANTOM COUNCIL
-                                </div>
-                              </>
-                            ) : (
-                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
-                                <Lock size={14} />
-                                <span className="font-tech-mono">PHANTOM COUNCIL TIER REQUIRED</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </CyberCard>
+                      // For tools the user has access to
+                      return (
+                        <ToolCard
+                          key={index}
+                          name={tool.name}
+                          description={tool.description}
+                          icon={tool.icon}
+                          href={tool.href}
+                          tier={tool.tier}
+                          color={tool.color}
+                          monitoringStats={tool.monitoringStats}
+                        />
+                      )
+                    })}
                   </div>
 
                   <div className="mt-8 text-center">
@@ -668,7 +360,7 @@ export default function DashboardPage() {
                       <CyberCard className="bg-black/60">
                         <h3 className="text-xl font-bold text-neon-cyan mb-4">$BLKBOX Price Chart</h3>
                         <TokenPriceChart />
-                        <div className="flex justify-between items-center mt-4">
+                        <div className="flex flex-wrap justify-between items-center mt-4 gap-2">
                           <div>
                             <p className="text-xs text-zinc-500 font-tech-mono">Current Price</p>
                             <p className="text-lg font-bold text-neon-pink">$0.000247</p>

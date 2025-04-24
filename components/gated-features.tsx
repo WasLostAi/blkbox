@@ -20,6 +20,7 @@ import {
   Rocket,
   Target,
   Lightbulb,
+  RefreshCw,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import CyberButton from "./cyber-button"
@@ -230,6 +231,19 @@ export default function GatedFeatures({ userTier = "UNAUTHORIZED" }: GatedFeatur
         "Simulation environment for strategy testing",
         "Profit calculation and gas optimization",
         "One-click deployment to mainnet with safety checks",
+      ],
+    },
+    {
+      id: "wash-trading",
+      name: "Wash Trading Engine",
+      icon: <RefreshCw className="h-5 w-5" />,
+      requiredTier: tierLevels.SHADOW_ELITE,
+      features: [
+        "Automated volume generation with anti-detection",
+        "Multi-wallet transaction distribution",
+        "Customizable trading patterns and frequencies",
+        "Advanced timing randomization algorithms",
+        "Risk assessment and security monitoring",
       ],
     },
   ]
