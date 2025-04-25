@@ -100,6 +100,12 @@ export function ToolCard({ name, description, icon: Icon, href, tier, color, mon
     setIsRealTimeUpdating(false)
   }
 
+  // Format tier name safely
+  const formatTierName = (tierName: string | undefined) => {
+    if (!tierName) return "UNKNOWN"
+    return tierName.replace("_", " ")
+  }
+
   if (!isLaunched) {
     // Standard card format (pre-launch)
     return (
@@ -116,7 +122,7 @@ export function ToolCard({ name, description, icon: Icon, href, tier, color, mon
                 LAUNCH
               </CyberButton>
               <div className={`bg-neon-${color}/10 text-neon-${color} text-xs font-tech-mono px-2 py-1 rounded`}>
-                {tier.replace("_", " ")}
+                {formatTierName(tier)}
               </div>
             </div>
           </div>

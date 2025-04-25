@@ -28,7 +28,7 @@ import CyberCard from "@/components/cyber-card"
 import DataPulse from "@/components/data-pulse"
 import CyberButton from "@/components/ui/button"
 import WalletModal from "@/components/wallet-modal"
-import ToolCard from "@/components/tool-card"
+import { ToolCard } from "@/components/tool-card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TokenPriceChart from "@/components/token-price-chart"
 import TierProgress from "@/components/tier-progress"
@@ -345,7 +345,9 @@ export default function DashboardPage() {
                 <CyberCard>
                   <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Your $BLKBOX Balance</h3>
                   <p className="text-2xl font-bold text-neon-pink">{formattedBalance}</p>
-                  <p className="text-sm text-zinc-400">Current tier: {tier.replace("_", " ")}</p>
+                  <p className="text-sm text-zinc-400">
+                    Current tier: {tier ? tier.replace("_", " ") : "UNAUTHORIZED"}
+                  </p>
                 </CyberCard>
                 <CyberCard variant="cyan">
                   <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Next USDC Dividend</h3>
@@ -391,8 +393,8 @@ export default function DashboardPage() {
                         PHANTOM_COUNCIL: 4,
                       }
 
-                      const userTierLevel = tierLevels[tier] || 0
-                      const toolTierLevel = tierLevels[tool.tier] || 0
+                      const userTierLevel = tierLevels[tier as keyof typeof tierLevels] || 0
+                      const toolTierLevel = tierLevels[tool.tier as keyof typeof tierLevels] || 0
 
                       // For tools that require higher tier than user has
                       if (toolTierLevel > userTierLevel) {
@@ -407,7 +409,9 @@ export default function DashboardPage() {
                                 <p className="text-zinc-500 font-tech-mono text-sm mb-4">{tool.description}</p>
                                 <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
                                   <Lock size={14} />
-                                  <span className="font-tech-mono">{tool.tier.replace("_", " ")} TIER REQUIRED</span>
+                                  <span className="font-tech-mono">
+                                    {tool.tier ? tool.tier.replace("_", " ") : "UNKNOWN"} TIER REQUIRED
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -424,7 +428,7 @@ export default function DashboardPage() {
                           icon={tool.icon}
                           href={tool.href}
                           tier={tool.tier}
-                          color={tool.color}
+                          color={tool.color || "cyan"}
                           monitoringStats={tool.monitoringStats}
                         />
                       )
@@ -563,7 +567,7 @@ export default function DashboardPage() {
                 </TabsContent>
 
                 <TabsContent value="features">
-                  <GatedFeatures userTier={tier} />
+                  <GatedFeatures userTier={tier || "UNAUTHORIZED"} />
                 </TabsContent>
 
                 <TabsContent value="settings">
@@ -578,7 +582,9 @@ export default function DashboardPage() {
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-zinc-400 font-tech-mono">Current Tier</span>
-                        <span className="text-neon-pink font-tech-mono">{tier.replace("_", " ")}</span>
+                        <span className="text-neon-pink font-tech-mono">
+                          {tier ? tier.replace("_", " ") : "UNAUTHORIZED"}
+                        </span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-zinc-400 font-tech-mono">$BLKBOX Balance</span>
