@@ -25,7 +25,6 @@ import {
   Shield,
   Settings,
   Menu,
-  X,
   ChevronLeft,
   FileCode,
   Activity,
@@ -109,7 +108,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "OPERATOR",
     },
     {
-      name: "Sniper",
+      name: "Sniper Bot",
       href: "/dashboard/tools/sniper-bot",
       icon: <Crosshair className="h-5 w-5" />,
       requiresAuth: true,
@@ -291,70 +290,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <WalletConnector buttonSize="sm" />
       </div>
 
-      {/* Mobile sidebar */}
-      <div
-        className={cn(
-          "fixed inset-0 z-50 bg-black/95 backdrop-blur-md transition-transform duration-300 ease-in-out md:hidden",
-          sidebarOpen ? "translate-x-0" : "-translate-x-full",
-        )}
-      >
-        <div className="flex justify-between items-center p-4 border-b border-zinc-800">
-          <Link href="/" className="flex items-center">
-            <Image src="/blkbox-logo-new.png" alt="BLKBOX" width={40} height={40} className="rounded-sm" />
-            <span className="ml-3 text-lg font-bold text-neon-pink">$BLKBOX</span>
-          </Link>
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="p-2 text-neon-pink hover:text-neon-cyan transition-colors"
-          >
-            <X className="h-6 w-6" />
-          </button>
-        </div>
-
-        <div className="overflow-y-auto py-4 px-2 h-[calc(100%-80px)]">
-          <nav className="space-y-1">
-            {navItems
-              .filter(
-                (item) =>
-                  !item.requiresAuth ||
-                  (connected &&
-                    (!item.adminOnly || isAdmin) &&
-                    (!item.minTier || tier === item.minTier || tierLevelCheck(tier, item.minTier))),
-              )
-              .map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center px-3 py-3 rounded-md text-sm font-medium transition-colors",
-                    isActive(item.href)
-                      ? "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
-                      : "text-zinc-400 hover:text-white hover:bg-zinc-900",
-                  )}
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <span className="mr-3">{item.icon}</span>
-                  <span className="font-tech-mono">{item.name}</span>
-                </Link>
-              ))}
-          </nav>
-        </div>
-
-        {/* Admin button in mobile sidebar */}
-        {isAdmin && (
-          <div className="px-2 py-4 border-t border-zinc-800 absolute bottom-0 w-full">
-            <Link
-              href="/admin"
-              className="flex items-center px-3 py-3 rounded-md text-sm font-medium bg-red-900/20 text-red-400 hover:bg-red-900/30 transition-colors"
-              onClick={() => setSidebarOpen(false)}
-            >
-              <Shield className="h-5 w-5 mr-3" />
-              <span className="font-tech-mono">ADMIN</span>
-            </Link>
-          </div>
-        )}
-      </div>
-
       {/* Main content */}
       <div className="w-full md:pl-48">
         {/* Back button for sub-pages */}
@@ -387,5 +322,5 @@ function tierLevelCheck(userTier: string, requiredTier: string) {
   // Always return true for PHANTOM_COUNCIL tier (highest tier)
   if (userTier === "PHANTOM_COUNCIL") return true
 
-  return tierLevels[userTier as keyof typeof tierLevels] >= tierLevels[requiredTier as keyof tierLevels]
+  return tierLevels[userTier as keyof typeof tierLevels] >= tierLevels[requiredTier as keyof typeof tierLevels]
 }
