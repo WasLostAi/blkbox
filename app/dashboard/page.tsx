@@ -282,6 +282,14 @@ export default function DashboardPage() {
       color: "cyan",
     },
     {
+      name: "Automated Arbitrage",
+      description: "Automated arbitrage",
+      icon: Shuffle,
+      href: "/dashboard/tools/automated-arbitrage",
+      tier: "PHANTOM_COUNCIL",
+      color: "cyan",
+    },
+    {
       name: "Upgrade",
       href: "/dashboard/upgrade",
       icon: Zap,
