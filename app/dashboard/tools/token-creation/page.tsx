@@ -9,9 +9,9 @@ import GlitchText from "@/components/glitch-text"
 import AuthCheck from "@/components/auth-check"
 import { useWallet } from "@/context/wallet-context"
 import WalletConnector from "@/components/wallet-connector"
-import QuantumStateManipulator from "@/components/quantum-state-manipulator"
+import TokenCreationWizard from "@/components/token-creation-wizard"
 
-export default function QuantumManipulatorPage() {
+export default function TokenCreationPage() {
   const { connected } = useWallet()
 
   return (
@@ -35,37 +35,35 @@ export default function QuantumManipulatorPage() {
       </header>
 
       <main className="flex-1 container py-12">
-        <AuthCheck toolPath="quantum-manipulator" requiredTier="PHANTOM_COUNCIL">
+        <AuthCheck toolPath="token-creation" requiredTier="OPERATOR">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8 text-center">
               <GlitchText
-                text="QUANTUM STATE MANIPULATOR"
-                className="text-3xl font-extrabold tracking-tight sm:text-4xl text-neon-cyan mb-4"
+                text="TOKEN CREATION WIZARD"
+                className="text-3xl font-extrabold tracking-tight sm:text-4xl text-neon-pink mb-4"
               />
-              <p className="text-neon-pink font-tech-mono">Harness quantum mechanics to influence token states</p>
+              <p className="text-neon-cyan font-tech-mono">Create your own tokens with custom parameters</p>
               <DataPulse className="my-6" />
             </div>
 
-            {/* Quantum State Manipulator Component */}
-            <QuantumStateManipulator inDashboard={false} />
+            {/* Token Creation Wizard Component */}
+            <TokenCreationWizard />
 
             <div className="mt-8 bg-black/60 border border-zinc-800 rounded-lg p-6">
-              <h2 className="text-xl font-bold text-neon-pink mb-4">About Quantum State Manipulation</h2>
+              <h2 className="text-xl font-bold text-neon-cyan mb-4">About Token Creation</h2>
               <p className="text-zinc-400 mb-4">
-                The Quantum State Manipulator is a cutting-edge tool that leverages quantum computing principles to
-                influence the state of tokens on the blockchain. By exploiting quantum superposition and entanglement,
-                this tool can create subtle market movements that are impossible to trace.
+                The Token Creation Wizard allows Operator members to create their own tokens with custom parameters,
+                including name, symbol, supply, and tax rates.
               </p>
               <p className="text-zinc-400 mb-4">
-                This technology is still experimental and results may vary. The Shadow Council has exclusive access to
-                this tool as it represents the bleeding edge of market manipulation technology.
+                This tool is useful for launching new projects, creating community tokens, or experimenting with new
+                tokenomics models.
               </p>
-              <div className="bg-red-900/20 border border-red-800 rounded p-4 mt-6">
-                <h3 className="text-red-400 font-bold mb-2">EXPERIMENTAL TECHNOLOGY WARNING</h3>
+              <div className="bg-yellow-900/20 border border-yellow-800 rounded p-4 mt-6">
+                <h3 className="text-yellow-400 font-bold mb-2">DISCLAIMER</h3>
                 <p className="text-zinc-400 text-sm">
-                  This tool is highly experimental and may produce unpredictable results. Use with extreme caution and
-                  only on test networks until you are comfortable with its operation. The Shadow Council assumes no
-                  responsibility for unintended consequences.
+                  Creating and launching tokens involves financial risk. The Shadow Council assumes no responsibility
+                  for any losses or damages resulting from the use of this tool.
                 </p>
               </div>
             </div>

@@ -3,9 +3,8 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import {
+  Shield,
   Zap,
-  Lock,
-  Users,
   Brain,
   Crosshair,
   Rocket,
@@ -18,12 +17,16 @@ import {
   Wallet,
   Shuffle,
   Layers,
+  Lock,
+  Users,
+  FileCode,
+  Settings,
 } from "lucide-react"
 import MatrixBackground from "@/components/matrix-background"
 import CircuitPattern from "@/components/circuit-pattern"
 import CyberCard from "@/components/cyber-card"
 import DataPulse from "@/components/data-pulse"
-import CyberButton from "@/components/cyber-button"
+import CyberButton from "@/components/ui/button"
 import WalletModal from "@/components/wallet-modal"
 import ToolCard from "@/components/tool-card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -99,11 +102,25 @@ export default function DashboardPage() {
       },
     },
     {
-      name: "MEV Extraction",
+      name: "Phantom Inter",
+      description: "Bridge assets across different chains",
+      icon: Layers,
+      href: "/dashboard/tools/interoperability",
+      tier: "SHADOW_ELITE",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "BRIDGED",
+        statOneValue: "124500",
+        statTwoLabel: "CHAINS",
+        statTwoValue: "3",
+      },
+    },
+    {
+      name: "Max Extract",
       description: "Capture value from the mempool",
       icon: Zap,
       href: "/dashboard/tools/mev-extraction",
-      tier: "OPERATOR",
+      tier: "SHADOW_ELITE",
       color: "pink",
       monitoringStats: {
         statOneLabel: "EXTRACTED",
@@ -211,32 +228,70 @@ export default function DashboardPage() {
       },
     },
     {
-      name: "Interoperability Tool",
-      description: "Bridge assets across different chains",
-      icon: Layers,
-      href: "/dashboard/tools/interoperability",
-      tier: "SHADOW_ELITE",
-      color: "pink",
-      monitoringStats: {
-        statOneLabel: "BRIDGED",
-        statOneValue: "124500",
-        statTwoLabel: "CHAINS",
-        statTwoValue: "3",
-      },
-    },
-    {
-      name: "Quantum State Token Manipulator",
-      description: "Harness quantum mechanics to influence token states",
-      icon: Zap,
-      href: "/dashboard/tools/quantum-manipulator",
+      name: "Temporal Fragmentation",
+      description: "Orchestrate token movements across time to maximize alpha",
+      icon: Shuffle,
+      href: "/dashboard/tools/temporal-fragmentation",
       tier: "PHANTOM_COUNCIL",
       color: "cyan",
       monitoringStats: {
-        statOneLabel: "MANIPULATIONS",
-        statOneValue: "0",
-        statTwoLabel: "SUCCESS",
-        statTwoValue: "0%",
+        statOneLabel: "FRAGMENTS",
+        statOneValue: "3",
+        statTwoLabel: "EFFICIENCY",
+        statTwoValue: "97%",
       },
+    },
+    {
+      name: "Hidden Tax Implementer",
+      description: "Obfuscate transaction taxes for maximum stealth",
+      icon: Shield,
+      href: "/dashboard/tools/hidden-tax-implementer",
+      tier: "SHADOW_ELITE",
+      color: "pink",
+    },
+    {
+      name: "Phantom Vault Constructor",
+      description: "Create secure, time-locked token vaults with advanced privacy features",
+      icon: Lock,
+      href: "/dashboard/tools/phantom-vault",
+      tier: "SHADOW_ELITE",
+      color: "pink",
+    },
+    {
+      name: "Emissions Skimming",
+      description: "Extract value from token emissions with surgical precision",
+      icon: Zap,
+      href: "/dashboard/tools/emissions-skimming",
+      tier: "PHANTOM_COUNCIL",
+      color: "pink",
+    },
+    {
+      name: "Sandwich Attack",
+      description: "Automate sandwich attacks to extract value from unsuspecting traders",
+      icon: AlertTriangle,
+      href: "/dashboard/tools/sandwich-attack",
+      tier: "PHANTOM_COUNCIL",
+      color: "cyan",
+    },
+    {
+      name: "Token Creation",
+      description: "Create your own tokens with custom parameters",
+      icon: FileCode,
+      href: "/dashboard/tools/token-creation",
+      tier: "OPERATOR",
+      color: "cyan",
+    },
+    {
+      name: "Upgrade",
+      href: "/dashboard/upgrade",
+      icon: Zap,
+      requiresAuth: true,
+    },
+    {
+      name: "Settings",
+      href: "/dashboard/settings",
+      icon: Settings,
+      requiresAuth: true,
     },
   ]
 

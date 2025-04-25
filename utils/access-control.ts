@@ -42,6 +42,8 @@ export function getToolRequiredTier(toolPath: string): WalletTier {
     "wash-trading": "SHADOW_ELITE",
     "manipulation-detection": "SHADOW_ELITE",
     "quantum-manipulator": "PHANTOM_COUNCIL",
+    "temporal-fragmentation": "PHANTOM_COUNCIL",
+    "hidden-tax-implementer": "SHADOW_ELITE",
   }
 
   // Default to ENTRY_LEVEL if the tool is not found in the map

@@ -9,9 +9,9 @@ import GlitchText from "@/components/glitch-text"
 import AuthCheck from "@/components/auth-check"
 import { useWallet } from "@/context/wallet-context"
 import WalletConnector from "@/components/wallet-connector"
-import QuantumStateManipulator from "@/components/quantum-state-manipulator"
+import PhantomVaultConstructor from "@/components/phantom-vault-constructor"
 
-export default function QuantumManipulatorPage() {
+export default function PhantomVaultConstructorPage() {
   const { connected } = useWallet()
 
   return (
@@ -25,6 +25,7 @@ export default function QuantumManipulatorPage() {
           <Link
             href="/dashboard"
             className="flex items-center gap-2 text-neon-cyan hover:text-neon-pink transition-colors"
+            title="Back to Dashboard"
           >
             <ArrowLeft size={16} />
             <span className="font-tech-mono">BACK_TO_DASHBOARD</span>
@@ -35,37 +36,38 @@ export default function QuantumManipulatorPage() {
       </header>
 
       <main className="flex-1 container py-12">
-        <AuthCheck toolPath="quantum-manipulator" requiredTier="PHANTOM_COUNCIL">
+        <AuthCheck toolPath="phantom-vault" requiredTier="SHADOW_ELITE">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8 text-center">
               <GlitchText
-                text="QUANTUM STATE MANIPULATOR"
-                className="text-3xl font-extrabold tracking-tight sm:text-4xl text-neon-cyan mb-4"
+                text="PHANTOM VAULT CONSTRUCTOR"
+                className="text-3xl font-extrabold tracking-tight sm:text-4xl text-neon-pink mb-4"
               />
-              <p className="text-neon-pink font-tech-mono">Harness quantum mechanics to influence token states</p>
+              <p className="text-neon-cyan font-tech-mono">
+                Create secure, time-locked token vaults with advanced privacy features
+              </p>
               <DataPulse className="my-6" />
             </div>
 
-            {/* Quantum State Manipulator Component */}
-            <QuantumStateManipulator inDashboard={false} />
+            {/* Phantom Vault Constructor Component */}
+            <PhantomVaultConstructor />
 
             <div className="mt-8 bg-black/60 border border-zinc-800 rounded-lg p-6">
-              <h2 className="text-xl font-bold text-neon-pink mb-4">About Quantum State Manipulation</h2>
+              <h2 className="text-xl font-bold text-neon-cyan mb-4">About Phantom Vaults</h2>
               <p className="text-zinc-400 mb-4">
-                The Quantum State Manipulator is a cutting-edge tool that leverages quantum computing principles to
-                influence the state of tokens on the blockchain. By exploiting quantum superposition and entanglement,
-                this tool can create subtle market movements that are impossible to trace.
+                Phantom Vaults are advanced token storage mechanisms that provide time-locked security and enhanced
+                privacy. These vaults are designed to protect your assets from unauthorized access and market
+                volatility.
               </p>
               <p className="text-zinc-400 mb-4">
-                This technology is still experimental and results may vary. The Shadow Council has exclusive access to
-                this tool as it represents the bleeding edge of market manipulation technology.
+                With Phantom Vaults, you can create custom vesting schedules, implement multi-signature access controls,
+                and obfuscate transaction histories.
               </p>
-              <div className="bg-red-900/20 border border-red-800 rounded p-4 mt-6">
-                <h3 className="text-red-400 font-bold mb-2">EXPERIMENTAL TECHNOLOGY WARNING</h3>
+              <div className="bg-green-900/20 border border-green-800 rounded p-4 mt-6">
+                <h3 className="text-green-400 font-bold mb-2">SECURITY NOTICE</h3>
                 <p className="text-zinc-400 text-sm">
-                  This tool is highly experimental and may produce unpredictable results. Use with extreme caution and
-                  only on test networks until you are comfortable with its operation. The Shadow Council assumes no
-                  responsibility for unintended consequences.
+                  Phantom Vaults provide enhanced security and privacy, but they are not foolproof. Always exercise
+                  caution and follow best practices for securing your assets.
                 </p>
               </div>
             </div>

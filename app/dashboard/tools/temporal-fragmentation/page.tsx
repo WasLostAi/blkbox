@@ -1,12 +1,10 @@
-"use client"
-
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import MatrixBackground from "@/components/matrix-background"
 import CircuitPattern from "@/components/circuit-pattern"
 import DataPulse from "@/components/data-pulse"
 import GlitchText from "@/components/glitch-text"
-import TierGate from "@/components/tier-gate"
+import AuthCheck from "@/components/auth-check"
 import { useWallet } from "@/context/wallet-context"
 import WalletConnector from "@/components/wallet-connector"
 import TemporalFragmentationEngine from "@/components/temporal-fragmentation-card"
@@ -25,6 +23,7 @@ export default function TemporalFragmentationEnginePage() {
           <Link
             href="/dashboard"
             className="flex items-center gap-2 text-neon-cyan hover:text-neon-pink transition-colors"
+            title="Back to Dashboard"
           >
             <ArrowLeft size={16} />
             <span className="font-tech-mono">BACK_TO_DASHBOARD</span>
@@ -35,7 +34,7 @@ export default function TemporalFragmentationEnginePage() {
       </header>
 
       <main className="flex-1 container py-12">
-        <TierGate requiredTier="PHANTOM_COUNCIL">
+        <AuthCheck toolPath="temporal-fragmentation" requiredTier="PHANTOM_COUNCIL">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8 text-center">
               <GlitchText
@@ -47,9 +46,31 @@ export default function TemporalFragmentationEnginePage() {
             </div>
 
             {/* Temporal Fragmentation Engine Component */}
-            <TemporalFragmentationEngine />
+            <TemporalFragmentationEngine inDashboard={false} />
+
+            <div className="mt-8 bg-black/60 border border-zinc-800 rounded-lg p-6">
+              <h2 className="text-xl font-bold text-neon-cyan mb-4">About Temporal Fragmentation</h2>
+              <p className="text-zinc-400 mb-4">
+                The Temporal Fragmentation Engine is an advanced tool that allows Shadow Council members to orchestrate
+                token movements across time, creating fragmented trading patterns that are impossible to track by
+                conventional means.
+              </p>
+              <p className="text-zinc-400 mb-4">
+                By fragmenting transactions across multiple timeframes, you can effectively manipulate market perception
+                while maintaining plausible deniability. This tool is particularly effective for creating artificial
+                price movements that trigger bot activity.
+              </p>
+              <div className="bg-red-900/20 border border-red-800 rounded p-4 mt-6">
+                <h3 className="text-red-400 font-bold mb-2">SECURITY WARNING</h3>
+                <p className="text-zinc-400 text-sm">
+                  This tool operates in a legal gray area. Use with caution and only on networks where regulatory
+                  oversight is minimal. The Shadow Council assumes no responsibility for legal consequences resulting
+                  from improper use.
+                </p>
+              </div>
+            </div>
           </div>
-        </TierGate>
+        </AuthCheck>
       </main>
 
       <footer className="border-t border-neon-pink/30 py-6 bg-black">

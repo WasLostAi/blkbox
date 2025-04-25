@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import CyberCard from "./cyber-card"
-import CyberButton from "./cyber-button"
+import CyberButton from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 
 interface ToolCardProps {
@@ -53,12 +53,12 @@ export default function ToolCard({ name, description, icon: Icon, href, tier, co
         // Update strategies count occasionally
         const strategiesCount = Math.floor(Math.random() * 3) + 3
 
-        setStats({
+        setStats((prevStats) => ({
           statOneLabel: "CAPITAL",
           statOneValue: `$${(newCapital / 1000).toFixed(1)}K`,
           statTwoLabel: "STRATEGIES",
           statTwoValue: strategiesCount.toString(),
-        })
+        }))
 
         // Update progress
         setProgress(Math.floor(Math.random() * 30) + 60)
@@ -106,7 +106,7 @@ export default function ToolCard({ name, description, icon: Icon, href, tier, co
       <CyberCard className="bg-black/60">
         <div className="flex items-start gap-4">
           <div className={`p-3 rounded-full bg-neon-${color}/10`}>
-            <Icon className={`h-6 w-6 text-neon-${color}`} />
+            <Icon className={`h-6 w-6 text-neon-${color}`} alt={`${name} icon`} />
           </div>
           <div>
             <h3 className={`text-lg font-bold text-neon-${color} mb-1`}>{name}</h3>
@@ -131,7 +131,7 @@ export default function ToolCard({ name, description, icon: Icon, href, tier, co
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-2">
           <div className={`p-2 rounded-full bg-neon-${color}/10`}>
-            <Icon className={`h-5 w-5 text-neon-${color}`} />
+            <Icon className={`h-5 w-5 text-neon-${color}`} alt={`${name} icon`} />
           </div>
           <div>
             <h3 className={`font-bold text-neon-${color}`}>{name}</h3>

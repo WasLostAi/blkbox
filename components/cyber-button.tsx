@@ -10,7 +10,7 @@ interface CyberButtonProps extends React.ComponentProps<typeof Button> {
   glowColor?: "pink" | "cyan"
 }
 
-export default function CyberButton({ children, className, glowColor = "pink", ...props }: CyberButtonProps) {
+export function CyberButton({ children, className, glowColor = "pink", ...props }: CyberButtonProps) {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
@@ -39,3 +39,6 @@ export default function CyberButton({ children, className, glowColor = "pink", .
     </div>
   )
 }
+
+// Also export as default for backward compatibility
+export default CyberButton

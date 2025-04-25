@@ -11,21 +11,24 @@ import {
   LayoutDashboard,
   Zap,
   Brain,
-  Target,
-  Lightbulb,
-  Rocket,
   Crosshair,
-  Settings,
-  Shield,
-  ChevronLeft,
-  RefreshCw,
-  Users,
-  AlertTriangle,
-  Menu,
-  X,
+  Rocket,
+  Target,
   Eye,
+  RefreshCw,
+  Lightbulb,
+  AlertTriangle,
   Shuffle,
   Layers,
+  Lock,
+  Users,
+  Shield,
+  Settings,
+  Menu,
+  X,
+  ChevronLeft,
+  FileCode,
+  Activity,
 } from "lucide-react"
 import WalletConnector from "@/components/wallet-connector"
 import { useState } from "react"
@@ -71,14 +74,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "ENTRY_LEVEL",
     },
     {
-      name: "Interoperability",
+      name: "Phantom Inter",
       href: "/dashboard/tools/interoperability",
       icon: <Layers className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "SHADOW_ELITE",
     },
     {
-      name: "MEV",
+      name: "Max Extract",
       href: "/dashboard/tools/mev-extraction",
       icon: <Zap className="h-5 w-5" />,
       requiresAuth: true,
@@ -99,7 +102,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "PHANTOM_COUNCIL",
     },
     {
-      name: "Router",
+      name: "Stealth Router",
       href: "/dashboard/tools/stealth-router",
       icon: <Eye className="h-5 w-5" />,
       requiresAuth: true,
@@ -116,6 +119,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       name: "Dark Launch",
       href: "/dashboard/tools/dark-launch",
       icon: <Rocket className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Liquidity Mirage",
+      href: "/dashboard/tools/liquidity-mirage",
+      icon: <Eye className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "SHADOW_ELITE",
     },
@@ -141,9 +151,51 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "PHANTOM_COUNCIL",
     },
     {
-      name: "Temporal Fragmentation",
+      name: "Temporal",
       href: "/dashboard/tools/temporal-fragmentation",
       icon: <Shuffle className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Hidden Tax",
+      href: "/dashboard/tools/hidden-tax-implementer",
+      icon: <Shield className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Phantom Vault",
+      href: "/dashboard/tools/phantom-vault",
+      icon: <Lock className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Emissions Skimming",
+      href: "/dashboard/tools/emissions-skimming",
+      icon: <Zap className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Sandwich Attack",
+      href: "/dashboard/tools/sandwich-attack",
+      icon: <AlertTriangle className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Token Creation",
+      href: "/dashboard/tools/token-creation",
+      icon: <FileCode className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "OPERATOR",
+    },
+    {
+      name: "Automated Arbitrage",
+      href: "/dashboard/tools/automated-arbitrage",
+      icon: <Activity className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "PHANTOM_COUNCIL",
     },
@@ -160,6 +212,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       requiresAuth: true,
     },
   ]
+
+  const tierLevels = {
+    UNAUTHORIZED: 0,
+    ENTRY_LEVEL: 1,
+    OPERATOR: 2,
+    SHADOW_ELITE: 3,
+    PHANTOM_COUNCIL: 4,
+  }
 
   return (
     <div className="flex min-h-screen bg-black text-white">
@@ -327,5 +387,5 @@ function tierLevelCheck(userTier: string, requiredTier: string) {
   // Always return true for PHANTOM_COUNCIL tier (highest tier)
   if (userTier === "PHANTOM_COUNCIL") return true
 
-  return tierLevels[userTier as keyof typeof tierLevels] >= tierLevels[requiredTier as keyof typeof tierLevels]
+  return tierLevels[userTier as keyof typeof tierLevels] >= tierLevels[requiredTier as keyof tierLevels]
 }

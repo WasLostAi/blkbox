@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Shield } from "lucide-react"
 import MatrixBackground from "@/components/matrix-background"
 import CircuitPattern from "@/components/circuit-pattern"
 import DataPulse from "@/components/data-pulse"
@@ -9,9 +9,10 @@ import GlitchText from "@/components/glitch-text"
 import AuthCheck from "@/components/auth-check"
 import { useWallet } from "@/context/wallet-context"
 import WalletConnector from "@/components/wallet-connector"
-import QuantumStateManipulator from "@/components/quantum-state-manipulator"
+import CyberCard from "@/components/cyber-card"
+import FunctionMasqueradingCard from "@/components/function-masquerading-card"
 
-export default function QuantumManipulatorPage() {
+export default function FunctionMasqueradingPage() {
   const { connected } = useWallet()
 
   return (
@@ -35,37 +36,46 @@ export default function QuantumManipulatorPage() {
       </header>
 
       <main className="flex-1 container py-12">
-        <AuthCheck toolPath="quantum-manipulator" requiredTier="PHANTOM_COUNCIL">
+        <AuthCheck toolPath="function-masquerading" requiredTier="SHADOW_ELITE">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8 text-center">
               <GlitchText
-                text="QUANTUM STATE MANIPULATOR"
-                className="text-3xl font-extrabold tracking-tight sm:text-4xl text-neon-cyan mb-4"
+                text="FUNCTION MASQUERADING"
+                className="text-3xl font-extrabold tracking-tight sm:text-4xl text-neon-pink mb-4"
               />
-              <p className="text-neon-pink font-tech-mono">Harness quantum mechanics to influence token states</p>
+              <p className="text-neon-cyan font-tech-mono">Obfuscate smart contract interactions</p>
               <DataPulse className="my-6" />
             </div>
 
-            {/* Quantum State Manipulator Component */}
-            <QuantumStateManipulator inDashboard={false} />
+            {/* Function Masquerading Content */}
+            <FunctionMasqueradingCard />
+
+            <CyberCard className="bg-black/60">
+              <div className="p-6 text-center">
+                <Shield className="h-12 w-12 text-neon-pink mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-neon-cyan mb-2">Under Development</h3>
+                <p className="text-zinc-400 font-tech-mono">
+                  This tool is currently under development. Check back soon for updates.
+                </p>
+              </div>
+            </CyberCard>
 
             <div className="mt-8 bg-black/60 border border-zinc-800 rounded-lg p-6">
-              <h2 className="text-xl font-bold text-neon-pink mb-4">About Quantum State Manipulation</h2>
+              <h2 className="text-xl font-bold text-neon-cyan mb-4">About Function Masquerading</h2>
               <p className="text-zinc-400 mb-4">
-                The Quantum State Manipulator is a cutting-edge tool that leverages quantum computing principles to
-                influence the state of tokens on the blockchain. By exploiting quantum superposition and entanglement,
-                this tool can create subtle market movements that are impossible to trace.
+                The Function Masquerading tool allows Shadow Elite members to obfuscate their smart contract
+                interactions, making it difficult to track and analyze their on-chain activity.
               </p>
               <p className="text-zinc-400 mb-4">
-                This technology is still experimental and results may vary. The Shadow Council has exclusive access to
-                this tool as it represents the bleeding edge of market manipulation technology.
+                This tool is particularly useful for hiding the purpose of transactions, preventing front-running, and
+                maintaining privacy.
               </p>
-              <div className="bg-red-900/20 border border-red-800 rounded p-4 mt-6">
-                <h3 className="text-red-400 font-bold mb-2">EXPERIMENTAL TECHNOLOGY WARNING</h3>
+              <div className="bg-yellow-900/20 border border-yellow-800 rounded p-4 mt-6">
+                <h3 className="text-yellow-400 font-bold mb-2">DISCLAIMER</h3>
                 <p className="text-zinc-400 text-sm">
-                  This tool is highly experimental and may produce unpredictable results. Use with extreme caution and
-                  only on test networks until you are comfortable with its operation. The Shadow Council assumes no
-                  responsibility for unintended consequences.
+                  This tool is intended for advanced users only. Misuse of function masquerading techniques may have
+                  unintended consequences. The Shadow Council assumes no responsibility for any losses or damages
+                  resulting from the use of this tool.
                 </p>
               </div>
             </div>
