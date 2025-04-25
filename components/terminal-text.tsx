@@ -11,13 +11,7 @@ interface TerminalTextProps {
   onComplete?: () => void
 }
 
-export default function TerminalText({
-  text,
-  className,
-  typingSpeed = 50,
-  showCursor = true,
-  onComplete,
-}: TerminalTextProps) {
+export function TerminalText({ text, className, typingSpeed = 50, showCursor = true, onComplete }: TerminalTextProps) {
   const [displayedText, setDisplayedText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isComplete, setIsComplete] = useState(false)
@@ -42,3 +36,5 @@ export default function TerminalText({
     </span>
   )
 }
+
+export default TerminalText

@@ -23,7 +23,7 @@ interface ToolCardProps {
   }
 }
 
-export default function ToolCard({ name, description, icon: Icon, href, tier, color, monitoringStats }: ToolCardProps) {
+export function ToolCard({ name, description, icon: Icon, href, tier, color, monitoringStats }: ToolCardProps) {
   const [isLaunched, setIsLaunched] = useState(false)
   const [isActive, setIsActive] = useState(false)
   const [progress, setProgress] = useState(Math.floor(Math.random() * 60) + 20) // Random progress between 20-80%
@@ -196,3 +196,5 @@ export default function ToolCard({ name, description, icon: Icon, href, tier, co
     </CyberCard>
   )
 }
+
+export default ToolCard

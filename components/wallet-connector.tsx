@@ -25,7 +25,7 @@ interface WalletConnectorProps {
   showBalance?: boolean
 }
 
-export default function WalletConnector({
+export function WalletConnector({
   buttonText = "CONNECT_WALLET",
   buttonSize = "default",
   buttonVariant = "default",
@@ -152,3 +152,5 @@ export default function WalletConnector({
     </>
   )
 }
+
+export default WalletConnector
