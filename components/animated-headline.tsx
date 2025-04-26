@@ -30,7 +30,7 @@ export default function AnimatedHeadline({ headlines, interval = 8000 }: Animate
       setIsVisible(false)
 
       setTimeout(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % headlines.length)
+        setCurrentIndex((prevIndex) => (prevIndex === 0 ? 1 : 0)) // Toggle between 0 and 1 only
         setTimeout(() => {
           setIsVisible(true)
           setTimeout(() => {
@@ -41,7 +41,7 @@ export default function AnimatedHeadline({ headlines, interval = 8000 }: Animate
     }, interval)
 
     return () => clearInterval(timer)
-  }, [headlines, interval])
+  }, [interval])
 
   const current = headlines[currentIndex]
 

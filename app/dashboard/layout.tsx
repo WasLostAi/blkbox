@@ -28,14 +28,35 @@ import {
   ChevronLeft,
   FileCode,
   Activity,
+  ChevronsLeft,
+  ChevronsRight,
 } from "lucide-react"
 import WalletConnector from "@/components/wallet-connector"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import PageHeader from "@/components/page-header"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const { connected, tier, isAdmin } = useWallet()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [collapsed, setCollapsed] = useState(false)
+
+  // Load collapsed state from localStorage on component mount
+  useEffect(() => {
+    const savedCollapsed = localStorage.getItem("sidebarCollapsed")
+    if (savedCollapsed !== null) {
+      setCollapsed(savedCollapsed === "true")
+    }
+  }, [])
+
+  // Save collapsed state to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem("sidebarCollapsed", String(collapsed))
+  }, [collapsed])
+
+  const toggleCollapse = () => {
+    setCollapsed(!collapsed)
+  }
 
   const isActive = (path: string) => {
     return pathname === path || pathname.startsWith(`${path}/`)
@@ -43,6 +64,30 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   // Check if we're on a sub-page that needs the back arrow
   const isSubPage = pathname !== "/dashboard" && pathname !== "/"
+
+  // Get current page title based on pathname
+  const getPageTitle = () => {
+    // Extract the last part of the path
+    const pathSegments = pathname.split("/")
+    const lastSegment = pathSegments[pathSegments.length - 1]
+
+    // If we're at the dashboard root
+    if (pathname === "/dashboard") {
+      return "Dashboard"
+    }
+
+    // If we're in a tool page
+    if (pathname.includes("/tools/")) {
+      // Convert kebab-case to Title Case
+      return lastSegment
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    }
+
+    // Default case - capitalize the last segment
+    return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1)
+  }
 
   const navItems = [
     {
@@ -59,56 +104,56 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "ENTRY_LEVEL",
     },
     {
-      name: "Whale Tracker",
+      name: "Whale Track",
       href: "/dashboard/tools/whale-tracker",
       icon: <Users className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "ENTRY_LEVEL",
     },
     {
-      name: "AI Strategy",
+      name: "AI Strat",
       href: "/dashboard/tools/ai-strategy",
       icon: <Brain className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "ENTRY_LEVEL",
     },
     {
-      name: "Phantom Inter",
+      name: "Phantom Int.",
       href: "/dashboard/tools/interoperability",
       icon: <Layers className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "SHADOW_ELITE",
     },
     {
-      name: "Max Extract",
+      name: "MEV Extract",
       href: "/dashboard/tools/mev-extraction",
       icon: <Zap className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "SHADOW_ELITE",
     },
     {
-      name: "Liquidation",
+      name: "Liq. Hunter",
       href: "/dashboard/tools/liquidation-hunter",
       icon: <Target className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "SHADOW_ELITE",
     },
     {
-      name: "Flashloan",
+      name: "Flash Lab",
       href: "/dashboard/tools/flashloan-lab",
       icon: <Lightbulb className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "PHANTOM_COUNCIL",
     },
     {
-      name: "Stealth Router",
+      name: "Stealth Rout.",
       href: "/dashboard/tools/stealth-router",
       icon: <Eye className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "OPERATOR",
     },
     {
-      name: "Sniper Bot",
+      name: "Sniper",
       href: "/dashboard/tools/sniper-bot",
       icon: <Crosshair className="h-5 w-5" />,
       requiresAuth: true,
@@ -122,14 +167,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "SHADOW_ELITE",
     },
     {
-      name: "Liquidity Mirage",
+      name: "Liquidity Mir.",
       href: "/dashboard/tools/liquidity-mirage",
       icon: <Eye className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "SHADOW_ELITE",
     },
     {
-      name: "Wash",
+      name: "Wash Trade",
       href: "/dashboard/tools/wash-trading",
       icon: <RefreshCw className="h-5 w-5" />,
       requiresAuth: true,
@@ -164,35 +209,35 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "SHADOW_ELITE",
     },
     {
-      name: "Phantom Vault",
+      name: "Phantom V.",
       href: "/dashboard/tools/phantom-vault",
       icon: <Lock className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "SHADOW_ELITE",
     },
     {
-      name: "Emissions Skimming",
+      name: "Emissions",
       href: "/dashboard/tools/emissions-skimming",
       icon: <Zap className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "PHANTOM_COUNCIL",
     },
     {
-      name: "Sandwich Attack",
+      name: "Sandwich",
       href: "/dashboard/tools/sandwich-attack",
       icon: <AlertTriangle className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "PHANTOM_COUNCIL",
     },
     {
-      name: "Token Creation",
+      name: "Token Gen",
       href: "/dashboard/tools/token-creation",
       icon: <FileCode className="h-5 w-5" />,
       requiresAuth: true,
       minTier: "OPERATOR",
     },
     {
-      name: "Automated Arbitrage",
+      name: "Auto Arb",
       href: "/dashboard/tools/automated-arbitrage",
       icon: <Activity className="h-5 w-5" />,
       requiresAuth: true,
@@ -223,16 +268,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex min-h-screen bg-black text-white">
       {/* Sidebar - desktop */}
-      <aside className="hidden md:block w-48 border-r border-zinc-800 bg-black/90 backdrop-blur-sm fixed h-full z-30">
-        <div className="p-3 border-b border-zinc-800">
-          <Link href="/" className="flex items-center">
+      <aside
+        className={cn(
+          "hidden md:block border-r border-zinc-800 bg-black/90 backdrop-blur-sm fixed h-full z-30 transition-all duration-300",
+          collapsed ? "w-16" : "w-40",
+        )}
+      >
+        <div className={cn("border-b border-zinc-800 flex items-center justify-center", collapsed ? "p-2" : "p-3")}>
+          <Link href="/" className="flex items-center justify-center">
             <Image src="/blkbox-logo-new.png" alt="BLKBOX" width={36} height={36} className="rounded-sm" />
-            <span className="ml-2 text-lg font-bold text-neon-pink">$BLKBOX</span>
           </Link>
         </div>
 
         <div className="flex flex-col flex-1 overflow-y-auto py-2 h-[calc(100%-160px)]">
-          <nav className="px-1 space-y-1">
+          <nav className={cn("space-y-1", collapsed ? "px-0" : "px-1")}>
             {navItems
               .filter(
                 (item) =>
@@ -246,14 +295,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-start px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                    "flex items-center rounded-md text-sm font-medium transition-colors",
+                    collapsed ? "justify-center py-3 px-0" : "items-start px-3 py-2",
                     isActive(item.href)
-                      ? "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
+                      ? collapsed
+                        ? "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
+                        : "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
                       : "text-zinc-400 hover:text-white hover:bg-zinc-900",
                   )}
+                  title={item.name}
                 >
-                  <span className="mr-3 mt-0.5">{item.icon}</span>
-                  <span className="font-tech-mono leading-tight">{item.name}</span>
+                  <span className={cn(collapsed ? "mr-0" : "mr-3 mt-0.5")}>{item.icon}</span>
+                  {!collapsed && <span className="font-tech-mono leading-tight">{item.name}</span>}
                 </Link>
               ))}
           </nav>
@@ -261,20 +314,46 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* Admin button at bottom of sidebar */}
         {isAdmin && (
-          <div className="p-3 border-t border-zinc-800 absolute bottom-[60px] w-full">
+          <div className={cn("border-t border-zinc-800 absolute bottom-[120px] w-full", collapsed ? "p-2" : "p-3")}>
             <Link
               href="/admin"
-              className="flex items-center px-2 py-2 rounded-md text-sm font-medium bg-red-900/20 text-red-400 hover:bg-red-900/30 transition-colors"
+              className={cn(
+                "flex rounded-md text-sm font-medium text-zinc-400 hover:text-neon-cyan hover:bg-zinc-900 transition-colors",
+                collapsed ? "justify-center py-3 px-0" : "items-center px-2 py-2",
+              )}
+              title="Admin"
             >
-              <Shield className="h-5 w-5 mr-2" />
-              <span className="font-tech-mono">ADMIN</span>
+              <Shield className={cn("h-5 w-5", collapsed ? "" : "mr-2")} />
+              {!collapsed && <span className="font-tech-mono">ADMIN</span>}
             </Link>
           </div>
         )}
 
+        {/* Collapse toggle button */}
+        <div className={cn("border-t border-zinc-800 absolute bottom-[60px] w-full", collapsed ? "p-2" : "p-3")}>
+          <button
+            onClick={toggleCollapse}
+            className={cn(
+              "flex w-full rounded-md text-sm font-medium text-zinc-400 hover:text-neon-cyan hover:bg-zinc-900 transition-colors",
+              collapsed ? "justify-center py-3 px-0" : "items-center px-2 py-2",
+            )}
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {collapsed ? (
+              <ChevronsRight className="h-5 w-5" />
+            ) : (
+              <>
+                <ChevronsLeft className="h-5 w-5 mr-2" />
+                <span className="font-tech-mono">COLLAPSE</span>
+              </>
+            )}
+          </button>
+        </div>
+
         {/* Wallet connector at bottom of sidebar */}
-        <div className="p-3 border-t border-zinc-800 absolute bottom-0 w-full">
-          <WalletConnector buttonText="CONNECT" />
+        <div className={cn("border-t border-zinc-800 absolute bottom-0 w-full", collapsed ? "p-2" : "p-3")}>
+          <WalletConnector buttonText={collapsed ? "" : "CONNECT"} buttonSize={collapsed ? "icon" : "default"} />
         </div>
       </aside>
 
@@ -285,13 +364,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </button>
         <Link href="/" className="flex items-center">
           <Image src="/blkbox-logo-new.png" alt="BLKBOX" width={36} height={36} className="rounded-sm" />
-          <span className="ml-2 text-lg font-bold text-neon-pink">$BLKBOX</span>
         </Link>
         <WalletConnector buttonSize="sm" />
       </div>
 
       {/* Main content */}
-      <div className="w-full md:pl-48">
+      <div className={cn("w-full transition-all duration-300", collapsed ? "md:pl-16" : "md:pl-40")}>
         {/* Back button for sub-pages */}
         {isSubPage && (
           <div className="py-2 px-4 border-b border-zinc-800 md:hidden">
@@ -302,8 +380,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         )}
 
+        {/* Page header */}
+        <PageHeader title={getPageTitle()} />
+
         {/* Main content area */}
-        <main className="pt-16 md:pt-0">{children}</main>
+        <main className="pt-16 md:pt-0 px-4 py-6">{children}</main>
       </div>
     </div>
   )

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react"
 
-export default function CircuitPattern() {
+export function CircuitPattern() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -108,3 +108,6 @@ export default function CircuitPattern() {
 
   return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-20 opacity-30" />
 }
+
+// Keep the default export for backward compatibility
+export default CircuitPattern

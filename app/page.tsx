@@ -23,6 +23,8 @@ import DigitalRain from "@/components/digital-rain"
 import WalletModal from "@/components/wallet-modal"
 import { useWallet } from "@/context/wallet-context"
 import AnimatedHeadline from "@/components/animated-headline"
+import TypingAnimation from "@/components/typing-animation"
+import { Footer } from "@/components/footer"
 
 export default function Home() {
   const [walletModalOpen, setWalletModalOpen] = useState(false)
@@ -36,98 +38,14 @@ export default function Home() {
     {
       title: "$BLKBOX",
       subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "THEY WANTED ME GONE.",
-      paragraph2: "I BUILT SOMETHING DARKER.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
       paragraph1: "THE SYSTEM HAS FAILED YOU.",
       paragraph2: "WE BUILT THE ANSWER.",
     },
     {
       title: "$BLKBOX",
       subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "STEALTH MEV EXTRACTION.",
-      paragraph2: "CAPTURE VALUE BEFORE OTHERS SEE OPPORTUNITIES.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "SHADOW SWAP SYSTEM.",
-      paragraph2: "TRANSACTION ROUTING WITH INTENT OBFUSCATION.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "PREDICTIVE LIQUIDATION ENGINE.",
-      paragraph2: "TARGET VULNERABLE POSITIONS.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "SNIPING AUTOMATION.",
-      paragraph2: "MICROSECOND-PRECISION EXECUTION FOR TOKEN LAUNCHES.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "AUTOMATED ARBITRAGE.",
-      paragraph2: "CROSS-DEX OPPORTUNITIES WITH CUSTOM ROUTING.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "DARK LAUNCH TOOLKIT.",
-      paragraph2: "DEPLOYMENT WITH PERFECT LIQUIDITY CURVES AND BACKDOORS.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "HIDDEN TAX IMPLEMENTER.",
-      paragraph2: "CONDITIONAL TAX STRUCTURES INVISIBLE TO EXPLORERS.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "FUNCTION MASQUERADING SYSTEM.",
-      paragraph2: "DISGUISED CONTRACT OPERATIONS.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "PHANTOM VAULT CONSTRUCTOR.",
-      paragraph2: "CREATE APPARENT RESERVES WITH CONDITIONAL ACCESS.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "WHALE INTELLIGENCE NETWORK.",
-      paragraph2: "TRACK MOVEMENTS OF MARKET-MOVING ENTITIES.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "AI STRATEGY LAB.",
-      paragraph2: "GENERATE CUSTOM TRADING ALGORITHMS.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "MARKET MANIPULATION DETECTION.",
-      paragraph2: "IDENTIFY SUSPICIOUS ACTIVITIES.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "QUANTUM STATE TOKEN MANIPULATOR.",
-      paragraph2: "EXPLOIT PARALLEL TRANSACTION PROCESSING.",
-    },
-    {
-      title: "$BLKBOX",
-      subtitle: "THE SHADOW PROTOCOL",
-      paragraph1: "TEMPORAL FRAGMENTATION ENGINE.",
-      paragraph2: "CREATE TEMPORAL ARBITRAGE OPPORTUNITIES.",
+      paragraph1: "THEY WANTED ME GONE.",
+      paragraph2: "I BUILT SOMETHING DARKER.",
     },
   ]
 
@@ -218,7 +136,24 @@ export default function Home() {
                 </div>
                 <div className="mt-6 space-y-2">
                   <p className="text-neon-cyan text-2xl md:text-4xl font-bold">$BLKBOX isn't software.</p>
-                  <p className="text-neon-cyan text-2xl md:text-4xl font-bold">It's warfare.</p>
+                  <p className="text-neon-cyan text-2xl md:text-4xl font-bold">
+                    <TypingAnimation
+                      baseText="It's "
+                      replacementWords={[
+                        "warfare",
+                        "stealth",
+                        "power",
+                        "control",
+                        "strategy",
+                        "advantage",
+                        "intelligence",
+                        "precision",
+                        "dominance",
+                        "leverage",
+                      ]}
+                      className="text-neon-cyan"
+                    />
+                  </p>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -271,30 +206,30 @@ export default function Home() {
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               <CyberCard>
                 <Shield className="h-10 w-10 mb-4 text-neon-pink" />
-                <h3 className="text-xl font-bold mb-2 text-neon-pink">Exclusive Access</h3>
+                <h3 className="text-xl font-bold mb-2 text-neon-pink">Alpha Network Detection</h3>
                 <p className="text-zinc-400 font-tech-mono text-sm">
-                  Gain entry to tools previously available only to insiders and whales.
+                  Capture value others never see with advanced market intelligence.
                 </p>
               </CyberCard>
               <CyberCard variant="cyan">
                 <Zap className="h-10 w-10 mb-4 text-neon-cyan" />
-                <h3 className="text-xl font-bold mb-2 text-neon-cyan">MEV Extraction</h3>
+                <h3 className="text-xl font-bold mb-2 text-neon-cyan">Dark Launch Toolkit</h3>
                 <p className="text-zinc-400 font-tech-mono text-sm">
-                  Capture value others miss with AI-powered MEV extraction systems.
+                  Deploy tokens with perfect liquidity curves and market positioning.
                 </p>
               </CyberCard>
               <CyberCard>
                 <BarChart3 className="h-10 w-10 mb-4 text-neon-pink" />
-                <h3 className="text-xl font-bold mb-2 text-neon-pink">USDC Dividends</h3>
+                <h3 className="text-xl font-bold mb-2 text-neon-pink">Shadow Swap System</h3>
                 <p className="text-zinc-400 font-tech-mono text-sm">
-                  Earn automated weekly USDC distributions directly to your wallet.
+                  Route transactions through obfuscation layers for minimal impact.
                 </p>
               </CyberCard>
               <CyberCard variant="cyan">
                 <Lock className="h-10 w-10 mb-4 text-neon-cyan" />
-                <h3 className="text-xl font-bold mb-2 text-neon-cyan">Stealth Routing</h3>
+                <h3 className="text-xl font-bold mb-2 text-neon-cyan">AI Strategy Lab</h3>
                 <p className="text-zinc-400 font-tech-mono text-sm">
-                  Conceal your trading intent and minimize slippage with advanced routing.
+                  Generate custom trading algorithms with microsecond-precision execution.
                 </p>
               </CyberCard>
             </div>
@@ -327,11 +262,11 @@ export default function Home() {
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               <CyberCard>
                 <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Initial Price</h3>
-                <p className="text-2xl font-bold text-neon-pink">$0.001</p>
+                <p className="text-2xl font-bold text-neon-pink">$0.01</p>
               </CyberCard>
               <CyberCard variant="cyan">
                 <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Launch Platform</h3>
-                <p className="text-2xl font-bold text-neon-cyan">Solana P2P Fair Launch</p>
+                <p className="text-2xl font-bold text-neon-cyan">Meteora.ag</p>
               </CyberCard>
               <CyberCard variant="cyan">
                 <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Hard Cap</h3>
@@ -400,6 +335,64 @@ const myTier = calculateTier(myHoldings);
 console.log(\`Access granted: \${myTier}\`); // Access granted: SHADOW_ELITE`}
                 className="max-w-2xl mx-auto"
               />
+            </div>
+          </div>
+        </section>
+
+        {/* The Dark Pool Section */}
+        <section className="py-20 bg-black/80 relative">
+          <div className="absolute inset-0 bg-[url('/matrix-pattern.svg')] opacity-10"></div>
+          <div className="container relative z-10">
+            <h2 className="mb-12 text-3xl font-bold tracking-tight text-center sm:text-4xl">
+              <span className="text-neon-pink font-tech-mono">[</span>
+              <span className="text-neon-cyan">THE DARK POOL: POWER IN NUMBERS</span>
+              <span className="text-neon-pink font-tech-mono">]</span>
+            </h2>
+            <DataPulse className="mb-8" color="cyan" />
+            <div className="mx-auto max-w-3xl text-center mb-16">
+              <p className="text-xl text-zinc-300 font-tech-mono">
+                For too long, sophisticated market operations required massive capital or insider connections. We're
+                changing that forever.
+              </p>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              <CyberCard>
+                <h3 className="text-xl font-bold mb-2 text-neon-pink">Pooled Capital Deployment</h3>
+                <p className="text-zinc-400 font-tech-mono text-sm">
+                  Execute strategies that require significant resources as a collective
+                </p>
+              </CyberCard>
+              <CyberCard variant="cyan">
+                <h3 className="text-xl font-bold mb-2 text-neon-cyan">Proportional USDC Returns</h3>
+                <p className="text-zinc-400 font-tech-mono text-sm">Daily dividends based on your contribution level</p>
+              </CyberCard>
+              <CyberCard>
+                <h3 className="text-xl font-bold mb-2 text-neon-pink">Illusory Network Compliance</h3>
+                <p className="text-zinc-400 font-tech-mono text-sm">
+                  Safety in grouped actions that mask individual intent
+                </p>
+              </CyberCard>
+              <CyberCard variant="cyan">
+                <h3 className="text-xl font-bold mb-2 text-neon-cyan">Counter-Offensive Capabilities</h3>
+                <p className="text-zinc-400 font-tech-mono text-sm">Level the playing field against predatory whales</p>
+              </CyberCard>
+              <CyberCard>
+                <h3 className="text-xl font-bold mb-2 text-neon-pink">Professional Execution</h3>
+                <p className="text-zinc-400 font-tech-mono text-sm">
+                  Benefit from advanced algorithms without technical expertise
+                </p>
+              </CyberCard>
+              <CyberCard variant="cyan">
+                <h3 className="text-xl font-bold mb-2 text-neon-cyan">Low Barrier to Entry</h3>
+                <p className="text-zinc-400 font-tech-mono text-sm">Join operations with as little as 0.5 SOL</p>
+              </CyberCard>
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-lg font-bold text-neon-cyan font-tech-mono">
+                Join operations with as little as 0.5 SOL and receive daily profits directly in USDC.
+              </p>
             </div>
           </div>
         </section>
@@ -610,6 +603,57 @@ console.log(\`Access granted: \${myTier}\`); // Access granted: SHADOW_ELITE`}
           </div>
         </section>
 
+        {/* Meteora Integration Section */}
+        <section className="py-20 bg-black relative">
+          <div className="absolute inset-0 dashboard-bg opacity-20"></div>
+          <div className="container relative z-10">
+            <h2 className="mb-12 text-3xl font-bold tracking-tight text-center sm:text-4xl">
+              <span className="text-neon-pink font-tech-mono">[</span>
+              <span className="text-neon-cyan">METEORA INTEGRATION</span>
+              <span className="text-neon-pink font-tech-mono">]</span>
+            </h2>
+            <DataPulse className="mb-8" />
+            <div className="mx-auto max-w-3xl text-center mb-16">
+              <p className="text-xl text-zinc-300 font-tech-mono">
+                $BLKBOX leverages Meteora's advanced infrastructure for a truly fair launch:
+              </p>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+              <CyberCard>
+                <h3 className="text-xl font-bold mb-2 text-neon-pink">Transparent Launch</h3>
+                <p className="text-zinc-400 font-tech-mono text-sm">
+                  Anti-bot mechanisms with equal opportunity for all participants
+                </p>
+              </CyberCard>
+              <CyberCard variant="cyan">
+                <h3 className="text-xl font-bold mb-2 text-neon-cyan">Concentrated Liquidity</h3>
+                <p className="text-zinc-400 font-tech-mono text-sm">
+                  Maximizing capital efficiency from day one with optimized pools
+                </p>
+              </CyberCard>
+              <CyberCard>
+                <h3 className="text-xl font-bold mb-2 text-neon-pink">Enhanced Security</h3>
+                <p className="text-zinc-400 font-tech-mono text-sm">
+                  Additional audit layer through Meteora's vetting process
+                </p>
+              </CyberCard>
+              <CyberCard variant="cyan">
+                <h3 className="text-xl font-bold mb-2 text-neon-cyan">Immediate Trading</h3>
+                <p className="text-zinc-400 font-tech-mono text-sm">
+                  Zero delay between contribution and trading activation
+                </p>
+              </CyberCard>
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-lg font-bold text-neon-cyan font-tech-mono">
+                Our integration with Meteora ensures sustainability and security for all participants.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* From The Shadows Section */}
         <section className="py-20 bg-black/80 relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('/matrix-pattern.svg')] opacity-10"></div>
@@ -693,35 +737,36 @@ console.log(\`Access granted: \${myTier}\`); // Access granted: SHADOW_ELITE`}
             </h2>
             <DataPulse className="mb-8" color="cyan" />
 
+            {/* Update the launch details section */}
             <div className="grid gap-12 md:grid-cols-2 items-center">
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <CyberCard>
                     <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Initial price</h3>
-                    <p className="text-2xl font-bold text-neon-pink">(TBD)</p>
+                    <p className="text-2xl font-bold text-neon-pink">$0.01</p>
                   </CyberCard>
                   <CyberCard variant="cyan">
                     <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Platform</h3>
-                    <p className="text-2xl font-bold text-neon-cyan">(TBD)</p>
+                    <p className="text-2xl font-bold text-neon-cyan">Meteora.ag</p>
                   </CyberCard>
                   <CyberCard variant="cyan">
                     <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Min contribution</h3>
-                    <p className="text-2xl font-bold text-neon-cyan">(TBD)</p>
+                    <p className="text-2xl font-bold text-neon-cyan">0.1 SOL</p>
                   </CyberCard>
                   <CyberCard>
                     <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Max contribution</h3>
-                    <p className="text-2xl font-bold text-neon-pink">(TBD)</p>
+                    <p className="text-2xl font-bold text-neon-pink">50 SOL</p>
                   </CyberCard>
                 </div>
 
                 <CyberCard>
                   <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Hard cap</h3>
-                  <p className="text-3xl font-bold text-neon-pink">(TBD)</p>
+                  <p className="text-3xl font-bold text-neon-pink">$1,000,000</p>
                 </CyberCard>
 
                 <CyberCard variant="cyan">
                   <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Total Supply</h3>
-                  <p className="text-3xl font-bold text-neon-cyan">100,000,000 $BLKBOX</p>
+                  <p className="text-3xl font-bold text-neon-cyan">1,000,000,000 $BLKBOX</p>
                 </CyberCard>
 
                 <div className="text-center">
@@ -771,50 +816,8 @@ console.log(\`Access granted: \${myTier}\`); // Access granted: SHADOW_ELITE`}
             </div>
           </div>
         </section>
+        <Footer />
       </main>
-
-      <footer className="border-t border-neon-pink/30 py-8 bg-black">
-        <div className="container">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <Image src="/blkbox-logo-stacked.png" alt="$BLKBOX" width={120} height={60} className="h-10 w-auto" />
-            </div>
-            <div className="flex gap-6">
-              <Link
-                href="https://twitter.com"
-                target="_blank"
-                className="text-sm text-zinc-400 hover:text-neon-pink transition-colors font-tech-mono"
-              >
-                Twitter
-              </Link>
-              <Link
-                href="https://t.me"
-                target="_blank"
-                className="text-sm text-zinc-400 hover:text-neon-cyan transition-colors font-tech-mono"
-              >
-                Telegram
-              </Link>
-              <Link
-                href="https://discord.com"
-                target="_blank"
-                className="text-sm text-zinc-400 hover:text-neon-pink transition-colors font-tech-mono"
-              >
-                Discord
-              </Link>
-              <Link
-                href="https://medium.com"
-                target="_blank"
-                className="text-sm text-zinc-400 hover:text-neon-cyan transition-colors font-tech-mono"
-              >
-                Medium
-              </Link>
-            </div>
-            <div className="mt-4 md:mt-0">
-              <p className="text-sm text-zinc-500 font-tech-mono">© 2025 $BLKBOX. All rights reserved.</p>
-            </div>
-          </div>
-        </div>
-      </footer>
       <WalletModal isOpen={walletModalOpen} onClose={() => setWalletModalOpen(false)} />
     </div>
   )

@@ -322,17 +322,8 @@ export default function DashboardPage() {
       <MatrixBackground />
       <CircuitPattern />
 
-      <main className="flex-1 px-4 py-6 md:py-12">
+      <main className="flex-1">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-8 text-center">
-            <GlitchText
-              text="$BLKBOX DASHBOARD"
-              className="text-3xl font-extrabold tracking-tight sm:text-4xl text-neon-pink mb-4"
-            />
-            <p className="text-neon-cyan font-tech-mono">SHADOW PROTOCOL CONTROL CENTER</p>
-            <DataPulse className="my-6" />
-          </div>
-
           {!connected ? (
             <div className="bg-black/60 border border-neon-pink p-8 rounded-lg text-center">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-neon-pink/20 mb-4">
@@ -350,20 +341,17 @@ export default function DashboardPage() {
           ) : (
             <div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <CyberCard>
-                  <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Your $BLKBOX Balance</h3>
+                <CyberCard title="$BLKBOX Balance">
                   <p className="text-2xl font-bold text-neon-pink">{formattedBalance}</p>
                   <p className="text-sm text-zinc-400">
                     Current tier: {tier ? tier.replace("_", " ") : "UNAUTHORIZED"}
                   </p>
                 </CyberCard>
-                <CyberCard variant="cyan">
-                  <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Next USDC Dividend</h3>
+                <CyberCard variant="cyan" title="Next USDC Dividend">
                   <p className="text-2xl font-bold text-neon-cyan">{(balance * 0.00005).toFixed(2)} USDC</p>
                   <p className="text-sm text-zinc-400">Estimated payout in 3 days</p>
                 </CyberCard>
-                <CyberCard>
-                  <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Total Earned</h3>
+                <CyberCard title="Total Earned">
                   <p className="text-2xl font-bold text-neon-pink">{(balance * 0.00035).toFixed(2)} USDC</p>
                   <p className="text-sm text-zinc-400">Since you joined</p>
                 </CyberCard>
@@ -454,8 +442,7 @@ export default function DashboardPage() {
                 <TabsContent value="analytics">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="md:col-span-2">
-                      <CyberCard className="bg-black/60">
-                        <h3 className="text-xl font-bold text-neon-cyan mb-4">$BLKBOX Price Chart</h3>
+                      <CyberCard title="$BLKBOX Price Chart" className="bg-black/60">
                         <TokenPriceChart />
                         <div className="flex flex-wrap justify-between items-center mt-4 gap-2">
                           <div>
@@ -491,8 +478,7 @@ export default function DashboardPage() {
                 <TabsContent value="dividends">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="md:col-span-2">
-                      <CyberCard className="bg-black/60">
-                        <h3 className="text-xl font-bold text-neon-pink mb-6">Dividend History</h3>
+                      <CyberCard title="Dividend History" className="bg-black/60">
                         <div className="space-y-4">
                           <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
                             <span className="text-zinc-400 font-tech-mono">April 15, 2025</span>
@@ -527,8 +513,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div>
-                      <CyberCard className="bg-black/60 mb-6">
-                        <h3 className="text-xl font-bold text-neon-cyan mb-4">Dividend Summary</h3>
+                      <CyberCard title="Dividend Summary" className="bg-black/60 mb-6">
                         <div className="space-y-4">
                           <div className="flex justify-between items-center">
                             <span className="text-zinc-400 font-tech-mono">Total Earned</span>
@@ -549,8 +534,7 @@ export default function DashboardPage() {
                         </div>
                       </CyberCard>
 
-                      <CyberCard className="bg-black/60">
-                        <h3 className="text-xl font-bold text-neon-pink mb-4">Dividend Boost</h3>
+                      <CyberCard title="Dividend Boost" className="bg-black/60">
                         <p className="text-zinc-400 font-tech-mono text-sm mb-4">
                           Increase your holdings to earn more weekly dividends.
                         </p>
@@ -579,8 +563,7 @@ export default function DashboardPage() {
                 </TabsContent>
 
                 <TabsContent value="settings">
-                  <CyberCard className="bg-black/60">
-                    <h3 className="text-xl font-bold text-neon-cyan mb-6">Account Settings</h3>
+                  <CyberCard title="Account Settings" className="bg-black/60">
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
                         <span className="text-zinc-400 font-tech-mono">Connected Wallet</span>
