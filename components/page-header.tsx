@@ -12,11 +12,11 @@ interface PageHeaderProps {
 
 export default function PageHeader({ title, subtitle, className }: PageHeaderProps) {
   return (
-    <div className={cn("border-b border-zinc-800 bg-black/60 backdrop-blur-sm py-6 px-8", className)}>
-      <div className="max-w-6xl mx-auto">
+    <div className={cn("bg-black/60 backdrop-blur-sm py-6 px-8", className)}>
+      <div className="max-w-6xl mx-auto text-center">
         <GlitchText text={title.toUpperCase()} className="text-2xl md:text-3xl font-bold text-neon-cyan mb-1" />
         {subtitle && <p className="text-zinc-400 font-tech-mono text-sm">{subtitle}</p>}
-        <DataPulse className="mt-4 h-0.5" />
+        <DataPulse className="mt-4 h-0.5 mx-auto w-48" />
       </div>
     </div>
   )

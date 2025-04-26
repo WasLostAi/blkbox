@@ -110,23 +110,21 @@ export function ToolCard({ name, description, icon: Icon, href, tier, color, mon
     // Standard card format (pre-launch)
     return (
       <CyberCard className="bg-black/60">
-        <div className="flex items-start gap-4">
-          <div className={`p-3 rounded-full bg-neon-${color}/10`}>
-            <Icon className={`h-6 w-6 text-neon-${color}`} alt={`${name} icon`} />
-          </div>
-          <div>
-            <h3 className={`text-lg font-bold text-neon-${color} mb-1`}>{name}</h3>
-            <p className="text-zinc-400 font-tech-mono text-sm mb-4">{description}</p>
-            <div className="flex items-center gap-2">
-              <CyberButton size="sm" glowColor={color} onClick={handleLaunch}>
-                LAUNCH
-              </CyberButton>
-              <div className={`bg-neon-${color}/10 text-neon-${color} text-xs font-tech-mono px-2 py-1 rounded`}>
-                {formatTierName(tier)}
-              </div>
+        <div className="flex flex-col">
+          <div className="flex items-center justify-between mb-3">
+            <div className={`p-2.5 rounded-full bg-neon-${color}/10`}>
+              <Icon className={`h-5 w-5 text-neon-${color}`} alt={`${name} icon`} />
             </div>
+            <h3 className={`text-lg font-bold text-neon-${color}`}>{name}</h3>
+          </div>
+          <div className={`bg-neon-${color}/10 text-neon-${color} text-xs font-tech-mono px-2 py-1 rounded`}>
+            {formatTierName(tier)}
           </div>
         </div>
+        <p className="text-zinc-400 font-tech-mono text-sm mb-4 pl-1">{description}</p>
+        <CyberButton size="sm" glowColor={color} onClick={handleLaunch} className="w-full">
+          LAUNCH
+        </CyberButton>
       </CyberCard>
     )
   }
@@ -134,17 +132,14 @@ export function ToolCard({ name, description, icon: Icon, href, tier, color, mon
   // Monitoring view (post-launch)
   return (
     <CyberCard className="bg-black/60">
-      <div className="flex items-start justify-between mb-4">
+      <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className={`p-2 rounded-full bg-neon-${color}/10`}>
             <Icon className={`h-5 w-5 text-neon-${color}`} alt={`${name} icon`} />
           </div>
-          <div>
-            <h3 className={`font-bold text-neon-${color}`}>{name}</h3>
-            <p className="text-xs text-zinc-500 font-tech-mono">{description}</p>
-          </div>
+          <h3 className={`font-bold text-neon-${color}`}>{name}</h3>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 px-2 py-1 rounded bg-black/40 border border-zinc-800">
           <div className={`h-2 w-2 rounded-full ${isActive ? "bg-green-500 animate-pulse" : "bg-zinc-700"}`} />
           <span className={`text-xs font-tech-mono ${isActive ? "text-green-500" : "text-zinc-700"}`}>
             {isActive ? "ACTIVE" : "INACTIVE"}
@@ -152,8 +147,10 @@ export function ToolCard({ name, description, icon: Icon, href, tier, color, mon
         </div>
       </div>
 
+      <p className="text-xs text-zinc-500 font-tech-mono mb-3">{description}</p>
+
       {isActive && (
-        <div className="mb-4">
+        <div className="mb-4 p-2 border border-zinc-800 rounded-md bg-black/40">
           <div className="flex items-center justify-between mb-1">
             <span className="text-xs text-zinc-500 font-tech-mono">PROGRESS</span>
             <span className={`text-xs text-neon-${color} font-tech-mono`}>{progress}%</span>
@@ -179,7 +176,7 @@ export function ToolCard({ name, description, icon: Icon, href, tier, color, mon
         </div>
       )}
 
-      <div className="flex items-center justify-between">
+      <div className="grid grid-cols-2 gap-2">
         <CyberButton
           size="sm"
           variant={isActive ? "default" : "outline"}
@@ -188,13 +185,15 @@ export function ToolCard({ name, description, icon: Icon, href, tier, color, mon
         >
           {isActive ? "STOP" : "START"}
         </CyberButton>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-2 gap-2">
           <CyberButton size="sm" variant="outline" glowColor="red" onClick={handleClose}>
             CLOSE
           </CyberButton>
-          <Link href={href}>
-            <CyberButton size="sm" variant="outline" glowColor={color} className="gap-1">
-              CONFIGURE <ArrowRight size={12} />
+          <Link href={href} className="block">
+            <CyberButton size="sm" variant="outline" glowColor={color} className="w-full">
+              <span className="flex items-center justify-center gap-1">
+                CONFIG <ArrowRight size={12} />
+              </span>
             </CyberButton>
           </Link>
         </div>

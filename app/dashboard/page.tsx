@@ -341,19 +341,38 @@ export default function DashboardPage() {
           ) : (
             <div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <CyberCard title="$BLKBOX Balance">
-                  <p className="text-2xl font-bold text-neon-pink">{formattedBalance}</p>
-                  <p className="text-sm text-zinc-400">
-                    Current tier: {tier ? tier.replace("_", " ") : "UNAUTHORIZED"}
-                  </p>
+                <CyberCard className="bg-black/60">
+                  <div className="border-b border-zinc-800 pb-2 mb-3">
+                    <h3 className="text-lg font-bold text-neon-pink">$BLKBOX Balance</h3>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-3xl font-bold text-neon-pink">{formattedBalance}</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="px-2 py-1 bg-neon-pink/10 rounded text-xs font-tech-mono text-neon-pink">
+                        {tier ? tier.replace("_", " ") : "UNAUTHORIZED"}
+                      </div>
+                    </div>
+                  </div>
                 </CyberCard>
-                <CyberCard variant="cyan" title="Next USDC Dividend">
-                  <p className="text-2xl font-bold text-neon-cyan">{(balance * 0.00005).toFixed(2)} USDC</p>
-                  <p className="text-sm text-zinc-400">Estimated payout in 3 days</p>
+
+                <CyberCard className="bg-black/60">
+                  <div className="border-b border-zinc-800 pb-2 mb-3">
+                    <h3 className="text-lg font-bold text-neon-cyan">Next USDC Dividend</h3>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-3xl font-bold text-neon-cyan">{(balance * 0.00005).toFixed(2)} USDC</p>
+                    <p className="text-xs text-zinc-400 font-tech-mono mt-2">Estimated payout in 3 days</p>
+                  </div>
                 </CyberCard>
-                <CyberCard title="Total Earned">
-                  <p className="text-2xl font-bold text-neon-pink">{(balance * 0.00035).toFixed(2)} USDC</p>
-                  <p className="text-sm text-zinc-400">Since you joined</p>
+
+                <CyberCard className="bg-black/60">
+                  <div className="border-b border-zinc-800 pb-2 mb-3">
+                    <h3 className="text-lg font-bold text-neon-pink">Total Earned</h3>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-3xl font-bold text-neon-pink">{(balance * 0.00035).toFixed(2)} USDC</p>
+                    <p className="text-xs text-zinc-400 font-tech-mono mt-2">Since you joined</p>
+                  </div>
                 </CyberCard>
               </div>
 
@@ -429,13 +448,6 @@ export default function DashboardPage() {
                         />
                       )
                     })}
-                  </div>
-
-                  <div className="mt-8 text-center">
-                    <p className="text-zinc-400 font-tech-mono mb-4">Upgrade your tier to unlock more powerful tools</p>
-                    <Link href="/dashboard/upgrade">
-                      <CyberButton glowColor="pink">UPGRADE TIER</CyberButton>
-                    </Link>
                   </div>
                 </TabsContent>
 

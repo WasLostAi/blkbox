@@ -34,7 +34,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${rajdhani.variable} ${shareTechMono.variable} font-rajdhani bg-black`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+          themes={["light", "dark"]}
+        >
           <WalletProvider>{children}</WalletProvider>
         </ThemeProvider>
       </body>

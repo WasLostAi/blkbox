@@ -167,7 +167,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "SHADOW_ELITE",
     },
     {
-      name: "Liquidity Mir.",
+      name: "Liquidity Mirage",
       href: "/dashboard/tools/liquidity-mirage",
       icon: <Eye className="h-5 w-5" />,
       requiresAuth: true,
@@ -244,12 +244,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       minTier: "PHANTOM_COUNCIL",
     },
     {
-      name: "Upgrade",
-      href: "/dashboard/upgrade",
-      icon: <Zap className="h-5 w-5" />,
-      requiresAuth: true,
-    },
-    {
       name: "Settings",
       href: "/dashboard/settings",
       icon: <Settings className="h-5 w-5" />,
@@ -290,25 +284,44 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     (!item.adminOnly || isAdmin) &&
                     (!item.minTier || tier === item.minTier || tierLevelCheck(tier, item.minTier))),
               )
-              .map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center rounded-md text-sm font-medium transition-colors",
-                    collapsed ? "justify-center py-3 px-0" : "items-start px-3 py-2",
-                    isActive(item.href)
-                      ? collapsed
-                        ? "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
-                        : "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
-                      : "text-zinc-400 hover:text-white hover:bg-zinc-900",
-                  )}
-                  title={item.name}
-                >
-                  <span className={cn(collapsed ? "mr-0" : "mr-3 mt-0.5")}>{item.icon}</span>
-                  {!collapsed && <span className="font-tech-mono leading-tight">{item.name}</span>}
-                </Link>
-              ))}
+              .map((item) => {
+                // Determine if user has access to this item
+                const hasAccess = !item.minTier || tier === item.minTier || tierLevelCheck(tier, item.minTier)
+
+                // Determine icon color based on tier and access
+                let iconColor = "text-zinc-400"
+                if (hasAccess) {
+                  if (item.minTier === "PHANTOM_COUNCIL") iconColor = "text-neon-pink"
+                  else if (item.minTier === "SHADOW_ELITE") iconColor = "text-neon-cyan"
+                  else if (item.minTier === "OPERATOR") iconColor = "text-green-400"
+                  else if (item.minTier === "ENTRY_LEVEL") iconColor = "text-blue-400"
+                }
+
+                // Active state overrides other colors
+                if (isActive(item.href)) {
+                  iconColor = "text-neon-cyan"
+                }
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center rounded-md text-sm font-medium transition-colors",
+                      collapsed ? "justify-center py-3 px-0" : "items-start px-3 py-2",
+                      isActive(item.href)
+                        ? collapsed
+                          ? "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
+                          : "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
+                        : "text-zinc-400 hover:text-white hover:bg-zinc-900",
+                    )}
+                    title={item.name}
+                  >
+                    <span className={cn(collapsed ? "mr-0" : "mr-3 mt-0.5", iconColor)}>{item.icon}</span>
+                    {!collapsed && <span className="font-tech-mono leading-tight">{item.name}</span>}
+                  </Link>
+                )
+              })}
           </nav>
         </div>
 
@@ -330,24 +343,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         )}
 
         {/* Collapse toggle button */}
-        <div className={cn("border-t border-zinc-800 absolute bottom-[60px] w-full", collapsed ? "p-2" : "p-3")}>
+        <div className="absolute bottom-[60px] right-0 z-40">
           <button
             onClick={toggleCollapse}
             className={cn(
-              "flex w-full rounded-md text-sm font-medium text-zinc-400 hover:text-neon-cyan hover:bg-zinc-900 transition-colors",
-              collapsed ? "justify-center py-3 px-0" : "items-center px-2 py-2",
+              "flex items-center justify-center rounded-r-md text-sm font-medium text-zinc-400 hover:text-neon-cyan hover:bg-zinc-900 transition-colors border border-l-0 border-zinc-800 bg-black",
+              "w-6 h-10",
             )}
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
             title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            {collapsed ? (
-              <ChevronsRight className="h-5 w-5" />
-            ) : (
-              <>
-                <ChevronsLeft className="h-5 w-5 mr-2" />
-                <span className="font-tech-mono">COLLAPSE</span>
-              </>
-            )}
+            {collapsed ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
           </button>
         </div>
 
@@ -370,12 +376,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Main content */}
       <div className={cn("w-full transition-all duration-300", collapsed ? "md:pl-16" : "md:pl-40")}>
-        {/* Back button for sub-pages */}
+        {/* Back arrow for sub-pages (no text, no border) */}
         {isSubPage && (
-          <div className="py-2 px-4 border-b border-zinc-800 md:hidden">
-            <Link href="/dashboard" className="text-zinc-400 hover:text-white flex items-center">
-              <ChevronLeft className="h-5 w-5 mr-1" />
-              <span className="font-tech-mono text-sm">Back to Dashboard</span>
+          <div className="absolute top-6 left-6 z-10 md:hidden">
+            <Link href="/dashboard" className="text-zinc-400 hover:text-white">
+              <ChevronLeft className="h-6 w-6" />
             </Link>
           </div>
         )}
@@ -383,8 +388,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Page header */}
         <PageHeader title={getPageTitle()} />
 
-        {/* Main content area */}
-        <main className="pt-16 md:pt-0 px-4 py-6">{children}</main>
+        {/* Main content area with improved spacing */}
+        <main className="pt-6 md:pt-4 px-4 py-6">{children}</main>
       </div>
     </div>
   )
