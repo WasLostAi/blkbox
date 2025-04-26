@@ -8,6 +8,7 @@ import { CyberButton } from "@/components/cyber-button"
 import { GlitchText } from "@/components/glitch-text"
 import { TerminalText } from "@/components/terminal-text"
 import { CircuitPattern } from "@/components/circuit-pattern"
+import DigitalRain from "@/components/digital-rain"
 
 const slides = [
   {
@@ -16,10 +17,29 @@ const slides = [
     subtitle: "PARTNER OPPORTUNITY BRIEF",
     content: (
       <div className="flex flex-col items-center justify-center h-full">
-        <Image src="/blkbox-logo-large.png" alt="BLKBOX Logo" width={300} height={300} className="mb-8 animate-pulse" />
+        <div className="relative">
+          <Image
+            src="/blkbox-logo-large.png"
+            alt="BLKBOX Logo"
+            width={300}
+            height={300}
+            className="mb-8 animate-pulse relative z-10"
+          />
+          <div className="absolute inset-0 bg-neon-pink/20 blur-xl rounded-full animate-pulse"></div>
+        </div>
         <GlitchText text="THE SHADOW PROTOCOL" className="text-4xl md:text-6xl font-bold mb-4 text-center" />
         <div className="w-32 h-1 bg-gradient-to-r from-pink-600 to-cyan-400 my-6"></div>
-        <TerminalText text="PARTNER OPPORTUNITY BRIEF" className="text-xl md:text-2xl text-center" />
+        <TerminalText text="PARTNER OPPORTUNITY BRIEF" className="text-xl md:text-2xl text-center" typingSpeed={50} />
+
+        <div className="mt-8 grid grid-cols-3 gap-4 w-full max-w-md">
+          {[...Array(9)].map((_, i) => (
+            <div
+              key={i}
+              className="aspect-square bg-gradient-to-br from-neon-pink/10 to-neon-cyan/10 border border-zinc-800 rounded-sm animate-pulse"
+              style={{ animationDelay: `${i * 0.1}s` }}
+            ></div>
+          ))}
+        </div>
       </div>
     ),
   },
@@ -28,18 +48,40 @@ const slides = [
     title: "THE OPPORTUNITY",
     content: (
       <div className="space-y-6">
-        <p className="text-lg">
-          While mainstream DeFi plays by established rules, a parallel ecosystem operates beneath the surface—where real
-          alpha is generated and value is extracted before retail even sees the opportunity.
-        </p>
-        <p className="text-lg">
-          $BLKBOX is the first comprehensive toolkit bringing these capabilities to a wider audience through a
-          sustainable, token-gated business model.
-        </p>
-        <p className="text-lg neon-text-pink">
-          We're seeking strategic partners who understand this vision and want to position themselves at the forefront
-          of next-generation DeFi operations.
-        </p>
+        <div className="p-4 border border-neon-pink/30 bg-black/70 rounded-sm mb-6 transform hover:scale-105 transition-transform duration-300">
+          <p className="text-lg">
+            While mainstream DeFi plays by established rules, a parallel ecosystem operates beneath the surface—where
+            real alpha is generated and value is extracted before retail even sees the opportunity.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-1 h-16 bg-gradient-to-b from-neon-pink to-neon-cyan"></div>
+          <p className="text-lg">
+            $BLKBOX is the first comprehensive toolkit bringing these capabilities to a wider audience through a
+            sustainable, token-gated business model.
+          </p>
+        </div>
+
+        <div className="relative">
+          <p className="text-lg neon-text-pink p-4 border-l-4 border-neon-pink">
+            We're seeking strategic partners who understand this vision and want to position themselves at the forefront
+            of next-generation DeFi operations.
+          </p>
+          <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-2 border-r-2 border-neon-pink"></div>
+        </div>
+
+        <div className="mt-8 grid grid-cols-3 gap-2">
+          {["STEALTH", "POWER", "PROFIT"].map((word, i) => (
+            <div
+              key={i}
+              className="border border-neon-cyan/30 bg-black/50 p-2 text-center font-tech-mono text-neon-cyan animate-pulse"
+              style={{ animationDelay: `${i * 0.2}s` }}
+            >
+              {word}
+            </div>
+          ))}
+        </div>
       </div>
     ),
   },
@@ -189,7 +231,12 @@ const slides = [
     title: "MARKET POSITIONING",
     content: (
       <div className="space-y-6">
-        <div className="relative h-80 w-full border border-gray-700 bg-black/50 p-4">
+        <div className="relative h-80 w-full border border-gray-700 bg-black/50 p-4 overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute left-1/2 top-0 h-full w-px bg-gray-700 animate-pulse"></div>
+            <div className="absolute top-1/2 left-0 w-full h-px bg-gray-700 animate-pulse"></div>
+          </div>
+
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-full h-full relative">
               {/* Y-axis label */}
@@ -197,12 +244,6 @@ const slides = [
 
               {/* X-axis label */}
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-gray-400">VALUE FOR USERS</div>
-
-              {/* Vertical line */}
-              <div className="absolute left-1/2 top-0 h-full w-px bg-gray-700"></div>
-
-              {/* Horizontal line */}
-              <div className="absolute top-1/2 left-0 w-full h-px bg-gray-700"></div>
 
               {/* Quadrant labels */}
               <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 text-gray-400 text-sm text-center">
@@ -213,7 +254,7 @@ const slides = [
                 TOOLS
               </div>
 
-              <div className="absolute top-1/4 left-3/4 -translate-x-1/2 -translate-y-1/2 text-pink-500 font-bold text-lg">
+              <div className="absolute top-1/4 left-3/4 -translate-x-1/2 -translate-y-1/2 text-pink-500 font-bold text-lg animate-pulse">
                 $BLKBOX
               </div>
 
@@ -245,11 +286,14 @@ const slides = [
               <div className="absolute left-0 top-1/2 -translate-x-6 -translate-y-1/2 text-gray-400">LOW VALUE</div>
 
               <div className="absolute right-0 top-1/2 translate-x-6 -translate-y-1/2 text-gray-400">HIGH VALUE</div>
+
+              {/* Animated highlight for BLKBOX position */}
+              <div className="absolute top-1/4 left-3/4 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border border-pink-500 animate-ping opacity-30"></div>
             </div>
           </div>
         </div>
 
-        <p className="text-lg mt-6 neon-text-cyan">
+        <p className="text-lg mt-6 neon-text-cyan animate-pulse">
           We operate in an uncontested space: high-capability tools with direct user value that were previously
           unavailable outside closed circles.
         </p>
@@ -305,40 +349,49 @@ const slides = [
 
           <div className="ml-12 space-y-12">
             <div className="relative">
-              <div className="absolute -left-12 w-8 h-8 rounded-full bg-black border-2 border-pink-500 flex items-center justify-center">
+              <div className="absolute -left-12 w-8 h-8 rounded-full bg-black border-2 border-pink-500 flex items-center justify-center animate-pulse">
                 <span className="text-pink-500 font-bold">1</span>
               </div>
-              <div>
+              <div className="transform transition-all duration-300 hover:translate-x-2">
                 <h3 className="text-xl font-bold text-pink-500">Phase 1 (Current)</h3>
                 <p className="text-lg">Core infrastructure and trading systems</p>
               </div>
             </div>
 
             <div className="relative">
-              <div className="absolute -left-12 w-8 h-8 rounded-full bg-black border-2 border-pink-500 flex items-center justify-center">
+              <div
+                className="absolute -left-12 w-8 h-8 rounded-full bg-black border-2 border-pink-500 flex items-center justify-center animate-pulse"
+                style={{ animationDelay: "0.2s" }}
+              >
                 <span className="text-pink-500 font-bold">2</span>
               </div>
-              <div>
+              <div className="transform transition-all duration-300 hover:translate-x-2">
                 <h3 className="text-xl font-bold text-pink-500">Phase 2 (Q2)</h3>
                 <p className="text-lg">Advanced extraction modules and AI integration</p>
               </div>
             </div>
 
             <div className="relative">
-              <div className="absolute -left-12 w-8 h-8 rounded-full bg-black border-2 border-cyan-400 flex items-center justify-center">
+              <div
+                className="absolute -left-12 w-8 h-8 rounded-full bg-black border-2 border-cyan-400 flex items-center justify-center animate-pulse"
+                style={{ animationDelay: "0.4s" }}
+              >
                 <span className="text-cyan-400 font-bold">3</span>
               </div>
-              <div>
+              <div className="transform transition-all duration-300 hover:translate-x-2">
                 <h3 className="text-xl font-bold text-cyan-400">Phase 3 (Q3)</h3>
                 <p className="text-lg">Full release with all planned systems</p>
               </div>
             </div>
 
             <div className="relative">
-              <div className="absolute -left-12 w-8 h-8 rounded-full bg-black border-2 border-cyan-400 flex items-center justify-center">
+              <div
+                className="absolute -left-12 w-8 h-8 rounded-full bg-black border-2 border-cyan-400 flex items-center justify-center animate-pulse"
+                style={{ animationDelay: "0.6s" }}
+              >
                 <span className="text-cyan-400 font-bold">4</span>
               </div>
-              <div>
+              <div className="transform transition-all duration-300 hover:translate-x-2">
                 <h3 className="text-xl font-bold text-cyan-400">Phase 4 (Q4)</h3>
                 <p className="text-lg">Partner-specific modules and integrations</p>
               </div>
@@ -346,7 +399,7 @@ const slides = [
           </div>
         </div>
 
-        <p className="text-lg mt-6 neon-text-pink">
+        <p className="text-lg mt-6 neon-text-pink animate-pulse">
           Partners joining now influence development priority and receive access to each feature 30 days before public
           release.
         </p>
@@ -424,20 +477,39 @@ const slides = [
     content: (
       <div className="space-y-8">
         <ol className="list-decimal pl-6 space-y-4 text-lg">
-          <li>Sign NDA for technical documentation access</li>
-          <li>Schedule technical demonstration of existing systems</li>
-          <li>Discuss partnership structure and economics</li>
-          <li>Finalize allocation and integration details</li>
+          <li className="transform transition-all duration-300 hover:translate-x-2 hover:text-neon-pink">
+            Sign NDA for technical documentation access
+          </li>
+          <li className="transform transition-all duration-300 hover:translate-x-2 hover:text-neon-cyan">
+            Schedule technical demonstration of existing systems
+          </li>
+          <li className="transform transition-all duration-300 hover:translate-x-2 hover:text-neon-pink">
+            Discuss partnership structure and economics
+          </li>
+          <li className="transform transition-all duration-300 hover:translate-x-2 hover:text-neon-cyan">
+            Finalize allocation and integration details
+          </li>
         </ol>
 
-        <p className="text-lg mt-8">
-          The future of Solana DeFi belongs to those with superior tools and information. Partner with $BLKBOX to ensure
-          you're on the right side of that equation.
-        </p>
+        <div className="p-4 border border-neon-cyan/30 bg-black/70 rounded-sm my-8">
+          <p className="text-lg">
+            The future of Solana DeFi belongs to those with superior tools and information. Partner with $BLKBOX to
+            ensure you're on the right side of that equation.
+          </p>
+        </div>
 
-        <div className="mt-8 p-6 border border-pink-500 bg-black/50 rounded text-center">
-          <p className="text-xl font-bold text-pink-500 mb-2">Contact:</p>
-          <p className="text-xl font-tech">partnerships@blkbox.io</p>
+        <div className="mt-8 p-6 border border-pink-500 bg-black/50 rounded text-center relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-r from-pink-900/20 to-cyan-900/20 transform group-hover:scale-110 transition-transform duration-500"></div>
+          <p className="text-xl font-bold text-pink-500 mb-2 relative z-10">Contact:</p>
+          <p className="text-xl font-tech relative z-10 group-hover:text-neon-cyan transition-colors duration-300">
+            mail@waslost.ai
+          </p>
+
+          {/* Decorative elements */}
+          <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-pink-500"></div>
+          <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-cyan-400"></div>
+          <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-cyan-400"></div>
+          <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-pink-500"></div>
         </div>
       </div>
     ),
@@ -446,17 +518,37 @@ const slides = [
 
 export default function PitchDeck() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
+      setTimeout(() => {
+        setIsTransitioning(false)
+      }, 300)
+    }, 300)
   }
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
+      setTimeout(() => {
+        setIsTransitioning(false)
+      }, 300)
+    }, 300)
   }
 
   const goToSlide = (index: number) => {
-    setCurrentSlide(index)
+    if (index === currentSlide) return
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentSlide(index)
+      setTimeout(() => {
+        setIsTransitioning(false)
+      }, 300)
+    }, 300)
   }
 
   const slide = slides[currentSlide]
@@ -464,6 +556,7 @@ export default function PitchDeck() {
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
       <CircuitPattern className="fixed inset-0 opacity-10" />
+      <DigitalRain className="fixed inset-0 opacity-5" />
 
       {/* Navigation */}
       <div className="fixed top-4 left-4 z-10">
@@ -476,20 +569,39 @@ export default function PitchDeck() {
 
       {/* Slide counter */}
       <div className="fixed top-4 right-4 z-10 font-tech text-sm">
-        {currentSlide + 1} / {slides.length}
+        <span className="text-neon-pink">{currentSlide + 1}</span>
+        <span className="text-zinc-500">/</span>
+        <span className="text-neon-cyan">{slides.length}</span>
       </div>
 
       {/* Main content */}
       <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col">
         <div className="flex-grow flex flex-col items-center justify-center">
-          <div className="w-full max-w-4xl mx-auto cyber-card p-8 md:p-12">
-            <div className="mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold mb-2 neon-text-pink">{slide.title}</h2>
-              {slide.subtitle && <h3 className="text-xl md:text-2xl text-cyan-400">{slide.subtitle}</h3>}
+          <div
+            className={`w-full max-w-4xl mx-auto cyber-card p-8 md:p-12 transition-all duration-500 transform ${
+              isTransitioning ? "scale-95 opacity-0" : "scale-100 opacity-100"
+            }`}
+          >
+            <div className="mb-8 relative">
+              <h2 className="text-3xl md:text-4xl font-bold mb-2 neon-text-pink glitch-text" data-text={slide.title}>
+                {slide.title}
+              </h2>
+              {slide.subtitle && <h3 className="text-xl md:text-2xl text-cyan-400 animate-pulse">{slide.subtitle}</h3>}
               <div className="w-full h-0.5 bg-gradient-to-r from-pink-600 to-cyan-400 mt-4"></div>
+
+              {/* Decorative elements */}
+              <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-neon-pink"></div>
+              <div className="absolute -top-4 -right-4 w-8 h-8 border-t-2 border-r-2 border-neon-cyan"></div>
+              <div className="absolute -bottom-4 -left-4 w-8 h-8 border-b-2 border-l-2 border-neon-cyan"></div>
+              <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-neon-pink"></div>
             </div>
 
-            <div className="min-h-[400px]">{slide.content}</div>
+            <div className="min-h-[400px] relative">
+              {slide.content}
+
+              {/* Scan line effect */}
+              <div className="absolute left-0 top-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-pink to-transparent opacity-70 animate-scan"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -498,10 +610,10 @@ export default function PitchDeck() {
       <div className="fixed bottom-8 left-0 right-0 flex justify-center items-center gap-4 z-10">
         <button
           onClick={prevSlide}
-          className="p-2 rounded-full bg-black/50 border border-pink-500 hover:bg-pink-900/30 transition-colors"
+          className="p-2 rounded-full bg-black/50 border border-pink-500 hover:bg-pink-900/30 transition-colors transform hover:scale-110"
           aria-label="Previous slide"
         >
-          <ChevronLeft size={24} />
+          <ChevronLeft size={24} className="text-neon-pink" />
         </button>
 
         <div className="flex gap-2">
@@ -509,8 +621,8 @@ export default function PitchDeck() {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                index === currentSlide ? "bg-pink-500" : "bg-gray-600 hover:bg-gray-400"
+              className={`w-2 h-2 rounded-full transition-all transform ${
+                index === currentSlide ? "bg-pink-500 scale-125" : "bg-gray-600 hover:bg-gray-400"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -519,10 +631,10 @@ export default function PitchDeck() {
 
         <button
           onClick={nextSlide}
-          className="p-2 rounded-full bg-black/50 border border-pink-500 hover:bg-pink-900/30 transition-colors"
+          className="p-2 rounded-full bg-black/50 border border-pink-500 hover:bg-pink-900/30 transition-colors transform hover:scale-110"
           aria-label="Next slide"
         >
-          <ChevronRight size={24} />
+          <ChevronRight size={24} className="text-neon-pink" />
         </button>
       </div>
     </div>
