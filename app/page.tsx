@@ -488,7 +488,7 @@ console.log(\`Access granted: \${myTier}\`); // Access granted: SHADOW_ELITE`}
             <DataPulse className="mb-8" />
             <div className="mx-auto max-w-3xl text-center mb-8">
               <p className="text-xl text-zinc-300 mb-4 font-tech-mono">
-                <span className="font-bold text-neon-pink">Total Supply:</span> 100,000,000 $BLKBOX
+                <span className="font-bold text-neon-pink">Total Supply:</span> 1,000,000,000 $BLKBOX
               </p>
             </div>
 
@@ -502,27 +502,35 @@ console.log(\`Access granted: \${myTier}\`); // Access granted: SHADOW_ELITE`}
                   <ul className="space-y-2 text-zinc-300 font-tech-mono text-sm">
                     <li className="flex items-center">
                       <span className="w-8 h-1 bg-neon-pink mr-3"></span>
-                      <span>30% Community Sale</span>
+                      <span>50% Public Fair Launch via Meteora</span>
                     </li>
                     <li className="flex items-center">
                       <span className="w-8 h-1 bg-neon-cyan mr-3"></span>
-                      <span>20% Development Fund (3-year linear vesting)</span>
+                      <span>12% Platform Development Treasury</span>
                     </li>
                     <li className="flex items-center">
                       <span className="w-8 h-1 bg-neon-pink/80 mr-3"></span>
-                      <span>15% Liquidity Pool (locked for 2 years)</span>
+                      <span>10% Initial Liquidity Pool (locked for 2 years)</span>
                     </li>
                     <li className="flex items-center">
                       <span className="w-8 h-1 bg-neon-cyan/80 mr-3"></span>
-                      <span>15% Marketing & Partnerships</span>
+                      <span>8% DAO Treasury (governance-controlled)</span>
                     </li>
                     <li className="flex items-center">
                       <span className="w-8 h-1 bg-neon-pink/60 mr-3"></span>
-                      <span>10% Team (1-year cliff, 3-year vesting)</span>
+                      <span>5% Bug Bounty & Security Program</span>
                     </li>
                     <li className="flex items-center">
                       <span className="w-8 h-1 bg-neon-cyan/60 mr-3"></span>
-                      <span>10% Future Shadow Operations</span>
+                      <span>5% Founder Allocation</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="w-8 h-1 bg-neon-pink/40 mr-3"></span>
+                      <span>5% Dark Pool Treasury (locked until $1M MCap)</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="w-8 h-1 bg-neon-cyan/40 mr-3"></span>
+                      <span>5% Alpha Pool Operations (locked until $1M MCap)</span>
                     </li>
                   </ul>
                 </CyberCard>
@@ -751,11 +759,11 @@ console.log(\`Access granted: \${myTier}\`); // Access granted: SHADOW_ELITE`}
                   </CyberCard>
                   <CyberCard variant="cyan">
                     <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Min contribution</h3>
-                    <p className="text-2xl font-bold text-neon-cyan">0.1 SOL</p>
+                    <p className="text-2xl font-bold text-neon-cyan">1 SOL</p>
                   </CyberCard>
                   <CyberCard>
                     <h3 className="text-sm font-medium text-zinc-500 mb-1 font-tech-mono">Max contribution</h3>
-                    <p className="text-2xl font-bold text-neon-pink">50 SOL</p>
+                    <p className="text-2xl font-bold text-neon-pink">100 SOL</p>
                   </CyberCard>
                 </div>
 

@@ -46,10 +46,9 @@ const slides = [
               "Platform Dark Pool Dividends",
               "DAO Driven Disruption",
               "100% Fair Launch",
-              "MEV Extraction Systems",
               "Shadow Protocol Access",
-              "Liquidity Manipulation Tools",
               "Stealth Router Technology",
+              "New and Evolving Tools",
             ]}
             className="text-2xl md:text-3xl font-tech text-neon-cyan"
             typingSpeed={70}
@@ -99,24 +98,6 @@ const slides = [
           </p>
           <div className="absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-neon-pink"></div>
         </motion.div>
-
-        <div className="mt-8 h-16">
-          <TypingAnimation
-            baseText=""
-            replacementWords={[
-              "Quant and Algo Trading Tools",
-              "Platform Dark Pool Dividends",
-              "DAO Driven Disruption",
-              "100% Fair Launch",
-              "MEV Extraction Systems",
-              "Shadow Protocol Access",
-            ]}
-            className="text-xl font-tech text-neon-pink"
-            typingSpeed={70}
-            deletingSpeed={50}
-            delayAfterComplete={2000}
-          />
-        </div>
       </div>
     ),
   },
@@ -131,23 +112,6 @@ const slides = [
           typingEffect={true}
           typingSpeed={30}
         />
-
-        <div className="my-8 h-16">
-          <TypingAnimation
-            baseText=""
-            replacementWords={[
-              "Liquidity Manipulation Tools",
-              "Stealth Router Technology",
-              "Quantum State Processing",
-              "Temporal Fragmentation",
-              "Cross-Chain Arbitrage Network",
-            ]}
-            className="text-xl font-tech text-neon-cyan"
-            typingSpeed={70}
-            deletingSpeed={50}
-            delayAfterComplete={2000}
-          />
-        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ThreeDCard className="p-6 bg-black/70 rounded-sm h-full">
@@ -235,23 +199,6 @@ const slides = [
           className="text-xl block mb-8"
           typingEffect={true}
         />
-
-        <div className="my-8 h-16">
-          <TypingAnimation
-            baseText=""
-            replacementWords={[
-              "Platform Dark Pool Dividends",
-              "DAO Driven Disruption",
-              "100% Fair Launch",
-              "MEV Extraction Systems",
-              "Shadow Protocol Access",
-            ]}
-            className="text-xl font-tech text-neon-pink"
-            typingSpeed={70}
-            deletingSpeed={50}
-            delayAfterComplete={2000}
-          />
-        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[

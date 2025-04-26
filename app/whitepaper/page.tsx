@@ -89,12 +89,14 @@ export default function WhitepaperPage() {
             <h2 className="text-neon-cyan font-tech-mono">4. TOKENOMICS</h2>
             <h3>4.1 Token Distribution</h3>
             <ul>
-              <li>30% Community Sale</li>
-              <li>20% Development Fund (3-year linear vesting)</li>
-              <li>15% Liquidity Pool (locked for 2 years)</li>
-              <li>15% Marketing & Partnerships</li>
-              <li>10% Team (1-year cliff, 3-year vesting)</li>
-              <li>10% Future Shadow Operations</li>
+              <li>50% Public Fair Launch via Meteora</li>
+              <li>12% Platform Development Treasury</li>
+              <li>10% Initial Liquidity Pool (locked for 2 years)</li>
+              <li>8% DAO Treasury (governance-controlled)</li>
+              <li>5% Bug Bounty & Security Program</li>
+              <li>5% Founder Allocation</li>
+              <li>5% Dark Pool Treasury (locked until $1M MCap)</li>
+              <li>5% Alpha Pool Operations (locked until $1M MCap)</li>
             </ul>
 
             <h3>4.2 Tax Structure</h3>
