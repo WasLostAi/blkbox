@@ -1,18 +1,23 @@
+"use client"
+
 import { cn } from "@/lib/utils"
+import GlitchText from "./glitch-text"
+import DataPulse from "./data-pulse"
 
 interface PageHeaderProps {
   title: string
-  description?: string
+  subtitle?: string
   className?: string
 }
 
-export function PageHeader({ title, description, className }: PageHeaderProps) {
+export default function PageHeader({ title, subtitle, className }: PageHeaderProps) {
   return (
-    <div className={cn("flex flex-col items-center justify-center py-6", className)}>
-      <h1 className="text-3xl font-bold text-neon-cyan">{title}</h1>
-      {description && <p className="text-zinc-400 mt-2">{description}</p>}
+    <div className={cn("bg-black/60 backdrop-blur-sm py-6 px-8", className)}>
+      <div className="max-w-6xl mx-auto text-center">
+        <GlitchText text={title.toUpperCase()} className="text-2xl md:text-3xl font-bold text-neon-cyan mb-1" />
+        {subtitle && <p className="text-zinc-400 font-tech-mono text-sm">{subtitle}</p>}
+        <DataPulse className="mt-4 h-0.5 mx-auto w-48" />
+      </div>
     </div>
   )
 }
-
-export default PageHeader

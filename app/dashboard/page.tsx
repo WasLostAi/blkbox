@@ -1,9 +1,27 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { PageHeader } from "@/components/page-header"
 import Link from "next/link"
-import { Loader2, Wallet } from "lucide-react"
+import {
+  Shield,
+  Zap,
+  Brain,
+  Crosshair,
+  Rocket,
+  Target,
+  Eye,
+  RefreshCw,
+  Lightbulb,
+  AlertTriangle,
+  Loader2,
+  Wallet,
+  Shuffle,
+  Layers,
+  Lock,
+  Users,
+  FileCode,
+  Settings,
+} from "lucide-react"
 import MatrixBackground from "@/components/matrix-background"
 import CircuitPattern from "@/components/circuit-pattern"
 import CyberCard from "@/components/cyber-card"
@@ -17,157 +35,23 @@ import MarketActivity from "@/components/market-activity"
 import GatedFeatures from "@/components/gated-features"
 import GlitchText from "@/components/glitch-text"
 import { useWallet } from "@/context/wallet-context"
-import DraggableDashboard from "@/components/draggable-dashboard"
-import { getUserAccessLevel } from "@/utils/access-control"
 
-// Define tools with their tiers
-const tools = [
-  {
-    id: "quantum-manipulator",
-    name: "Quantum Manipulator",
-    description: "Manipulate market perception through quantum state interference",
-    icon: "🔮",
-    href: "/dashboard/tools/quantum-manipulator",
-    status: "operational",
-    tier: 3,
-    isRealTimeMonitoring: true,
-    monitoringData: {
-      activeManipulations: 3,
-      successRate: "92%",
-      profitGenerated: "$14,325",
-    },
-  },
-  {
-    id: "temporal-fragmentation",
-    name: "Temporal Fragmentation",
-    description: "Fragment transactions across time to avoid detection",
-    icon: "⏱️",
-    href: "/dashboard/tools/temporal-fragmentation",
-    status: "operational",
-    tier: 3,
-    isRealTimeMonitoring: true,
-    monitoringData: {
-      activeFragmentations: 7,
-      detectionAvoidance: "99.2%",
-      transactionsProcessed: 1432,
-    },
-  },
-  {
-    id: "phantom-vault",
-    name: "Phantom Vault",
-    description: "Create undetectable storage for assets",
-    icon: "👻",
-    href: "/dashboard/tools/phantom-vault",
-    status: "operational",
-    tier: 3,
-    isRealTimeMonitoring: false,
-  },
-  {
-    id: "mev-extraction",
-    name: "MEV Extraction",
-    description: "Extract value from pending transactions",
-    icon: "💎",
-    href: "/dashboard/tools/mev-extraction",
-    status: "operational",
-    tier: 2,
-    isRealTimeMonitoring: true,
-    monitoringData: {
-      extractionOpportunities: 12,
-      estimatedValue: "$2,450",
-      successfulExtractions: 8,
-    },
-  },
-  {
-    id: "liquidity-mirage",
-    name: "Liquidity Mirage",
-    description: "Create false perception of market liquidity",
-    icon: "🌊",
-    href: "/dashboard/tools/liquidity-mirage",
-    status: "operational",
-    tier: 2,
-    isRealTimeMonitoring: true,
-    monitoringData: {
-      activeMirages: 4,
-      impactLevel: "High",
-      targetedPairs: ["ETH/USDT", "BTC/USDC"],
-    },
-  },
-  {
-    id: "function-masquerading",
-    name: "Function Masquerading",
-    description: "Disguise contract functions to hide true intent",
-    icon: "🎭",
-    href: "/dashboard/tools/function-masquerading",
-    status: "operational",
-    tier: 2,
-    isRealTimeMonitoring: false,
-  },
-  {
-    id: "shadow-swap",
-    name: "Shadow Swap",
-    description: "Execute trades through shadow routes",
-    icon: "🕶️",
-    href: "/dashboard/tools/shadow-swap",
-    status: "operational",
-    tier: 1,
-    isRealTimeMonitoring: true,
-    monitoringData: {
-      activeSwaps: 5,
-      volumeProcessed: "$32,450",
-      savingsGenerated: "$1,245",
-    },
-  },
-  {
-    id: "whale-tracker",
-    name: "Whale Tracker",
-    description: "Track and analyze whale movements",
-    icon: "🐋",
-    href: "/dashboard/tools/whale-tracker",
-    status: "operational",
-    tier: 1,
-    isRealTimeMonitoring: true,
-    monitoringData: {
-      whalesTracked: 17,
-      recentMovements: 3,
-      largestMovement: "$2.4M",
-    },
-  },
-  {
-    id: "sniper-bot",
-    name: "Sniper Bot",
-    description: "Automatically snipe token launches",
-    icon: "🎯",
-    href: "/dashboard/tools/sniper-bot",
-    status: "operational",
-    tier: 1,
-    isRealTimeMonitoring: true,
-    monitoringData: {
-      activeTargets: 2,
-      successfulSnipes: 8,
-      profitGenerated: "$5,780",
-    },
-  },
-].sort((a, b) => b.tier - a.tier)
+// First, add these imports at the top
+import { DragDropProvider } from "@/components/dnd-provider"
+import { DraggableToolCard } from "@/components/draggable-tool-card"
+import { DashboardProvider, useDashboard } from "@/context/dashboard-context"
+import update from "immutability-helper"
 
 export default function DashboardPage() {
   const [walletModalOpen, setWalletModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const { connected, address, balance, tier } = useWallet()
-  const [userTier, setUserTier] = useState(1)
-  const [accessLevel, setAccessLevel] = useState(0)
-
-  useEffect(() => {
-    // In a real app, this would come from authentication
-    const level = getUserAccessLevel()
-    setAccessLevel(level)
-    setUserTier(level)
-  }, [])
+  const { connected, address, balance, tier, isAdmin } = useWallet()
 
   // Simulate loading state
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 1000)
+    }, 1500)
 
     return () => clearTimeout(timer)
   }, [])
@@ -178,6 +62,251 @@ export default function DashboardPage() {
 
   // Format balance with commas
   const formattedBalance = balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+  const tools = [
+    {
+      name: "Whale Tracker",
+      description: "Monitor large wallet movements",
+      icon: Users,
+      href: "/dashboard/tools/whale-tracker",
+      tier: "ENTRY_LEVEL",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "WHALES TRACKED",
+        statOneValue: "247",
+        statTwoLabel: "ALERTS",
+        statTwoValue: "12",
+      },
+    },
+    {
+      name: "Shadow Swap",
+      description: "Private, zero-slippage token swaps",
+      icon: Shuffle,
+      href: "/dashboard/tools/shadow-swap",
+      tier: "ENTRY_LEVEL",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "VOLUME (24H)",
+        statOneValue: 89750,
+        statTwoLabel: "ROUTES",
+        statTwoValue: "8",
+      },
+    },
+    {
+      name: "AI Strategy Lab",
+      description: "Generate custom trading algorithms",
+      icon: Brain,
+      href: "/dashboard/tools/ai-strategy",
+      tier: "ENTRY_LEVEL",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "STRATEGIES",
+        statOneValue: "3",
+        statTwoLabel: "WIN RATE",
+        statTwoValue: "68%",
+      },
+    },
+    {
+      name: "Phantom Inter",
+      description: "Bridge assets across different chains",
+      icon: Layers,
+      href: "/dashboard/tools/interoperability",
+      tier: "SHADOW_ELITE",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "BRIDGED",
+        statOneValue: "124500",
+        statTwoLabel: "CHAINS",
+        statTwoValue: "3",
+      },
+    },
+    {
+      name: "Max Extract",
+      description: "Capture value from the mempool",
+      icon: Zap,
+      href: "/dashboard/tools/mev-extraction",
+      tier: "SHADOW_ELITE",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "EXTRACTED",
+        statOneValue: 12450,
+        statTwoLabel: "PENDING",
+        statTwoValue: "$3,200",
+      },
+    },
+    {
+      name: "Sniper Bot",
+      description: "Microsecond-precision execution for token launches",
+      icon: Crosshair,
+      href: "/dashboard/tools/sniper-bot",
+      tier: "OPERATOR",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "TARGETS",
+        statOneValue: "5",
+        statTwoLabel: "SUCCESS RATE",
+        statTwoValue: "92%",
+      },
+    },
+    {
+      name: "Dark Launch Toolkit",
+      description: "Deploy tokens with perfect liquidity curves",
+      icon: Rocket,
+      href: "/dashboard/tools/dark-launch",
+      tier: "SHADOW_ELITE",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "PROJECTS",
+        statOneValue: "2",
+        statTwoLabel: "LIQUIDITY",
+        statTwoValue: "$215K",
+      },
+    },
+    {
+      name: "Liquidation Hunter",
+      description: "Profit from market volatility",
+      icon: Target,
+      href: "/dashboard/tools/liquidation-hunter",
+      tier: "SHADOW_ELITE",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "POSITIONS",
+        statOneValue: "8",
+        statTwoLabel: "PROFIT",
+        statTwoValue: "$5,320",
+      },
+    },
+    {
+      name: "Stealth Router",
+      description: "Conceal transaction routes and minimize footprint",
+      icon: Eye,
+      href: "/dashboard/tools/stealth-router",
+      tier: "OPERATOR",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "ROUTES",
+        statOneValue: "12",
+        statTwoLabel: "OBFUSCATION",
+        statTwoValue: "97%",
+      },
+    },
+    {
+      name: "Wash Trading Engine",
+      description: "Volume simulation with anti-detection algorithms",
+      icon: RefreshCw,
+      href: "/dashboard/tools/wash-trading",
+      tier: "SHADOW_ELITE",
+      color: "pink",
+      monitoringStats: {
+        statOneLabel: "VOLUME (24H)",
+        statOneValue: 124500,
+        statTwoLabel: "DETECTION RISK",
+        statTwoValue: "Low",
+      },
+    },
+    {
+      name: "Flashloan Lab",
+      description: "Create and test flashloan strategies",
+      icon: Lightbulb,
+      href: "/dashboard/tools/flashloan-lab",
+      tier: "PHANTOM_COUNCIL",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "CAPITAL",
+        statOneValue: "$1.2M",
+        statTwoLabel: "STRATEGIES",
+        statTwoValue: "4",
+      },
+    },
+    {
+      name: "Market Manipulation Detection",
+      description: "Identify and analyze market manipulation patterns",
+      icon: AlertTriangle,
+      href: "/dashboard/tools/manipulation-detection",
+      tier: "SHADOW_ELITE",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "ALERTS",
+        statOneValue: "7",
+        statTwoLabel: "CONFIDENCE",
+        statTwoValue: "High",
+      },
+    },
+    {
+      name: "Temporal Fragmentation",
+      description: "Orchestrate token movements across time to maximize alpha",
+      icon: Shuffle,
+      href: "/dashboard/tools/temporal-fragmentation",
+      tier: "PHANTOM_COUNCIL",
+      color: "cyan",
+      monitoringStats: {
+        statOneLabel: "FRAGMENTS",
+        statOneValue: "3",
+        statTwoLabel: "EFFICIENCY",
+        statTwoValue: "97%",
+      },
+    },
+    {
+      name: "Hidden Tax Implementer",
+      description: "Obfuscate transaction taxes for maximum stealth",
+      icon: Shield,
+      href: "/dashboard/tools/hidden-tax-implementer",
+      tier: "SHADOW_ELITE",
+      color: "pink",
+    },
+    {
+      name: "Phantom Vault Constructor",
+      description: "Create secure, time-locked token vaults with advanced privacy features",
+      icon: Lock,
+      href: "/dashboard/tools/phantom-vault",
+      tier: "SHADOW_ELITE",
+      color: "pink",
+    },
+    {
+      name: "Emissions Skimming",
+      description: "Extract value from token emissions with surgical precision",
+      icon: Zap,
+      href: "/dashboard/tools/emissions-skimming",
+      tier: "PHANTOM_COUNCIL",
+      color: "pink",
+    },
+    {
+      name: "Sandwich Attack",
+      description: "Automate sandwich attacks to extract value from unsuspecting traders",
+      icon: AlertTriangle,
+      href: "/dashboard/tools/sandwich-attack",
+      tier: "PHANTOM_COUNCIL",
+      color: "cyan",
+    },
+    {
+      name: "Token Creation",
+      description: "Create your own tokens with custom parameters",
+      icon: FileCode,
+      href: "/dashboard/tools/token-creation",
+      tier: "OPERATOR",
+      color: "cyan",
+    },
+    {
+      name: "Automated Arbitrage",
+      description: "Automated arbitrage",
+      icon: Shuffle,
+      href: "/dashboard/tools/automated-arbitrage",
+      tier: "PHANTOM_COUNCIL",
+      color: "cyan",
+    },
+    {
+      name: "Upgrade",
+      href: "/dashboard/upgrade",
+      icon: Zap,
+      requiresAuth: true,
+    },
+    {
+      name: "Settings",
+      href: "/dashboard/settings",
+      icon: Settings,
+      requiresAuth: true,
+    },
+  ]
 
   if (isLoading) {
     return (
@@ -194,12 +323,12 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="relative min-h-screen">
+    <div className="flex min-h-screen flex-col bg-black text-white">
       <MatrixBackground />
       <CircuitPattern />
-      <div className="relative z-10">
-        <PageHeader title="Dashboard" description="Monitor your assets and access your tools" />
-        <div className="container mx-auto px-4 py-6">
+
+      <main className="flex-1">
+        <div className="max-w-6xl mx-auto">
           {!connected ? (
             <div className="bg-black/60 border border-neon-pink p-8 rounded-lg text-center">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-neon-pink/20 mb-4">
@@ -272,7 +401,9 @@ export default function DashboardPage() {
                 </TabsList>
 
                 <TabsContent value="tools">
-                  <DraggableDashboard tools={tools} userTier={userTier} />
+                  <DashboardProvider>
+                    <DragDropToolGrid tools={tools} tier={tier} />
+                  </DashboardProvider>
                 </TabsContent>
 
                 <TabsContent value="analytics">
@@ -428,9 +559,162 @@ export default function DashboardPage() {
             </div>
           )}
         </div>
-      </div>
+      </main>
 
       <WalletModal isOpen={walletModalOpen} onClose={() => setWalletModalOpen(false)} />
     </div>
   )
+}
+
+function DragDropToolGrid({ tools, tier }: { tools: any[]; tier: string }) {
+  const { cardOrder, updateCardOrder } = useDashboard()
+  const [sortedTools, setSortedTools] = useState<any[]>([])
+
+  // Sort tools by tier level (highest to lowest)
+  useEffect(() => {
+    const tierOrder = {
+      PHANTOM_COUNCIL: 4,
+      SHADOW_ELITE: 3,
+      OPERATOR: 2,
+      ENTRY_LEVEL: 1,
+      UNAUTHORIZED: 0,
+    }
+
+    // Filter out tools that require higher tier than user has
+    const accessibleTools = tools.filter((tool) => {
+      if (!tool.tier) return true
+      const userTierLevel = tierOrder[tier as keyof typeof tierOrder] || 0
+      const toolTierLevel = tierOrder[tool.tier as keyof typeof tierOrder] || 0
+      return userTierLevel >= toolTierLevel
+    })
+
+    // Sort by tier level (highest to lowest)
+    const sorted = [...accessibleTools].sort((a, b) => {
+      return (tierOrder[b.tier as keyof typeof tierOrder] || 0) - (tierOrder[a.tier as keyof typeof tierOrder] || 0)
+    })
+
+    // Apply saved order if available
+    if (cardOrder.length > 0) {
+      const orderedTools: any[] = []
+      // First add tools in the saved order
+      cardOrder.forEach((id) => {
+        const tool = sorted.find((t) => t.name === id)
+        if (tool) {
+          orderedTools.push(tool)
+        }
+      })
+
+      // Then add any new tools that weren't in the saved order
+      sorted.forEach((tool) => {
+        if (!cardOrder.includes(tool.name)) {
+          orderedTools.push(tool)
+        }
+      })
+
+      setSortedTools(orderedTools)
+    } else {
+      setSortedTools(sorted)
+      // Initialize card order
+      updateCardOrder(sorted.map((tool) => tool.name))
+    }
+  }, [tools, tier, cardOrder, updateCardOrder])
+
+  const moveCard = (dragIndex: number, hoverIndex: number) => {
+    const draggedTool = sortedTools[dragIndex]
+
+    // Update the sorted tools array
+    setSortedTools(
+      update(sortedTools, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, draggedTool],
+        ],
+      }),
+    )
+
+    // Update the card order in context/localStorage
+    const newOrder = update(sortedTools, {
+      $splice: [
+        [dragIndex, 1],
+        [hoverIndex, 0, draggedTool],
+      ],
+    }).map((tool) => tool.name)
+
+    updateCardOrder(newOrder)
+  }
+
+  const tierLevels = {
+    UNAUTHORIZED: 0,
+    ENTRY_LEVEL: 1,
+    OPERATOR: 2,
+    SHADOW_ELITE: 3,
+    PHANTOM_COUNCIL: 4,
+  }
+
+  return (
+    <DragDropProvider>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sortedTools.map((tool, index) => {
+          const userTierLevel = tierLevels[tier as keyof typeof tierLevels] || 0
+          const toolTierLevel = tierLevels[tool.tier as keyof typeof tierLevels] || 0
+
+          // For tools that require higher tier than user has
+          if (toolTierLevel > userTierLevel) {
+            return (
+              <CyberCard key={index} className="bg-black/60">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-full bg-zinc-800">
+                    <tool.icon className="h-6 w-6 text-zinc-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-400 mb-1">{tool.name}</h3>
+                    <p className="text-zinc-500 font-tech-mono text-sm mb-4">{tool.description}</p>
+                    <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
+                      <Lock size={14} />
+                      <span className="font-tech-mono">
+                        {tool.tier ? tool.tier.replace("_", " ") : "UNKNOWN"} TIER REQUIRED
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CyberCard>
+            )
+          }
+
+          // For tools the user has access to
+          return (
+            <DraggableToolCard
+              key={tool.name}
+              id={tool.name}
+              index={index}
+              name={tool.name}
+              description={tool.description}
+              icon={tool.icon}
+              href={tool.href}
+              tier={tool.tier}
+              color={tool.color || "cyan"}
+              monitoringStats={tool.monitoringStats}
+              moveCard={moveCard}
+            />
+          )
+        })}
+      </div>
+    </DragDropProvider>
+  )
+}
+
+// Helper function to check if user tier is high enough
+function tierLevelCheck(userTier: string, requiredTier: string) {
+  const tierLevels = {
+    UNAUTHORIZED: 0,
+    ENTRY_LEVEL: 1,
+    OPERATOR: 2,
+    SHADOW_ELITE: 3,
+    PHANTOM_COUNCIL: 4,
+  }
+
+  // Always return true for PHANTOM_COUNCIL tier (highest tier)
+  if (userTier === "PHANTOM_COUNCIL") return true
+
+  return tierLevels[userTier as keyof typeof tierLevels] >= tierLevels[requiredTier as keyof typeof tierLevels]
 }

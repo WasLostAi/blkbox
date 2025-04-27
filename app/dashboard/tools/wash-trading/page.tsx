@@ -161,7 +161,7 @@ export default function WashTradingEnginePage() {
     <div className="space-y-6 p-6">
       <div className="flex flex-col lg:flex-row justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-neon-pink mb-2">
+          <h1 className="text-3xl font-bold text-neon-pink mb-2 text-center lg:text-left">
             <GlitchText text="WASH TRADING ENGINE" />
           </h1>
           <p className="text-zinc-400 font-tech-mono text-sm">
@@ -302,7 +302,7 @@ export default function WashTradingEnginePage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <CyberCard className="bg-black/60">
-              <h3 className="text-lg font-bold text-neon-cyan mb-4">Trading Pairs</h3>
+              <h3 className="text-lg font-bold text-neon-cyan mb-4 text-center">Trading Pairs</h3>
               <div className="space-y-4">
                 {tradingPairs.map((pair) => (
                   <div
@@ -340,7 +340,7 @@ export default function WashTradingEnginePage() {
             </CyberCard>
 
             <CyberCard className="bg-black/60">
-              <h3 className="text-lg font-bold text-neon-cyan mb-4">Wallet Rotation</h3>
+              <h3 className="text-lg font-bold text-neon-cyan mb-4 text-center">Wallet Rotation</h3>
               <div className="space-y-4">
                 {wallets.map((wallet) => (
                   <div
@@ -377,7 +377,7 @@ export default function WashTradingEnginePage() {
 
           <CyberCard className="bg-black/60">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-neon-cyan">Risk Assessment</h3>
+              <h3 className="text-lg font-bold text-neon-cyan text-center">Risk Assessment</h3>
               <AlertTriangle className="h-5 w-5 text-yellow-500" />
             </div>
 
@@ -430,7 +430,7 @@ export default function WashTradingEnginePage() {
 
         <TabsContent value="settings" className="space-y-6">
           <CyberCard className="bg-black/60">
-            <h3 className="text-lg font-bold text-neon-cyan mb-4">Engine Configuration</h3>
+            <h3 className="text-lg font-bold text-neon-cyan mb-4 text-center">Engine Configuration</h3>
 
             <div className="space-y-6">
               <div className="space-y-4">
@@ -542,7 +542,7 @@ export default function WashTradingEnginePage() {
           </CyberCard>
 
           <CyberCard className="bg-black/60">
-            <h3 className="text-lg font-bold text-neon-cyan mb-4">Advanced Settings</h3>
+            <h3 className="text-lg font-bold text-neon-cyan mb-4 text-center">Advanced Settings</h3>
 
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -630,7 +630,7 @@ export default function WashTradingEnginePage() {
         <TabsContent value="logs" className="space-y-6">
           <CyberCard className="bg-black/60">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-neon-cyan">System Logs</h3>
+              <h3 className="text-lg font-bold text-neon-cyan text-center">System Logs</h3>
               <div className="flex items-center gap-2">
                 <CyberButton variant="outline" size="sm" glowColor="cyan" className="gap-1">
                   <RefreshCw size={12} /> REFRESH

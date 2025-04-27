@@ -37,8 +37,8 @@ export default function ManipulationDetectionCard() {
             <AlertTriangle className="h-6 w-6 text-neon-cyan" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-neon-cyan mb-1">Market Manipulation Detection</h3>
-            <p className="text-zinc-400 font-tech-mono text-sm mb-4">
+            <h3 className="text-lg font-bold text-neon-cyan mb-1 text-center">Market Manipulation Detection</h3>
+            <p className="text-zinc-400 font-tech-mono text-sm mb-4 text-left">
               Identify and analyze market manipulation patterns.
             </p>
             <div className="flex items-center gap-2">
@@ -64,8 +64,8 @@ export default function ManipulationDetectionCard() {
             <AlertTriangle className="h-5 w-5 text-neon-cyan" />
           </div>
           <div>
-            <h3 className="font-bold text-neon-cyan">Market Manipulation Detection</h3>
-            <p className="text-xs text-zinc-500 font-tech-mono">Pattern recognition and alerts</p>
+            <h3 className="font-bold text-neon-cyan text-center">Market Manipulation Detection</h3>
+            <p className="text-xs text-zinc-500 font-tech-mono text-left">Pattern recognition and alerts</p>
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -88,12 +88,12 @@ export default function ManipulationDetectionCard() {
 
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div className="p-2 border border-zinc-800 rounded-md bg-black/40">
-          <div className="text-xs text-zinc-500 font-tech-mono mb-1">ALERTS</div>
-          <div className="text-lg font-bold text-white">{alerts}</div>
+          <div className="text-xs text-zinc-500 font-tech-mono mb-1 text-center">ALERTS</div>
+          <div className="text-lg font-bold text-white text-center">{alerts}</div>
         </div>
         <div className="p-2 border border-zinc-800 rounded-md bg-black/40">
-          <div className="text-xs text-zinc-500 font-tech-mono mb-1">CONFIDENCE</div>
-          <div className="text-lg font-bold text-white">High</div>
+          <div className="text-xs text-zinc-500 font-tech-mono mb-1 text-center">CONFIDENCE</div>
+          <div className="text-lg font-bold text-white text-center">High</div>
         </div>
       </div>
 

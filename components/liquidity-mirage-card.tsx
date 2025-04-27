@@ -13,8 +13,8 @@ export default function LiquidityMirageCard() {
           <Eye className="h-6 w-6 text-neon-cyan" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-neon-cyan mb-1">Liquidity Mirage Creator</h3>
-          <p className="text-zinc-400 font-tech-mono text-sm mb-4">
+          <h3 className="text-lg font-bold text-neon-cyan mb-1 text-center">Liquidity Mirage Creator</h3>
+          <p className="text-zinc-400 font-tech-mono text-sm mb-4 text-left">
             Create temporary liquidity pools to attract attention and volume.
           </p>
           <div className="flex items-center gap-2">

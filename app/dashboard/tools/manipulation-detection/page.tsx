@@ -109,7 +109,7 @@ export default function MarketManipulationDetectionPage() {
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <CyberCard className="bg-black/60">
-                <h3 className="text-lg font-bold text-neon-cyan mb-4">Scan Status</h3>
+                <h3 className="text-lg font-bold text-neon-cyan mb-4 text-center">Scan Status</h3>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <div className={`w-3 h-3 rounded-full ${isScanning ? "bg-green-500" : "bg-red-500"}`}></div>
@@ -149,7 +149,7 @@ export default function MarketManipulationDetectionPage() {
               </CyberCard>
 
               <CyberCard className="bg-black/60">
-                <h3 className="text-lg font-bold text-neon-pink mb-4">Detection Stats</h3>
+                <h3 className="text-lg font-bold text-neon-pink mb-4 text-center">Detection Stats</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-zinc-400 font-tech-mono">Alerts Found</p>
@@ -163,7 +163,7 @@ export default function MarketManipulationDetectionPage() {
               </CyberCard>
 
               <CyberCard className="bg-black/60">
-                <h3 className="text-lg font-bold text-neon-cyan mb-4">Analysis</h3>
+                <h3 className="text-lg font-bold text-neon-cyan mb-4 text-center">Analysis</h3>
                 <div className="flex items-center justify-center mb-4">
                   <p className="text-sm text-zinc-400 font-tech-mono">No analysis available</p>
                 </div>
@@ -188,7 +188,7 @@ export default function MarketManipulationDetectionPage() {
                   <TabsContent value="logs">
                     <CyberCard className="bg-black/60 h-[500px] overflow-hidden">
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-bold text-neon-pink">System Logs</h3>
+                        <h3 className="text-lg font-bold text-neon-pink text-center">System Logs</h3>
                         <div className="flex gap-2">
                           <CyberButton variant="outline" size="sm" glowColor="cyan" className="h-8 px-2">
                             <RefreshCw className="h-4 w-4" />
@@ -204,7 +204,7 @@ export default function MarketManipulationDetectionPage() {
                   <TabsContent value="patterns">
                     <CyberCard className="bg-black/60 h-[500px] overflow-hidden">
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-bold text-neon-cyan">Detected Patterns</h3>
+                        <h3 className="text-lg font-bold text-neon-cyan text-center">Detected Patterns</h3>
                       </div>
                       <div className="flex flex-col items-center justify-center h-[440px]">
                         <AlertCircle className="h-12 w-12 text-zinc-500 mb-4" />
@@ -222,7 +222,7 @@ export default function MarketManipulationDetectionPage() {
                         className="flex items-center justify-between cursor-pointer"
                         onClick={() => toggleSection("settings")}
                       >
-                        <h3 className="text-lg font-bold text-neon-cyan">Scan Settings</h3>
+                        <h3 className="text-lg font-bold text-neon-cyan text-center">Scan Settings</h3>
                         {expandedSection === "settings" ? (
                           <ChevronUp className="h-5 w-5 text-neon-pink" />
                         ) : (
@@ -285,7 +285,7 @@ export default function MarketManipulationDetectionPage() {
 
               <div className="space-y-6">
                 <CyberCard className="bg-black/60">
-                  <h3 className="text-lg font-bold text-neon-pink mb-4">Detection Methods</h3>
+                  <h3 className="text-lg font-bold text-neon-pink mb-4 text-center">Detection Methods</h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <label className="text-sm font-tech-mono text-zinc-400">Wash Trading Detection</label>
@@ -307,7 +307,7 @@ export default function MarketManipulationDetectionPage() {
                 </CyberCard>
 
                 <CyberCard className="bg-black/60">
-                  <h3 className="text-lg font-bold text-neon-cyan mb-4">Alert Configuration</h3>
+                  <h3 className="text-lg font-bold text-neon-cyan mb-4 text-center">Alert Configuration</h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <label className="text-sm font-tech-mono text-zinc-400">Email Notifications</label>

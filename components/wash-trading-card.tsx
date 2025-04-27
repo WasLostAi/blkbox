@@ -37,8 +37,8 @@ export default function WashTradingCard() {
             <RefreshCw className="h-6 w-6 text-neon-pink" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-neon-pink mb-1">Wash Trading Engine</h3>
-            <p className="text-zinc-400 font-tech-mono text-sm mb-4">
+            <h3 className="text-lg font-bold text-neon-pink mb-1 text-center">Wash Trading Engine</h3>
+            <p className="text-zinc-400 font-tech-mono text-sm mb-4 text-left">
               Volume simulation with anti-detection algorithms.
             </p>
             <div className="flex items-center gap-2">
@@ -64,8 +64,8 @@ export default function WashTradingCard() {
             <RefreshCw className="h-5 w-5 text-neon-pink" />
           </div>
           <div>
-            <h3 className="font-bold text-neon-pink">Wash Trading Engine</h3>
-            <p className="text-xs text-zinc-500 font-tech-mono">Volume simulation with anti-detection</p>
+            <h3 className="font-bold text-neon-pink text-center">Wash Trading Engine</h3>
+            <p className="text-xs text-zinc-500 font-tech-mono text-left">Volume simulation with anti-detection</p>
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -88,12 +88,12 @@ export default function WashTradingCard() {
 
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div className="p-2 border border-zinc-800 rounded-md bg-black/40">
-          <div className="text-xs text-zinc-500 font-tech-mono mb-1">VOLUME (24H)</div>
-          <div className="text-lg font-bold text-white">${volume.toLocaleString()}</div>
+          <div className="text-xs text-zinc-500 font-tech-mono mb-1 text-center">VOLUME (24H)</div>
+          <div className="text-lg font-bold text-white text-center">${volume.toLocaleString()}</div>
         </div>
         <div className="p-2 border border-zinc-800 rounded-md bg-black/40">
-          <div className="text-xs text-zinc-500 font-tech-mono mb-1">DETECTION RISK</div>
-          <div className="text-lg font-bold text-white">{isActive ? "Low" : "None"}</div>
+          <div className="text-xs text-zinc-500 font-tech-mono mb-1 text-center">DETECTION RISK</div>
+          <div className="text-lg font-bold text-white text-center">{isActive ? "Low" : "None"}</div>
         </div>
       </div>
 

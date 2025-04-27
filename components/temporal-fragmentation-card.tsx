@@ -48,8 +48,8 @@ export default function TemporalFragmentationEngine({ inDashboard = false }: Tem
             <Shuffle className="h-6 w-6 text-neon-pink" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-neon-pink mb-1">Temporal Fragmentation Engine</h3>
-            <p className="text-zinc-400 font-tech-mono text-sm mb-4">
+            <h3 className="text-lg font-bold text-neon-pink mb-1 text-center">Temporal Fragmentation Engine</h3>
+            <p className="text-zinc-400 font-tech-mono text-sm mb-4 text-left">
               Orchestrate token movements across time to maximize alpha.
             </p>
             <div className="flex items-center gap-2">
@@ -77,8 +77,8 @@ export default function TemporalFragmentationEngine({ inDashboard = false }: Tem
             <Shuffle className="h-5 w-5 text-neon-pink" />
           </div>
           <div>
-            <h3 className="font-bold text-neon-pink">Temporal Fragmentation Engine</h3>
-            <p className="text-xs text-zinc-500 font-tech-mono">Orchestrate token movements across time</p>
+            <h3 className="font-bold text-neon-pink text-center">Temporal Fragmentation Engine</h3>
+            <p className="text-xs text-zinc-500 font-tech-mono text-left">Orchestrate token movements across time</p>
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -91,12 +91,12 @@ export default function TemporalFragmentationEngine({ inDashboard = false }: Tem
 
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div className="p-2 border border-zinc-800 rounded-md bg-black/40">
-          <div className="text-xs text-zinc-500 font-tech-mono mb-1">FRAGMENTS</div>
-          <div className="text-lg font-bold text-white">{fragments}</div>
+          <div className="text-xs text-zinc-500 font-tech-mono mb-1 text-center">FRAGMENTS</div>
+          <div className="text-lg font-bold text-white text-center">{fragments}</div>
         </div>
         <div className="p-2 border border-zinc-800 rounded-md bg-black/40">
-          <div className="text-xs text-zinc-500 font-tech-mono mb-1">VOLUME (24H)</div>
-          <div className="text-lg font-bold text-white">${volume.toLocaleString()}</div>
+          <div className="text-xs text-zinc-500 font-tech-mono mb-1 text-center">VOLUME (24H)</div>
+          <div className="text-lg font-bold text-white text-center">${volume.toLocaleString()}</div>
         </div>
       </div>
 
@@ -155,7 +155,7 @@ export default function TemporalFragmentationEngine({ inDashboard = false }: Tem
         </div>
       )}
 
-      <div className="flex items-center justify-between mt-4">
+      <div className="flex items-center justify-center mt-4">
         <Button
           size="sm"
           variant={isActive ? "default" : "outline"}

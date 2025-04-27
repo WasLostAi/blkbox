@@ -18,14 +18,11 @@ export default function TokenomicsChart() {
 
     // Data for the pie chart
     const data = [
-      { value: 50, color: "#ff00aa", label: "Public Fair Launch" },
-      { value: 12, color: "#00e5ff", label: "Platform Development" },
+      { value: 60, color: "#ff00aa", label: "Public Fair Launch" },
+      { value: 15, color: "#00e5ff", label: "Platform Development" },
       { value: 10, color: "#ff33bb", label: "Initial Liquidity Pool" },
-      { value: 8, color: "#33eeff", label: "DAO Treasury" },
+      { value: 10, color: "#33eeff", label: "DAO Treasury" },
       { value: 5, color: "#ff66cc", label: "Bug Bounty & Security" },
-      { value: 5, color: "#33ccff", label: "Founder Allocation" },
-      { value: 5, color: "#ff99dd", label: "Dark Pool Treasury" },
-      { value: 5, color: "#66ddff", label: "Alpha Pool Operations" },
     ]
 
     // Calculate total
@@ -72,7 +69,7 @@ export default function TokenomicsChart() {
     ctx.font = "bold 16px 'Share Tech Mono', monospace"
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
-    ctx.fillText("1B", centerX, centerY - 10)
+    ctx.fillText("100M", centerX, centerY - 10)
     ctx.font = "12px 'Share Tech Mono', monospace"
     ctx.fillText("Total Supply", centerX, centerY + 10)
 
