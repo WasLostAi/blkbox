@@ -9,46 +9,25 @@ interface CyberCardProps {
   className?: string
   variant?: "pink" | "cyan"
   interactive?: boolean
-  title?: string
 }
 
-export default function CyberCard({
-  children,
-  className,
-  variant = "pink",
-  interactive = true,
-  title,
-}: CyberCardProps) {
+export default function CyberCard({ children, className, variant = "pink", interactive = true }: CyberCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
     <div
       className={cn(
-        "cyber-card relative rounded-sm overflow-hidden transition-all duration-300",
+        "cyber-card relative rounded-sm overflow-hidden p-4 transition-all duration-300",
         variant === "cyan" && "cyber-card-cyan",
         interactive && "hover:shadow-lg",
         variant === "pink" && interactive && isHovered && "hover:shadow-neon-pink/30",
         variant === "cyan" && interactive && isHovered && "hover:shadow-neon-cyan/30",
         interactive && isHovered && "scale-[1.02]",
-        "border border-zinc-800/50 bg-black/60 backdrop-blur-sm",
         className,
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {title && (
-        <div
-          className={cn(
-            "border-b border-zinc-800/50 px-4 py-3",
-            variant === "pink" ? "bg-neon-pink/5" : "bg-neon-cyan/5",
-          )}
-        >
-          <h3 className={cn("text-xl font-bold", variant === "pink" ? "text-neon-pink" : "text-neon-cyan")}>{title}</h3>
-        </div>
-      )}
-
-      <div className="p-4">{children}</div>
-
       <div className="hud-corner hud-corner-tl"></div>
       <div className="hud-corner hud-corner-tr"></div>
       <div className="hud-corner hud-corner-bl"></div>
@@ -63,6 +42,8 @@ export default function CyberCard({
           }}
         />
       )}
+
+      {children}
     </div>
   )
 }

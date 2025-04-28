@@ -6,10 +6,9 @@ import { Copy, Check } from "lucide-react"
 interface TerminalCodeProps {
   code: string
   language?: string
-  className?: string
 }
 
-export default function TerminalCode({ code, language = "javascript", className }: TerminalCodeProps) {
+export default function TerminalCode({ code, language = "javascript" }: TerminalCodeProps) {
   const [copied, setCopied] = useState(false)
 
   const copyToClipboard = async () => {
@@ -23,7 +22,7 @@ export default function TerminalCode({ code, language = "javascript", className 
   }
 
   return (
-    <div className={`relative rounded-md overflow-hidden ${className}`}>
+    <div className="relative rounded-md overflow-hidden">
       <div className="absolute right-2 top-2">
         <button
           onClick={copyToClipboard}

@@ -29,6 +29,7 @@ export default function AiStrategyPage() {
   const [generatedStrategy, setGeneratedStrategy] = useState<string | null>(null)
   const [generatedCode, setGeneratedCode] = useState<string | null>(null)
   const [backtestResults, setBacktestResults] = useState<any | null>(null)
+  const [selectedStrategy, setSelectedStrategy] = useState("momentum")
 
   // Load initial data
   useEffect(() => {
@@ -195,6 +196,10 @@ export const strategy = createStrategy({
     }
   }
 
+  const handleStrategyChange = (value: string) => {
+    setSelectedStrategy(value)
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
       <MatrixBackground />
@@ -257,6 +262,26 @@ export const strategy = createStrategy({
                     </div>
 
                     <div className="space-y-2">
+                      <label className="text-sm font-tech-mono text-neon-cyan">Strategy Type</label>
+                      <Select value={selectedStrategy} onValueChange={handleStrategyChange}>
+                        <SelectTrigger className="bg-black border-zinc-800">
+                          <SelectValue placeholder="Select strategy" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-black border-zinc-800">
+                          <SelectItem value="momentum">Momentum</SelectItem>
+                          <SelectItem value="mean-reversion">Mean Reversion</SelectItem>
+                          <SelectItem value="breakout">Breakout</SelectItem>
+                          <SelectItem value="trend-following">Trend Following</SelectItem>
+                          <SelectItem value="grid-trading">Grid Trading</SelectItem>
+                          <SelectItem value="statistical-arbitrage">Statistical Arbitrage</SelectItem>
+                          <SelectItem value="ml-prediction">ML Prediction</SelectItem>
+                          <SelectItem value="sentiment-analysis">Sentiment Analysis</SelectItem>
+                          <SelectItem value="custom">Custom Strategy</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
                       <label className="text-sm font-tech-mono text-neon-cyan">Market</label>
                       <Select value={market} onValueChange={setMarket}>
                         <SelectTrigger className="bg-black border-zinc-800">
@@ -267,6 +292,10 @@ export const strategy = createStrategy({
                           <SelectItem value="BTC-USDC">BTC-USDC</SelectItem>
                           <SelectItem value="ETH-USDC">ETH-USDC</SelectItem>
                           <SelectItem value="BLKBOX-USDC">BLKBOX-USDC</SelectItem>
+                          <SelectItem value="JUP-USDC">JUP-USDC</SelectItem>
+                          <SelectItem value="BONK-USDC">BONK-USDC</SelectItem>
+                          <SelectItem value="RAY-USDC">RAY-USDC</SelectItem>
+                          <SelectItem value="ORCA-USDC">ORCA-USDC</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -289,6 +318,22 @@ export const strategy = createStrategy({
                     </div>
 
                     <div className="space-y-2">
+                      <label className="text-sm font-tech-mono text-neon-cyan">AI Model</label>
+                      <Select defaultValue="gpt-4">
+                        <SelectTrigger className="bg-black border-zinc-800">
+                          <SelectValue placeholder="Select AI model" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-black border-zinc-800">
+                          <SelectItem value="gpt-4">GPT-4 (Balanced)</SelectItem>
+                          <SelectItem value="gpt-4-turbo">GPT-4 Turbo (Fast)</SelectItem>
+                          <SelectItem value="claude-3">Claude 3 (Creative)</SelectItem>
+                          <SelectItem value="blkbox-quant">BLKBOX Quant (Specialized)</SelectItem>
+                          <SelectItem value="ensemble">AI Ensemble (Advanced)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
                       <div className="flex justify-between">
                         <label className="text-sm font-tech-mono text-neon-cyan">Risk Level</label>
                         <span className="text-sm font-tech-mono text-neon-pink">{riskLevel}%</span>
@@ -305,6 +350,25 @@ export const strategy = createStrategy({
                         <span>Conservative</span>
                         <span>Moderate</span>
                         <span>Aggressive</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <label className="text-sm font-tech-mono text-neon-cyan">Advanced Parameters</label>
+                        <button className="text-xs text-neon-pink hover:text-neon-cyan transition-colors">
+                          Configure
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="p-2 border border-zinc-800 rounded-md">
+                          <p className="text-xs text-zinc-400 font-tech-mono">Indicators</p>
+                          <p className="text-sm text-neon-pink">12 Selected</p>
+                        </div>
+                        <div className="p-2 border border-zinc-800 rounded-md">
+                          <p className="text-xs text-zinc-400 font-tech-mono">Optimization</p>
+                          <p className="text-sm text-neon-pink">Genetic Algorithm</p>
+                        </div>
                       </div>
                     </div>
 

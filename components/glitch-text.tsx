@@ -5,7 +5,7 @@ interface GlitchTextProps {
   className?: string
 }
 
-export function GlitchText({ text, className }: GlitchTextProps) {
+export default function GlitchText({ text, className }: GlitchTextProps) {
   return (
     <div className={cn("relative inline-block", className)}>
       <span className="glitch" data-text={text}>
@@ -14,6 +14,3 @@ export function GlitchText({ text, className }: GlitchTextProps) {
     </div>
   )
 }
-
-// Keep the default export for backward compatibility
-export default GlitchText

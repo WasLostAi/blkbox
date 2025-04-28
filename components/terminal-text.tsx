@@ -37,4 +37,5 @@ export function TerminalText({ text, className, typingSpeed = 50, showCursor = t
   )
 }
 
+// Keep the default export for backward compatibility
 export default TerminalText

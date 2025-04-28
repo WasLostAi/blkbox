@@ -18,11 +18,12 @@ export default function TokenomicsChart() {
 
     // Data for the pie chart
     const data = [
-      { value: 60, color: "#ff00aa", label: "Public Fair Launch" },
-      { value: 15, color: "#00e5ff", label: "Platform Development" },
-      { value: 10, color: "#ff33bb", label: "Initial Liquidity Pool" },
-      { value: 10, color: "#33eeff", label: "DAO Treasury" },
-      { value: 5, color: "#ff66cc", label: "Bug Bounty & Security" },
+      { value: 30, color: "#ff00aa", label: "Community Sale" },
+      { value: 20, color: "#00e5ff", label: "Development Fund" },
+      { value: 15, color: "#ff33bb", label: "Liquidity Pool" },
+      { value: 15, color: "#33eeff", label: "Marketing & Partnerships" },
+      { value: 10, color: "#ff66cc", label: "Team" },
+      { value: 10, color: "#66f5ff", label: "Future Shadow Operations" },
     ]
 
     // Calculate total

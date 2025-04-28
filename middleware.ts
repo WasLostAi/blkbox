@@ -6,11 +6,7 @@ export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
 
   // Check if the path is for a protected route
-  const isProtectedRoute =
-    path.startsWith("/dashboard/tools/") ||
-    path === "/dashboard/upgrade" ||
-    path === "/dashboard/settings" ||
-    path.startsWith("/admin")
+  const isProtectedRoute = path.startsWith("/dashboard/tools/") || path === "/dashboard/upgrade"
 
   // If it's not a protected route, allow the request
   if (!isProtectedRoute) {
@@ -20,24 +16,8 @@ export function middleware(request: NextRequest) {
   // Check for wallet connection from cookies
   const walletAddress = request.cookies.get("walletAddress")?.value
 
-  // Check for admin status from cookies (in a real app, this would be verified server-side)
-  const isAdmin = request.cookies.get("isAdmin")?.value === "true"
-
-  // Check for kill switch status
-  const killSwitchActive = request.cookies.get("killSwitchActive")?.value === "true"
-
-  // If kill switch is active and the user is not an admin, redirect to dashboard
-  if (killSwitchActive && !isAdmin && path.startsWith("/dashboard/tools/")) {
-    return NextResponse.redirect(new URL("/dashboard", request.url))
-  }
-
   // If no wallet is connected, redirect to the dashboard
   if (!walletAddress) {
-    return NextResponse.redirect(new URL("/dashboard", request.url))
-  }
-
-  // For admin-only routes, check admin status
-  if ((path === "/dashboard/settings" || path.startsWith("/admin")) && !isAdmin) {
     return NextResponse.redirect(new URL("/dashboard", request.url))
   }
 
@@ -50,5 +30,5 @@ export function middleware(request: NextRequest) {
 
 // Configure the middleware to run only on specific paths
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*"],
+  matcher: ["/dashboard/:path*"],
 }

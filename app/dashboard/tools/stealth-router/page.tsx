@@ -1,127 +1,140 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { ArrowLeft, Shield, AlertCircle, Loader2, Eye, Network } from "lucide-react"
 import Link from "next/link"
-import { ArrowLeft, Eye, RefreshCw, Shield, AlertCircle } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Slider } from "@/components/ui/slider"
-import CyberButton from "@/components/cyber-button"
+import { StealthTransactionRouter } from "@/utils/stealth-transaction-router"
 import MatrixBackground from "@/components/matrix-background"
 import CircuitPattern from "@/components/circuit-pattern"
-import DataPulse from "@/components/data-pulse"
 import GlitchText from "@/components/glitch-text"
 import CyberCard from "@/components/cyber-card"
-import TierGate from "@/components/tier-gate"
-import { useWallet } from "@/context/wallet-context"
-import WalletConnector from "@/components/wallet-connector"
+import CyberButton from "@/components/cyber-button"
+import DataPulse from "@/components/data-pulse"
 import TerminalCode from "@/components/terminal-code"
+import { useWallet } from "@/context/wallet-context"
+import TierGate from "@/components/tier-gate"
+import { Slider } from "@/components/ui/slider"
+import { Switch } from "@/components/ui/switch"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function StealthRouterPage() {
-  const { connected, tier } = useWallet()
   const [isLoading, setIsLoading] = useState(true)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [networkConditions, setNetworkConditions] = useState<any>(null)
+  const [fragmentationLevel, setFragmentationLevel] = useState(3)
+  const [obfuscationStrength, setObfuscationStrength] = useState(70)
+  const [priorityLevel, setPriorityLevel] = useState(2)
+  const [useDecoys, setUseDecoys] = useState(true)
+  const [useRelayNetwork, setUseRelayNetwork] = useState(false)
+  const [routingResult, setRoutingResult] = useState<any>(null)
   const [isRouting, setIsRouting] = useState(false)
-  const [privacyLevel, setPrivacyLevel] = useState(70)
-  const [routeHops, setRouteHops] = useState(3)
-  const [usePrivateRPC, setUsePrivateRPC] = useState(true)
-  const [obfuscateMetadata, setObfuscateMetadata] = useState(true)
-  const [selectedNetwork, setSelectedNetwork] = useState("solana")
-  const [routeType, setRouteType] = useState("transaction")
-  const [routeStatus, setRouteStatus] = useState<string | null>(null)
-  const [routeLog, setRouteLog] = useState<string[]>([])
+  const [logs, setLogs] = useState<string[]>([])
+  const { connected, address, tier } = useWallet()
+  const router = useRouter()
 
-  // Load initial data
+  // Initialize the router
+  const stealthRouter = new StealthTransactionRouter()
+
+  // Simulate loading state
   useEffect(() => {
-    const loadData = async () => {
-      setIsLoading(true)
-      try {
-        // Simulate API call delay
-        await new Promise((resolve) => setTimeout(resolve, 1500))
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
 
-        // Set initial route log
-        setRouteLog([
-          "Stealth Router initialized",
-          "Private RPC endpoints connected",
-          "Obfuscation layers ready",
-          "System ready for secure routing",
-        ])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    loadData()
+    return () => clearTimeout(timer)
   }, [])
 
-  // Start routing
-  const startRouting = async () => {
-    if (isRouting) return
+  const addLog = (message: string) => {
+    setLogs((prev) => [...prev, `[${new Date().toISOString()}] ${message}`])
+  }
 
-    setIsRouting(true)
-    setRouteStatus("initializing")
-    addRouteLog("Starting secure routing process...")
+  const analyzeNetwork = async () => {
+    if (isAnalyzing) return
+
+    setIsAnalyzing(true)
+    addLog("Analyzing network conditions...")
 
     try {
-      // Simulate routing process
-      await simulateRoutingProcess()
-      setRouteStatus("complete")
-      addRouteLog("Routing complete. Transaction successfully obfuscated.")
+      const conditions = await stealthRouter.analyzeNetworkConditions()
+      setNetworkConditions(conditions)
+      addLog(`Network analysis complete: ${conditions.congestionLevel} congestion detected`)
+      addLog(`Current TPS: ${conditions.currentTps}`)
+      addLog(`Recommended strategy: ${conditions.optimalStrategy}`)
     } catch (error) {
-      console.error("Routing error:", error)
-      setRouteStatus("failed")
-      addRouteLog("Routing failed. Please try again.")
+      console.error(error)
+      addLog(`Error analyzing network: ${error instanceof Error ? error.message : String(error)}`)
+    } finally {
+      setIsAnalyzing(false)
+    }
+  }
+
+  const simulateTransaction = async () => {
+    if (isRouting || !connected) return
+
+    setIsRouting(true)
+    addLog("Preparing transaction for stealth routing...")
+
+    try {
+      // Configure the router with current settings
+      stealthRouter.configure({
+        fragmentationLevel,
+        obfuscationStrength,
+        priorityLevel,
+        useDecoys,
+        useRelayNetwork,
+      })
+
+      addLog(`Router configured with fragmentation level ${fragmentationLevel}`)
+      addLog(`Obfuscation strength set to ${obfuscationStrength}%`)
+      addLog(`Using decoys: ${useDecoys ? "Yes" : "No"}`)
+      addLog(`Using relay network: ${useRelayNetwork ? "Yes" : "No"}`)
+
+      // Simulate a transaction (in a real implementation, this would be a real transaction)
+      const mockTransaction = {} as any
+      const mockSigner = { publicKey: address } as any
+
+      // Route the transaction
+      addLog("Routing transaction through stealth network...")
+      const result = await stealthRouter.routeTransaction(mockTransaction, mockSigner)
+      setRoutingResult(result)
+
+      if (result.success) {
+        addLog(`Transaction routed successfully: ${result.signature}`)
+        if (result.fragmentSignatures?.length) {
+          addLog(`Created ${result.fragmentSignatures.length} transaction fragments`)
+        }
+        if (result.decoySignatures?.length) {
+          addLog(`Created ${result.decoySignatures.length} decoy transactions`)
+        }
+        addLog(`Detection risk: ${result.detectionRisk}`)
+      } else {
+        addLog("Transaction routing failed")
+      }
+    } catch (error) {
+      console.error(error)
+      addLog(`Error routing transaction: ${error instanceof Error ? error.message : String(error)}`)
     } finally {
       setIsRouting(false)
     }
   }
 
-  // Simulate routing process
-  const simulateRoutingProcess = async () => {
-    // Step 1: Initialize
-    addRouteLog("Initializing stealth routing protocol...")
-    await delay(1000)
-
-    // Step 2: Connect to private RPC
-    if (usePrivateRPC) {
-      addRouteLog("Connecting to private RPC endpoints...")
-      await delay(1500)
-      addRouteLog("Private RPC connection established")
-    }
-
-    // Step 3: Generate route path
-    addRouteLog(`Generating route path with ${routeHops} hops...`)
-    await delay(2000)
-
-    // Step 4: Apply obfuscation
-    if (obfuscateMetadata) {
-      addRouteLog("Applying metadata obfuscation...")
-      await delay(1000)
-      addRouteLog("Transaction metadata successfully obfuscated")
-    }
-
-    // Step 5: Route through hops
-    for (let i = 1; i <= routeHops; i++) {
-      addRouteLog(`Routing through hop ${i}/${routeHops}...`)
-      await delay(1000)
-      addRouteLog(`Hop ${i} complete`)
-    }
-
-    // Step 6: Finalize
-    addRouteLog("Finalizing transaction...")
-    await delay(1500)
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
+        <MatrixBackground />
+        <CircuitPattern />
+        <div className="flex flex-col items-center">
+          <Loader2 className="h-12 w-12 text-neon-pink animate-spin mb-4" />
+          <GlitchText
+            text="LOADING STEALTH TRANSACTION ROUTER"
+            className="text-xl font-tech-mono text-neon-cyan mb-2"
+          />
+          <DataPulse className="w-48 mt-4" />
+        </div>
+      </div>
+    )
   }
-
-  // Add log entry
-  const addRouteLog = (message: string) => {
-    setRouteLog((prev) => {
-      const timestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
-      return [`[${timestamp}] ${message}`, ...prev]
-    })
-  }
-
-  // Helper function for delay
-  const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
@@ -138,366 +151,320 @@ export default function StealthRouterPage() {
             <ArrowLeft size={16} />
             <span className="font-tech-mono">BACK_TO_DASHBOARD</span>
           </Link>
-
-          <WalletConnector buttonSize="sm" glowColor="cyan" />
         </div>
       </header>
 
       <main className="flex-1 container py-12">
-        <TierGate requiredTier="SHADOW_ELITE">
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-8 text-center">
-              <GlitchText
-                text="STEALTH ROUTER"
-                className="text-3xl font-extrabold tracking-tight sm:text-4xl text-neon-pink mb-4"
-              />
-              <p className="text-neon-cyan font-tech-mono">CONCEAL TRANSACTION ROUTES AND MINIMIZE FOOTPRINT</p>
-              <DataPulse className="my-6" />
-            </div>
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-8 text-center">
+            <GlitchText
+              text="STEALTH TRANSACTION ROUTER"
+              className="text-3xl font-extrabold tracking-tight sm:text-4xl text-neon-pink mb-4"
+            />
+            <p className="text-neon-cyan font-tech-mono">ROUTE TRANSACTIONS THROUGH OBFUSCATION LAYERS</p>
+            <DataPulse className="my-6" />
+          </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="md:col-span-1">
-                <CyberCard className="bg-black/60">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 rounded-full bg-neon-pink/10">
-                      <Eye className="h-6 w-6 text-neon-pink" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-neon-pink">Stealth Settings</h3>
-                      <p className="text-zinc-400 font-tech-mono text-sm">Configure privacy parameters</p>
-                    </div>
-                  </div>
+          <TierGate requiredTier="OPERATOR">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="md:col-span-2">
+                <CyberCard className="h-full">
+                  <h2 className="text-xl font-bold text-neon-pink mb-4">Stealth Router Control Panel</h2>
 
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <label className="text-sm font-tech-mono text-neon-cyan">Privacy Level</label>
-                        <span className="text-sm font-tech-mono text-neon-pink">{privacyLevel}%</span>
+                        <label className="text-sm font-tech-mono text-neon-cyan">Fragmentation Level</label>
+                        <span className="text-sm font-tech-mono text-neon-pink">{fragmentationLevel}</span>
                       </div>
                       <Slider
-                        value={[privacyLevel]}
-                        min={10}
-                        max={100}
-                        step={10}
-                        onValueChange={(value) => setPrivacyLevel(value[0])}
-                        className="w-full"
-                      />
-                      <p className="text-xs text-zinc-500">Higher privacy requires more gas and time</p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <label className="text-sm font-tech-mono text-neon-cyan">Route Hops</label>
-                        <span className="text-sm font-tech-mono text-neon-pink">{routeHops}</span>
-                      </div>
-                      <Slider
-                        value={[routeHops]}
+                        value={[fragmentationLevel]}
                         min={1}
-                        max={7}
+                        max={5}
                         step={1}
-                        onValueChange={(value) => setRouteHops(value[0])}
+                        onValueChange={(value) => setFragmentationLevel(value[0])}
                         className="w-full"
                       />
-                      <p className="text-xs text-zinc-500">More hops = better privacy, higher cost</p>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <label className="text-sm font-tech-mono text-neon-cyan">Use Private RPC</label>
-                        <Switch
-                          checked={usePrivateRPC}
-                          onCheckedChange={setUsePrivateRPC}
-                          className="data-[state=checked]:bg-neon-pink"
-                        />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <label className="text-sm font-tech-mono text-neon-cyan">Obfuscate Metadata</label>
-                        <Switch
-                          checked={obfuscateMetadata}
-                          onCheckedChange={setObfuscateMetadata}
-                          className="data-[state=checked]:bg-neon-pink"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-tech-mono text-neon-cyan">Network</label>
-                      <Select value={selectedNetwork} onValueChange={setSelectedNetwork}>
-                        <SelectTrigger className="bg-black border-zinc-800">
-                          <SelectValue placeholder="Select network" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-black border-zinc-800">
-                          <SelectItem value="solana">Solana</SelectItem>
-                          <SelectItem value="ethereum">Ethereum</SelectItem>
-                          <SelectItem value="arbitrum">Arbitrum</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-tech-mono text-neon-cyan">Route Type</label>
-                      <Select value={routeType} onValueChange={setRouteType}>
-                        <SelectTrigger className="bg-black border-zinc-800">
-                          <SelectValue placeholder="Select route type" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-black border-zinc-800">
-                          <SelectItem value="transaction">Transaction</SelectItem>
-                          <SelectItem value="swap">Token Swap</SelectItem>
-                          <SelectItem value="transfer">Token Transfer</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <CyberButton onClick={startRouting} disabled={isRouting} glowColor="cyan" className="w-full mt-4">
-                      {isRouting ? (
-                        <>
-                          <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> ROUTING...
-                        </>
-                      ) : (
-                        <>
-                          <Shield className="h-4 w-4 mr-2" /> START ROUTING
-                        </>
-                      )}
-                    </CyberButton>
-                  </div>
-                </CyberCard>
-
-                <CyberCard className="bg-black/60 mt-6">
-                  <h3 className="text-lg font-bold text-neon-cyan mb-4">Route Status</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-3 h-3 rounded-full ${
-                          routeStatus === "initializing"
-                            ? "bg-yellow-500"
-                            : routeStatus === "complete"
-                              ? "bg-green-500"
-                              : routeStatus === "failed"
-                                ? "bg-red-500"
-                                : "bg-zinc-500"
-                        }`}
-                      ></div>
-                      <p className="text-sm font-tech-mono">
-                        {routeStatus === "initializing"
-                          ? "ROUTING IN PROGRESS"
-                          : routeStatus === "complete"
-                            ? "ROUTING COMPLETE"
-                            : routeStatus === "failed"
-                              ? "ROUTING FAILED"
-                              : "READY TO ROUTE"}
+                      <p className="text-xs text-zinc-500">
+                        Higher fragmentation splits transactions into more parts, increasing stealth but may reduce
+                        reliability
                       </p>
                     </div>
 
-                    {routeStatus === "complete" && (
-                      <div className="p-3 border border-green-500/30 rounded-md bg-green-500/10">
-                        <p className="text-green-500 font-tech-mono text-sm">
-                          Transaction successfully routed through {routeHops} hops with {privacyLevel}% privacy level.
-                        </p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <label className="text-sm font-tech-mono text-neon-cyan">Obfuscation Strength</label>
+                        <span className="text-sm font-tech-mono text-neon-pink">{obfuscationStrength}%</span>
                       </div>
-                    )}
+                      <Slider
+                        value={[obfuscationStrength]}
+                        min={10}
+                        max={100}
+                        step={10}
+                        onValueChange={(value) => setObfuscationStrength(value[0])}
+                        className="w-full"
+                      />
+                      <p className="text-xs text-zinc-500">
+                        Higher obfuscation increases stealth but may increase transaction cost
+                      </p>
+                    </div>
 
-                    {routeStatus === "failed" && (
-                      <div className="p-3 border border-red-500/30 rounded-md bg-red-500/10">
-                        <p className="text-red-500 font-tech-mono text-sm">
-                          Routing failed. Please check your settings and try again.
-                        </p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <label className="text-sm font-tech-mono text-neon-cyan">Priority Level</label>
+                        <span className="text-sm font-tech-mono text-neon-pink">{priorityLevel}x</span>
                       </div>
-                    )}
+                      <Slider
+                        value={[priorityLevel]}
+                        min={1}
+                        max={5}
+                        step={0.5}
+                        onValueChange={(value) => setPriorityLevel(value[0])}
+                        className="w-full"
+                      />
+                      <p className="text-xs text-zinc-500">
+                        Higher priority increases transaction fee but improves confirmation speed
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <label className="text-sm font-tech-mono text-neon-cyan">Use Decoy Transactions</label>
+                      <Switch
+                        checked={useDecoys}
+                        onCheckedChange={setUseDecoys}
+                        className="data-[state=checked]:bg-neon-pink"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <label className="text-sm font-tech-mono text-neon-cyan">Use Relay Network</label>
+                      <Switch
+                        checked={useRelayNetwork}
+                        onCheckedChange={setUseRelayNetwork}
+                        className="data-[state=checked]:bg-neon-pink"
+                      />
+                    </div>
+
+                    <div className="flex flex-wrap gap-4">
+                      <CyberButton onClick={analyzeNetwork} disabled={isAnalyzing} glowColor="cyan">
+                        {isAnalyzing ? (
+                          <>
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" /> ANALYZING...
+                          </>
+                        ) : (
+                          <>
+                            <Network className="h-4 w-4 mr-2" /> ANALYZE NETWORK
+                          </>
+                        )}
+                      </CyberButton>
+
+                      <CyberButton onClick={simulateTransaction} disabled={isRouting} glowColor="pink">
+                        {isRouting ? (
+                          <>
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" /> ROUTING...
+                          </>
+                        ) : (
+                          <>
+                            <Shield className="h-4 w-4 mr-2" /> ROUTE TRANSACTION
+                          </>
+                        )}
+                      </CyberButton>
+                    </div>
                   </div>
                 </CyberCard>
               </div>
 
-              <div className="md:col-span-2">
-                <Tabs defaultValue="logs" className="w-full">
-                  <TabsList className="grid grid-cols-3 mb-6">
-                    <TabsTrigger value="logs" className="font-tech-mono">
-                      LOGS
-                    </TabsTrigger>
-                    <TabsTrigger value="visualization" className="font-tech-mono">
-                      VISUALIZATION
-                    </TabsTrigger>
-                    <TabsTrigger value="advanced" className="font-tech-mono">
-                      ADVANCED
-                    </TabsTrigger>
-                  </TabsList>
+              <CyberCard variant="cyan">
+                <h2 className="text-xl font-bold text-neon-cyan mb-4">Stealth Theory</h2>
+                <p className="text-zinc-400 text-sm mb-4 font-tech-mono">
+                  The Stealth Transaction Router conceals your trading intent by fragmenting transactions and routing
+                  them through multiple layers of obfuscation.
+                </p>
+                <p className="text-zinc-400 text-sm font-tech-mono">
+                  By using decoy transactions and relay networks, your actual transaction becomes indistinguishable from
+                  background noise, preventing front-running and surveillance.
+                </p>
+              </CyberCard>
+            </div>
 
-                  <TabsContent value="logs">
-                    <CyberCard className="bg-black/60 h-[500px] overflow-hidden">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-bold text-neon-pink">Routing Logs</h3>
-                        <div className="flex gap-2">
-                          <CyberButton variant="outline" size="sm" glowColor="cyan" className="h-8 px-2">
-                            <RefreshCw className="h-4 w-4" />
-                          </CyberButton>
+            <Tabs defaultValue="results" className="w-full">
+              <TabsList className="grid grid-cols-3 mb-6">
+                <TabsTrigger value="results" className="font-tech-mono">
+                  RESULTS
+                </TabsTrigger>
+                <TabsTrigger value="network" className="font-tech-mono">
+                  NETWORK
+                </TabsTrigger>
+                <TabsTrigger value="logs" className="font-tech-mono">
+                  LOGS
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="results">
+                <CyberCard className="bg-black/60 min-h-[300px]">
+                  <h2 className="text-xl font-bold text-neon-pink mb-4">Routing Results</h2>
+
+                  {routingResult ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 p-4 rounded-md bg-black/40 border border-neon-pink/30">
+                        <div
+                          className={`p-2 rounded-full ${routingResult.success ? "bg-green-500/20" : "bg-red-500/20"}`}
+                        >
+                          {routingResult.success ? (
+                            <Shield className="h-5 w-5 text-green-500" />
+                          ) : (
+                            <AlertCircle className="h-5 w-5 text-red-500" />
+                          )}
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold text-neon-cyan">
+                            {routingResult.success ? "Transaction Routed Successfully" : "Routing Failed"}
+                          </h3>
+                          {routingResult.success && (
+                            <p className="text-zinc-400 font-tech-mono text-sm">
+                              Transaction signature: {routingResult.signature}
+                            </p>
+                          )}
                         </div>
                       </div>
-                      <div className="h-[440px] overflow-y-auto bg-black/50 rounded-md p-4 font-tech-mono text-xs">
-                        {routeLog.map((log, index) => (
-                          <div key={index} className="mb-1 text-zinc-300">
-                            {log}
-                          </div>
-                        ))}
-                      </div>
-                    </CyberCard>
-                  </TabsContent>
 
-                  <TabsContent value="visualization">
-                    <CyberCard className="bg-black/60 h-[500px] overflow-hidden">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-bold text-neon-cyan">Route Visualization</h3>
-                      </div>
-                      <div className="h-[440px] flex flex-col items-center justify-center">
-                        {routeStatus === "complete" ? (
-                          <div className="w-full max-w-md">
-                            <div className="mb-6">
-                              <h4 className="text-sm font-tech-mono text-neon-pink mb-2">Route Path</h4>
-                              <div className="relative h-20">
-                                {/* Source node */}
-                                <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-neon-pink/20 border border-neon-pink flex items-center justify-center">
-                                  <div className="w-2 h-2 rounded-full bg-neon-pink"></div>
-                                </div>
-
-                                {/* Route hops */}
-                                {Array.from({ length: routeHops }).map((_, i) => (
-                                  <div
-                                    key={i}
-                                    className="absolute top-1/2 transform -translate-y-1/2 w-6 h-6 rounded-full bg-neon-cyan/20 border border-neon-cyan flex items-center justify-center"
-                                    style={{ left: `${((i + 1) * 100) / (routeHops + 1)}%` }}
-                                  >
-                                    <div className="w-1.5 h-1.5 rounded-full bg-neon-cyan"></div>
-                                  </div>
-                                ))}
-
-                                {/* Destination node */}
-                                <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-neon-pink/20 border border-neon-pink flex items-center justify-center">
-                                  <div className="w-2 h-2 rounded-full bg-neon-pink"></div>
-                                </div>
-
-                                {/* Connection lines */}
-                                <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-neon-pink via-neon-cyan to-neon-pink"></div>
-                              </div>
-                            </div>
-
-                            <div className="space-y-4">
-                              <div className="flex justify-between items-center">
-                                <span className="text-sm font-tech-mono text-zinc-400">Privacy Score</span>
-                                <span className="text-sm font-tech-mono text-neon-cyan">{privacyLevel}/100</span>
-                              </div>
-                              <div className="w-full bg-zinc-800 h-2 rounded-full">
-                                <div
-                                  className="bg-gradient-to-r from-neon-pink to-neon-cyan h-2 rounded-full"
-                                  style={{ width: `${privacyLevel}%` }}
-                                ></div>
-                              </div>
-
-                              <div className="p-4 border border-zinc-800 rounded-md">
-                                <p className="text-xs text-zinc-400 font-tech-mono mb-2">Traceability Analysis</p>
-                                <p className="text-sm text-white">
-                                  {privacyLevel < 30
-                                    ? "High risk of transaction tracing."
-                                    : privacyLevel < 70
-                                      ? "Moderate privacy protection. Basic tracking prevention."
-                                      : "Strong privacy protection. Transaction origin effectively concealed."}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="text-center">
-                            <AlertCircle className="h-12 w-12 text-zinc-500 mb-4 mx-auto" />
-                            <p className="text-zinc-400 font-tech-mono mb-2">No active route</p>
-                            <p className="text-zinc-500 text-sm">Start routing to see visualization</p>
-                          </div>
-                        )}
-                      </div>
-                    </CyberCard>
-                  </TabsContent>
-
-                  <TabsContent value="advanced">
-                    <CyberCard className="bg-black/60 h-[500px] overflow-hidden">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-bold text-neon-pink">Advanced Configuration</h3>
-                      </div>
-                      <div className="h-[440px] overflow-y-auto">
-                        <div className="space-y-6">
-                          <div>
-                            <h4 className="text-sm font-tech-mono text-neon-cyan mb-4">Custom RPC Endpoints</h4>
-                            <div className="p-4 border border-zinc-800 rounded-md">
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-tech-mono">Private RPC #1</span>
-                                <span className="text-xs text-green-500 font-tech-mono">CONNECTED</span>
-                              </div>
-                              <p className="text-xs text-zinc-500 font-tech-mono">
-                                https://rpc-shadow-1.blkbox.network
+                      {routingResult.success && (
+                        <>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="p-3 border border-zinc-800 rounded-md">
+                              <p className="text-xs text-zinc-400 font-tech-mono">Detection Risk</p>
+                              <p
+                                className={`text-lg font-bold ${
+                                  routingResult.detectionRisk === "low"
+                                    ? "text-green-500"
+                                    : routingResult.detectionRisk === "medium"
+                                      ? "text-yellow-500"
+                                      : "text-red-500"
+                                }`}
+                              >
+                                {routingResult.detectionRisk.toUpperCase()}
                               </p>
                             </div>
-                          </div>
-
-                          <div>
-                            <h4 className="text-sm font-tech-mono text-neon-cyan mb-4">Routing Algorithm</h4>
-                            <TerminalCode
-                              code={`// Stealth routing algorithm configuration
-{
-  "algorithm": "shadow_path_v2",
-  "parameters": {
-    "minHops": ${routeHops},
-    "maxHops": ${routeHops + 2},
-    "privacyLevel": ${privacyLevel},
-    "usePrivateRPC": ${usePrivateRPC},
-    "obfuscateMetadata": ${obfuscateMetadata},
-    "network": "${selectedNetwork}",
-    "routeType": "${routeType}",
-    "timeoutMs": 30000,
-    "retryCount": 3,
-    "gasMultiplier": 1.2
-  },
-  "securityFeatures": {
-    "antiFingerprinting": true,
-    "timeShuffling": true,
-    "dummyTransactions": ${privacyLevel > 70},
-    "metadataScrubbing": true
-  }
-}`}
-                            />
-                          </div>
-
-                          <div>
-                            <h4 className="text-sm font-tech-mono text-neon-cyan mb-4">Security Settings</h4>
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <label className="text-sm font-tech-mono text-zinc-400">Anti-Fingerprinting</label>
-                                <Switch defaultChecked className="data-[state=checked]:bg-neon-cyan" />
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <label className="text-sm font-tech-mono text-zinc-400">Time Shuffling</label>
-                                <Switch defaultChecked className="data-[state=checked]:bg-neon-cyan" />
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <label className="text-sm font-tech-mono text-zinc-400">Dummy Transactions</label>
-                                <Switch checked={privacyLevel > 70} className="data-[state=checked]:bg-neon-cyan" />
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <label className="text-sm font-tech-mono text-zinc-400">Metadata Scrubbing</label>
-                                <Switch defaultChecked className="data-[state=checked]:bg-neon-cyan" />
-                              </div>
+                            <div className="p-3 border border-zinc-800 rounded-md">
+                              <p className="text-xs text-zinc-400 font-tech-mono">Time to Confirmation</p>
+                              <p className="text-lg font-bold text-neon-cyan">{routingResult.timeToConfirmation}ms</p>
                             </div>
                           </div>
+
+                          {routingResult.fragmentSignatures && (
+                            <div className="p-3 border border-zinc-800 rounded-md">
+                              <p className="text-xs text-zinc-400 font-tech-mono mb-2">Transaction Fragments</p>
+                              <div className="space-y-1 max-h-[100px] overflow-y-auto">
+                                {routingResult.fragmentSignatures.map((sig: string, index: number) => (
+                                  <p key={index} className="text-xs font-tech-mono text-zinc-300">
+                                    Fragment {index + 1}: {sig}
+                                  </p>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {routingResult.decoySignatures && (
+                            <div className="p-3 border border-zinc-800 rounded-md">
+                              <p className="text-xs text-zinc-400 font-tech-mono mb-2">Decoy Transactions</p>
+                              <div className="space-y-1 max-h-[100px] overflow-y-auto">
+                                {routingResult.decoySignatures.map((sig: string, index: number) => (
+                                  <p key={index} className="text-xs font-tech-mono text-zinc-300">
+                                    Decoy {index + 1}: {sig}
+                                  </p>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-[200px]">
+                      <Eye className="h-12 w-12 text-zinc-500 mb-4" />
+                      <p className="text-zinc-400 font-tech-mono mb-2">No transactions routed yet</p>
+                      <p className="text-zinc-500 text-sm text-center max-w-md">
+                        Configure your stealth settings and route a transaction to see results
+                      </p>
+                    </div>
+                  )}
+                </CyberCard>
+              </TabsContent>
+
+              <TabsContent value="network">
+                <CyberCard className="bg-black/60 min-h-[300px]">
+                  <h2 className="text-xl font-bold text-neon-pink mb-4">Network Analysis</h2>
+
+                  {networkConditions ? (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div className="p-3 border border-zinc-800 rounded-md">
+                          <p className="text-xs text-zinc-400 font-tech-mono">Current TPS</p>
+                          <p className="text-lg font-bold text-neon-cyan">{networkConditions.currentTps}</p>
+                        </div>
+                        <div className="p-3 border border-zinc-800 rounded-md">
+                          <p className="text-xs text-zinc-400 font-tech-mono">Congestion Level</p>
+                          <p
+                            className={`text-lg font-bold ${
+                              networkConditions.congestionLevel === "low"
+                                ? "text-green-500"
+                                : networkConditions.congestionLevel === "medium"
+                                  ? "text-yellow-500"
+                                  : "text-red-500"
+                            }`}
+                          >
+                            {networkConditions.congestionLevel.toUpperCase()}
+                          </p>
+                        </div>
+                        <div className="p-3 border border-zinc-800 rounded-md">
+                          <p className="text-xs text-zinc-400 font-tech-mono">Recent Slot</p>
+                          <p className="text-lg font-bold text-neon-pink">{networkConditions.recentSlot}</p>
                         </div>
                       </div>
-                    </CyberCard>
-                  </TabsContent>
-                </Tabs>
-              </div>
-            </div>
-          </div>
-        </TierGate>
-      </main>
 
-      <footer className="border-t border-neon-pink/30 py-6 bg-black">
-        <div className="container text-center">
-          <p className="text-sm text-zinc-500 font-tech-mono">© 2025 $BLKBOX. All rights reserved.</p>
+                      <div className="p-4 border border-zinc-800 rounded-md">
+                        <p className="text-xs text-zinc-400 font-tech-mono mb-2">Optimal Strategy</p>
+                        <p className="text-sm font-tech-mono text-neon-cyan">{networkConditions.optimalStrategy}</p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="p-3 border border-zinc-800 rounded-md">
+                          <p className="text-xs text-zinc-400 font-tech-mono">Recommended Fragmentation</p>
+                          <p className="text-lg font-bold text-neon-pink">
+                            {networkConditions.recommendedFragmentation}
+                          </p>
+                        </div>
+                        <div className="p-3 border border-zinc-800 rounded-md">
+                          <p className="text-xs text-zinc-400 font-tech-mono">Recommended Decoys</p>
+                          <p className="text-lg font-bold text-neon-cyan">{networkConditions.recommendedDecoys}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-[200px]">
+                      <Network className="h-12 w-12 text-zinc-500 mb-4" />
+                      <p className="text-zinc-400 font-tech-mono mb-2">No network analysis yet</p>
+                      <p className="text-zinc-500 text-sm text-center max-w-md">
+                        Click "Analyze Network" to get current network conditions and recommendations
+                      </p>
+                    </div>
+                  )}
+                </CyberCard>
+              </TabsContent>
+
+              <TabsContent value="logs">
+                <CyberCard className="bg-black/60 min-h-[300px]">
+                  <h2 className="text-xl font-bold text-neon-pink mb-4">Operation Logs</h2>
+                  <TerminalCode
+                    lines={logs.length > 0 ? logs : ["No operations performed yet."]}
+                    className="h-[250px] overflow-auto"
+                  />
+                </CyberCard>
+              </TabsContent>
+            </Tabs>
+          </TierGate>
         </div>
-      </footer>
+      </main>
     </div>
   )
 }

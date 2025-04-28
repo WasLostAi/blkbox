@@ -193,84 +193,8 @@ function calculateTier(holdings) {
       </main>
 
       <footer className="border-t border-neon-pink/30 py-6 bg-black">
-        <div className="container flex items-center justify-between">
-          <div className="flex items-center">
-            <span className="text-neon-pink font-bold">$BLK</span>
-            <span className="text-neon-cyan font-bold">BOX</span>
-          </div>
-          <div className="flex items-center gap-6">
-            <Link href="https://twitter.com" className="text-zinc-400 hover:text-neon-pink transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-              </svg>
-            </Link>
-            <Link href="https://t.me" className="text-zinc-400 hover:text-neon-pink transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-              </svg>
-            </Link>
-            <Link href="https://discord.com" className="text-zinc-400 hover:text-neon-pink transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M18 9a5 5 0 0 0-5-5H9a5 5 0 0 0-5 5v7a5 5 0 0 0 5 5h4"></path>
-                <path d="M16 3v5"></path>
-                <path d="M8 3v5"></path>
-                <path d="M12 12h7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-7"></path>
-              </svg>
-            </Link>
-            <Link href="https://medium.com" className="text-zinc-400 hover:text-neon-pink transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M18 3v18"></path>
-                <path d="M6 3v18"></path>
-                <path d="M12 3v18"></path>
-              </svg>
-            </Link>
-          </div>
-          <div className="text-xs text-zinc-500">
-            © 2025 $BLKBOX. All rights reserved.{" "}
-            <Link href="/pitch-deck" className="text-zinc-500 hover:text-neon-cyan transition-colors opacity-60">
-              [pitch]
-            </Link>
-          </div>
+        <div className="container text-center">
+          <p className="text-sm text-zinc-500 font-tech-mono">© 2025 $BLKBOX. All rights reserved.</p>
         </div>
       </footer>
     </div>

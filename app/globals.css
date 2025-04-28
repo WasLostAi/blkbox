@@ -24,29 +24,6 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
     --radius: 0.25rem;
-
-    /* Add these contrast level variables */
-    /* Default contrast variables */
-    --neon-glow-intensity: 10px;
-    --border-opacity: 0.5;
-    --background-opacity: 0.6;
-    --text-shadow-intensity: 1px;
-  }
-
-  /* High contrast mode */
-  [data-contrast="high"] {
-    --neon-glow-intensity: 15px;
-    --border-opacity: 0.8;
-    --background-opacity: 0.9;
-    --text-shadow-intensity: 2px;
-  }
-
-  /* Low contrast mode */
-  [data-contrast="low"] {
-    --neon-glow-intensity: 5px;
-    --border-opacity: 0.3;
-    --background-opacity: 0.4;
-    --text-shadow-intensity: 0px;
   }
 }
 
@@ -107,23 +84,6 @@
 .neon-text-cyan {
   color: #fff;
   text-shadow: 0 0 5px #00e5ff, 0 0 10px #00e5ff, 0 0 15px #00e5ff;
-}
-
-/* Apply these variables to elements */
-.cyber-card {
-  box-shadow: 0 0 var(--neon-glow-intensity) rgba(255, 0, 170, 0.2);
-}
-
-.cyber-card-cyan {
-  box-shadow: 0 0 var(--neon-glow-intensity) rgba(0, 229, 255, 0.2);
-}
-
-.text-neon-pink {
-  text-shadow: 0 0 var(--text-shadow-intensity) #ff00aa;
-}
-
-.text-neon-cyan {
-  text-shadow: 0 0 var(--text-shadow-intensity) #00e5ff;
 }
 
 .neon-border {
@@ -292,6 +252,15 @@
   animation: data-pulse 2s infinite;
 }
 
+@keyframes data-pulse {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 /* Cyberpunk card styling */
 .cyber-card {
   background: rgba(10, 10, 15, 0.8);
@@ -351,17 +320,3 @@
 }
 
 /* Now let's create a mobile navigation component: */
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-.animate-blink {
-  animation: blink 1s infinite;
-}
