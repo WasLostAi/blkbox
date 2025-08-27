@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { X, AlertCircle, Wallet, Loader2 } from "lucide-react"
+import { X, AlertCircle, Wallet, Loader2, UserX } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import CyberButton from "./cyber-button"
@@ -22,14 +22,58 @@ const WALLET_TYPES = [
 ]
 
 export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
-  const { connecting, connect, connectionError, clearConnectionError } = useWallet()
+  const { connecting, connect, connectionError, clearConnectionError, blockAllConnections, whitelistOnly } = useWallet()
   const [selectedWallet, setSelectedWallet] = useState<string | null>(null)
 
+  // Check if connections are blocked
+  if (blockAllConnections) {
+    return (
+      <Dialog
+        open={isOpen}
+        onOpenChange={(open) => {
+          if (!open) onClose()
+        }}
+        modal={true}
+      >
+        <DialogContent className="bg-black border border-red-500/50 p-0 max-w-md w-full">
+          <DialogHeader className="p-6 border-b border-neon-pink/30">
+            <div className="flex items-center justify-between">
+              <DialogTitle className="text-red-500">Connections Blocked</DialogTitle>
+              <button onClick={onClose} className="text-zinc-400 hover:text-neon-pink">
+                <X size={20} />
+              </button>
+            </div>
+          </DialogHeader>
+          <div className="p-6">
+            <div className="flex items-center justify-center mb-6">
+              <div className="p-4 rounded-full bg-red-900/20">
+                <UserX className="h-12 w-12 text-red-500" />
+              </div>
+            </div>
+            <p className="text-zinc-300 font-tech-mono text-sm text-center mb-6">
+              New wallet connections are currently disabled by the system administrator. Please try again later or
+              contact support if you believe this is an error.
+            </p>
+            <div className="flex justify-center">
+              <CyberButton onClick={onClose} glowColor="pink">
+                CLOSE
+              </CyberButton>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
   const handleConnect = async (walletType: string) => {
-    clearConnectionError()
+    if (clearConnectionError) {
+      clearConnectionError()
+    }
     setSelectedWallet(walletType)
 
     try {
+      // In a real implementation, you would check if the address is whitelisted
+      // before allowing the connection when whitelistOnly is true
       await connect(walletType)
       onClose()
       setSelectedWallet(null)
@@ -44,11 +88,14 @@ export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
       open={isOpen}
       onOpenChange={(open) => {
         if (!open) {
-          clearConnectionError()
+          if (clearConnectionError) {
+            clearConnectionError()
+          }
           setSelectedWallet(null)
           onClose()
         }
       }}
+      modal={true}
     >
       <DialogContent className="bg-black border border-neon-pink/50 p-0 max-w-md w-full">
         <DialogHeader className="p-6 border-b border-neon-pink/30">
@@ -114,9 +161,9 @@ export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
             </div>
           </div>
 
-          <p className="text-zinc-500 text-xs font-tech-mono mt-6 text-center">
-            By connecting your wallet, you agree to the Terms of Service and Privacy Policy
-          </p>
+          <div className="mt-6 flex justify-between items-center">
+            <p className="text-zinc-500 text-xs font-tech-mono">By connecting, you agree to the Terms of Service</p>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

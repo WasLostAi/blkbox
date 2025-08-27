@@ -11,7 +11,7 @@ interface TierCardProps {
   featured?: boolean
 }
 
-export default function TierCard({ tier, amount, features, color, borderColor, featured = false }: TierCardProps) {
+export function TierCard({ tier, amount, features, color, borderColor, featured = false }: TierCardProps) {
   return (
     <div className={cn("relative", featured && "transform hover:scale-105 transition-transform duration-300")}>
       {featured && (
@@ -50,3 +50,5 @@ export default function TierCard({ tier, amount, features, color, borderColor, f
     </div>
   )
 }
+
+export default TierCard

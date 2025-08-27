@@ -1,227 +1,407 @@
+"use client"
+
 import type React from "react"
-import type { ReactNode } from "react"
+
 import Link from "next/link"
-import {
-  Home,
-  Menu,
-  Shield,
-  Zap,
-  Bot,
-  LineChart,
-  Wallet,
-  Code,
-  Eye,
-  Sparkles,
-  Layers,
-  ArrowLeftRight,
-} from "lucide-react"
+import { usePathname } from "next/navigation"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import MobileNav from "@/components/mobile-nav"
+import { useWallet } from "@/context/wallet-context"
+import {
+  LayoutDashboard,
+  Zap,
+  Brain,
+  Crosshair,
+  Rocket,
+  Target,
+  Eye,
+  RefreshCw,
+  Lightbulb,
+  AlertTriangle,
+  Shuffle,
+  Layers,
+  Lock,
+  Users,
+  Shield,
+  Settings,
+  Menu,
+  ChevronLeft,
+  FileCode,
+  Activity,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react"
 import WalletConnector from "@/components/wallet-connector"
+import { useState, useEffect } from "react"
+import PageHeader from "@/components/page-header"
 
-interface NavItem {
-  title: string
-  href: string
-  icon: React.ReactNode
-  requiredTier?: string
-}
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+  const { connected, tier, isAdmin } = useWallet()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [collapsed, setCollapsed] = useState(false)
 
-interface NavSection {
-  title: string
-  items: NavItem[]
-}
+  // Load collapsed state from localStorage on component mount
+  useEffect(() => {
+    const savedCollapsed = localStorage.getItem("sidebarCollapsed")
+    if (savedCollapsed !== null) {
+      setCollapsed(savedCollapsed === "true")
+    }
+  }, [])
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
-  // Navigation items
-  const mainNavItems: NavItem[] = [
+  // Save collapsed state to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem("sidebarCollapsed", String(collapsed))
+  }, [collapsed])
+
+  const toggleCollapse = () => {
+    setCollapsed(!collapsed)
+  }
+
+  const isActive = (path: string) => {
+    return pathname === path || pathname.startsWith(`${path}/`)
+  }
+
+  // Check if we're on a sub-page that needs the back arrow
+  const isSubPage = pathname !== "/dashboard" && pathname !== "/"
+
+  // Get current page title based on pathname
+  const getPageTitle = () => {
+    // Extract the last part of the path
+    const pathSegments = pathname.split("/")
+    const lastSegment = pathSegments[pathSegments.length - 1]
+
+    // If we're at the dashboard root
+    if (pathname === "/dashboard") {
+      return "Dashboard"
+    }
+
+    // If we're in a tool page
+    if (pathname.includes("/tools/")) {
+      // Convert kebab-case to Title Case
+      return lastSegment
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    }
+
+    // Default case - capitalize the last segment
+    return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1)
+  }
+
+  const navItems = [
     {
-      title: "Dashboard",
+      name: "Dashboard",
       href: "/dashboard",
-      icon: <Home className="h-4 w-4" />,
+      icon: <LayoutDashboard className="h-5 w-5" />,
+      requiresAuth: true,
     },
     {
-      title: "Base Tier Tools",
-      href: "/dashboard/tools/base-tier",
-      icon: <Shield className="h-4 w-4" />,
+      name: "Swap",
+      href: "/dashboard/tools/shadow-swap",
+      icon: <Shuffle className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "ENTRY_LEVEL",
+    },
+    {
+      name: "Whale Track",
+      href: "/dashboard/tools/whale-tracker",
+      icon: <Users className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "ENTRY_LEVEL",
+    },
+    {
+      name: "AI Strat",
+      href: "/dashboard/tools/ai-strategy",
+      icon: <Brain className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "ENTRY_LEVEL",
+    },
+    {
+      name: "Phantom Int.",
+      href: "/dashboard/tools/interoperability",
+      icon: <Layers className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "MEV Extract",
+      href: "/dashboard/tools/mev-extraction",
+      icon: <Zap className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Liq. Hunter",
+      href: "/dashboard/tools/liquidation-hunter",
+      icon: <Target className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Flash Lab",
+      href: "/dashboard/tools/flashloan-lab",
+      icon: <Lightbulb className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Stealth Rout.",
+      href: "/dashboard/tools/stealth-router",
+      icon: <Eye className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "OPERATOR",
+    },
+    {
+      name: "Sniper",
+      href: "/dashboard/tools/sniper-bot",
+      icon: <Crosshair className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "OPERATOR",
+    },
+    {
+      name: "Dark Launch",
+      href: "/dashboard/tools/dark-launch",
+      icon: <Rocket className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Liquidity Mir.",
+      href: "/dashboard/tools/liquidity-mirage",
+      icon: <Eye className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Wash Trade",
+      href: "/dashboard/tools/wash-trading",
+      icon: <RefreshCw className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Detect",
+      href: "/dashboard/tools/manipulation-detection",
+      icon: <AlertTriangle className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Quantum",
+      href: "/dashboard/tools/quantum-manipulator",
+      icon: <Zap className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Temporal",
+      href: "/dashboard/tools/temporal-fragmentation",
+      icon: <Shuffle className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Hidden Tax",
+      href: "/dashboard/tools/hidden-tax-implementer",
+      icon: <Shield className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Phantom V.",
+      href: "/dashboard/tools/phantom-vault",
+      icon: <Lock className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "SHADOW_ELITE",
+    },
+    {
+      name: "Emissions",
+      href: "/dashboard/tools/emissions-skimming",
+      icon: <Zap className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Sandwich",
+      href: "/dashboard/tools/sandwich-attack",
+      icon: <AlertTriangle className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Token Gen",
+      href: "/dashboard/tools/token-creation",
+      icon: <FileCode className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "OPERATOR",
+    },
+    {
+      name: "Auto Arb",
+      href: "/dashboard/tools/automated-arbitrage",
+      icon: <Activity className="h-5 w-5" />,
+      requiresAuth: true,
+      minTier: "PHANTOM_COUNCIL",
+    },
+    {
+      name: "Upgrade",
+      href: "/dashboard/upgrade",
+      icon: <Zap className="h-5 w-5" />,
+      requiresAuth: true,
+    },
+    {
+      name: "Settings",
+      href: "/dashboard/settings",
+      icon: <Settings className="h-5 w-5" />,
+      requiresAuth: true,
     },
   ]
 
-  const toolSections: NavSection[] = [
-    {
-      title: "Trading Tools",
-      items: [
-        {
-          title: "Shadow Swap",
-          href: "/dashboard/tools/shadow-swap",
-          icon: <ArrowLeftRight className="h-4 w-4" />,
-          requiredTier: "ENTRY_LEVEL",
-        },
-        {
-          title: "Jupiter Swap",
-          href: "/dashboard/tools/jupiter-swap",
-          icon: <ArrowLeftRight className="h-4 w-4" />,
-          requiredTier: "ENTRY_LEVEL",
-        },
-        {
-          title: "AI Strategy",
-          href: "/dashboard/tools/ai-strategy",
-          icon: <Bot className="h-4 w-4" />,
-          requiredTier: "OPERATOR",
-        },
-        {
-          title: "Whale Tracker",
-          href: "/dashboard/tools/whale-tracker",
-          icon: <LineChart className="h-4 w-4" />,
-          requiredTier: "OPERATOR",
-        },
-      ],
-    },
-    {
-      title: "Advanced Tools",
-      items: [
-        {
-          title: "MEV Extraction",
-          href: "/dashboard/tools/mev-extraction",
-          icon: <Zap className="h-4 w-4" />,
-          requiredTier: "SHADOW_ELITE",
-        },
-        {
-          title: "Liquidation Hunter",
-          href: "/dashboard/tools/liquidation-hunter",
-          icon: <Wallet className="h-4 w-4" />,
-          requiredTier: "SHADOW_ELITE",
-        },
-        {
-          title: "Flashloan Lab",
-          href: "/dashboard/tools/flashloan-lab",
-          icon: <Code className="h-4 w-4" />,
-          requiredTier: "SHADOW_ELITE",
-        },
-        {
-          title: "Stealth Router",
-          href: "/dashboard/tools/stealth-router",
-          icon: <Eye className="h-4 w-4" />,
-          requiredTier: "PHANTOM_COUNCIL",
-        },
-      ],
-    },
-    {
-      title: "Experimental Tools",
-      items: [
-        {
-          title: "Quantum State Manipulator",
-          href: "/dashboard/tools/quantum-state-manipulator",
-          icon: <Sparkles className="h-4 w-4" />,
-          requiredTier: "PHANTOM_COUNCIL",
-        },
-        {
-          title: "Temporal Fragmentation",
-          href: "/dashboard/tools/temporal-fragmentation",
-          icon: <Layers className="h-4 w-4" />,
-          requiredTier: "PHANTOM_COUNCIL",
-        },
-        {
-          title: "Liquidity Mirage",
-          href: "/dashboard/tools/liquidity-mirage",
-          icon: <Eye className="h-4 w-4" />,
-          requiredTier: "PHANTOM_COUNCIL",
-        },
-        {
-          title: "Shadow Protocol",
-          href: "/dashboard/tools/shadow-protocol",
-          icon: <Shield className="h-4 w-4" />,
-          requiredTier: "PHANTOM_COUNCIL",
-        },
-      ],
-    },
-  ]
+  const tierLevels = {
+    UNAUTHORIZED: 0,
+    ENTRY_LEVEL: 1,
+    OPERATOR: 2,
+    SHADOW_ELITE: 3,
+    PHANTOM_COUNCIL: 4,
+  }
 
   return (
     <div className="flex min-h-screen bg-black text-white">
-      {/* Sidebar for desktop */}
-      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 z-10">
-        <div className="flex flex-col h-full border-r border-neon-pink/20 bg-black/90 backdrop-blur-sm">
-          <div className="h-16 flex items-center border-b border-neon-pink/20 px-6">
-            <Link href="/" className="flex items-center gap-2">
-              <img src="/blkhrt-logo.png" alt="$BLKBOX" className="h-8 w-8" />
-              <span className="font-tech-mono text-neon-pink text-xl">$BLKBOX</span>
+      {/* Sidebar - desktop */}
+      <aside
+        className={cn(
+          "hidden md:block border-r border-zinc-800 bg-black/90 backdrop-blur-sm fixed h-full z-30 transition-all duration-300",
+          collapsed ? "w-16" : "w-40",
+        )}
+      >
+        <div className={cn("border-b border-zinc-800 flex items-center justify-center", collapsed ? "p-2" : "p-3")}>
+          <Link href="/" className="flex items-center justify-center">
+            <Image src="/blkbox-logo-new.png" alt="BLKBOX" width={36} height={36} className="rounded-sm" />
+          </Link>
+        </div>
+
+        <div className="flex flex-col flex-1 overflow-y-auto py-2 h-[calc(100%-160px)]">
+          <nav className={cn("space-y-1", collapsed ? "px-0" : "px-1")}>
+            {navItems
+              .filter(
+                (item) =>
+                  !item.requiresAuth ||
+                  (connected &&
+                    (!item.adminOnly || isAdmin) &&
+                    (!item.minTier || tier === item.minTier || tierLevelCheck(tier, item.minTier))),
+              )
+              .map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "flex items-center rounded-md text-sm font-medium transition-colors",
+                    collapsed ? "justify-center py-3 px-0" : "items-start px-3 py-2",
+                    isActive(item.href)
+                      ? collapsed
+                        ? "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
+                        : "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
+                      : "text-zinc-400 hover:text-white hover:bg-zinc-900",
+                  )}
+                  title={item.name}
+                >
+                  <span className={cn(collapsed ? "mr-0" : "mr-3 mt-0.5")}>{item.icon}</span>
+                  {!collapsed && <span className="font-tech-mono leading-tight">{item.name}</span>}
+                </Link>
+              ))}
+          </nav>
+        </div>
+
+        {/* Admin button at bottom of sidebar */}
+        {isAdmin && (
+          <div className={cn("border-t border-zinc-800 absolute bottom-[120px] w-full", collapsed ? "p-2" : "p-3")}>
+            <Link
+              href="/admin"
+              className={cn(
+                "flex rounded-md text-sm font-medium text-zinc-400 hover:text-neon-cyan hover:bg-zinc-900 transition-colors",
+                collapsed ? "justify-center py-3 px-0" : "items-center px-2 py-2",
+              )}
+              title="Admin"
+            >
+              <Shield className={cn("h-5 w-5", collapsed ? "" : "mr-2")} />
+              {!collapsed && <span className="font-tech-mono">ADMIN</span>}
             </Link>
           </div>
+        )}
 
-          <ScrollArea className="flex-1 py-4">
-            <nav className="px-4 space-y-6">
-              <div className="space-y-1">
-                {mainNavItems.map((item) => (
-                  <Link
-                    key={item.title}
-                    href={item.href}
-                    className={cn(
-                      "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
-                      "hover:bg-neon-pink/10 hover:text-neon-pink",
-                      "text-zinc-400",
-                    )}
-                  >
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </Link>
-                ))}
-              </div>
-
-              {toolSections.map((section) => (
-                <div key={section.title} className="space-y-1">
-                  <h4 className="text-xs font-semibold text-zinc-500 px-3 mb-2">{section.title}</h4>
-                  {section.items.map((item) => (
-                    <Link
-                      key={item.title}
-                      href={item.href}
-                      className={cn(
-                        "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
-                        "hover:bg-neon-pink/10 hover:text-neon-pink",
-                        "text-zinc-400",
-                      )}
-                    >
-                      {item.icon}
-                      <span>{item.title}</span>
-                      {item.requiredTier && (
-                        <span className="ml-auto text-xs px-1.5 py-0.5 rounded bg-neon-pink/10 text-neon-pink">
-                          {item.requiredTier.replace("_", " ")}
-                        </span>
-                      )}
-                    </Link>
-                  ))}
-                </div>
-              ))}
-            </nav>
-          </ScrollArea>
-
-          <div className="border-t border-neon-pink/20 p-4">
-            <WalletConnector />
-          </div>
+        {/* Collapse toggle button */}
+        <div className={cn("border-t border-zinc-800 absolute bottom-[60px] w-full", collapsed ? "p-2" : "p-3")}>
+          <button
+            onClick={toggleCollapse}
+            className={cn(
+              "flex w-full rounded-md text-sm font-medium text-zinc-400 hover:text-neon-cyan hover:bg-zinc-900 transition-colors",
+              collapsed ? "justify-center py-3 px-0" : "items-center px-2 py-2",
+            )}
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {collapsed ? (
+              <ChevronsRight className="h-5 w-5" />
+            ) : (
+              <>
+                <ChevronsLeft className="h-5 w-5 mr-2" />
+                <span className="font-tech-mono">COLLAPSE</span>
+              </>
+            )}
+          </button>
         </div>
+
+        {/* Wallet connector at bottom of sidebar */}
+        <div className={cn("border-t border-zinc-800 absolute bottom-0 w-full", collapsed ? "p-2" : "p-3")}>
+          <WalletConnector buttonText={collapsed ? "" : "CONNECT"} buttonSize={collapsed ? "icon" : "default"} />
+        </div>
+      </aside>
+
+      {/* Mobile sidebar toggle */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-black/90 backdrop-blur-sm border-b border-zinc-800 flex items-center justify-between p-4">
+        <button onClick={() => setSidebarOpen(true)} className="text-neon-cyan hover:text-neon-pink transition-colors">
+          <Menu className="h-6 w-6" />
+        </button>
+        <Link href="/" className="flex items-center">
+          <Image src="/blkbox-logo-new.png" alt="BLKBOX" width={36} height={36} className="rounded-sm" />
+        </Link>
+        <WalletConnector buttonSize="sm" />
       </div>
 
-      {/* Mobile navigation */}
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="lg:hidden fixed top-4 left-4 z-50 bg-black/50 backdrop-blur-sm border-neon-pink/30 text-neon-pink hover:bg-neon-pink/10 hover:text-neon-pink"
-          >
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-full max-w-xs p-0 bg-black border-r border-neon-pink/20">
-          <MobileNav />
-        </SheetContent>
-      </Sheet>
-
       {/* Main content */}
-      <div className="lg:pl-64 flex flex-col flex-1">{children}</div>
+      <div className={cn("w-full transition-all duration-300", collapsed ? "md:pl-16" : "md:pl-40")}>
+        {/* Back button for sub-pages */}
+        {isSubPage && (
+          <div className="py-2 px-4 border-b border-zinc-800 md:hidden">
+            <Link href="/dashboard" className="text-zinc-400 hover:text-white flex items-center">
+              <ChevronLeft className="h-5 w-5 mr-1" />
+              <span className="font-tech-mono text-sm">Back to Dashboard</span>
+            </Link>
+          </div>
+        )}
+
+        {/* Page header */}
+        <PageHeader title={getPageTitle()} />
+
+        {/* Main content area */}
+        <main className="pt-16 md:pt-0 px-4 py-6">{children}</main>
+      </div>
     </div>
   )
+}
+
+// Helper function to check if user tier is high enough
+function tierLevelCheck(userTier: string, requiredTier: string) {
+  const tierLevels = {
+    UNAUTHORIZED: 0,
+    ENTRY_LEVEL: 1,
+    OPERATOR: 2,
+    SHADOW_ELITE: 3,
+    PHANTOM_COUNCIL: 4,
+  }
+
+  // Always return true for PHANTOM_COUNCIL tier (highest tier)
+  if (userTier === "PHANTOM_COUNCIL") return true
+
+  return tierLevels[userTier as keyof typeof tierLevels] >= tierLevels[requiredTier as keyof typeof tierLevels]
 }

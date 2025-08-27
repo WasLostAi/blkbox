@@ -75,27 +75,32 @@ export default function PresalePage() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
                   <span className="text-zinc-400 font-tech-mono">Token Price:</span>
-                  <span className="text-white font-tech-mono">0.00025 SOL</span>
+                  <span className="text-white font-tech-mono">0.01 SOL</span>
                 </div>
 
                 <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
                   <span className="text-zinc-400 font-tech-mono">Min Purchase:</span>
-                  <span className="text-white font-tech-mono">10,000 $BLKBOX</span>
+                  <span className="text-white font-tech-mono">0.1 SOL</span>
                 </div>
 
                 <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
                   <span className="text-zinc-400 font-tech-mono">Max Purchase:</span>
-                  <span className="text-white font-tech-mono">1,000,000 $BLKBOX</span>
+                  <span className="text-white font-tech-mono">50 SOL</span>
                 </div>
 
                 <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
                   <span className="text-zinc-400 font-tech-mono">Hard Cap:</span>
-                  <span className="text-white font-tech-mono">7,500 SOL</span>
+                  <span className="text-white font-tech-mono">$1,000,000</span>
                 </div>
 
                 <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
                   <span className="text-zinc-400 font-tech-mono">Tokens for Sale:</span>
                   <span className="text-white font-tech-mono">30,000,000 $BLKBOX</span>
+                </div>
+
+                <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
+                  <span className="text-zinc-400 font-tech-mono">Platform:</span>
+                  <span className="text-white font-tech-mono">Meteora.ag</span>
                 </div>
               </div>
 

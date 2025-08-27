@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title: "$BLKBOX | The Shadow Protocol",
   description:
     "Access the darkest toolbox ever built for Solana. A system that gives you what the whales, insiders, and shadow teams have been using.",
-    generator: 'v0.dev'
+    generator: 'v0.app'
 }
 
 export default function RootLayout({

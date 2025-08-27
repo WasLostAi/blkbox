@@ -9,7 +9,7 @@ interface DividendCardProps {
   icon: ReactNode
 }
 
-export default function DividendCard({ percentage, title, description, icon }: DividendCardProps) {
+export function DividendCard({ percentage, title, description, icon }: DividendCardProps) {
   return (
     <Card className="bg-black/50 border-zinc-700 overflow-hidden relative cyber-card">
       <div className="hud-corner hud-corner-tl"></div>
@@ -29,3 +29,5 @@ export default function DividendCard({ percentage, title, description, icon }: D
     </Card>
   )
 }
+
+export default DividendCard
