@@ -6,7 +6,6 @@ import CircuitPattern from "@/components/circuit-pattern"
 import DataPulse from "@/components/data-pulse"
 import GlitchText from "@/components/glitch-text"
 import TerminalCode from "@/components/terminal-code"
-import PDFDownloadButton from "@/components/pdf-download-button"
 
 export default function WhitepaperPage() {
   return (
@@ -33,11 +32,6 @@ export default function WhitepaperPage() {
             />
             <p className="text-neon-cyan font-tech-mono text-xl">THE SHADOW PROTOCOL</p>
             <DataPulse className="my-6" />
-
-            {/* PDF Download Button */}
-            <div className="mt-6">
-              <PDFDownloadButton />
-            </div>
           </div>
 
           <div className="prose prose-invert prose-lg max-w-none">

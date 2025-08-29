@@ -1,23 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useState } from "react"
 import Link from "next/link"
-import {
-  ArrowLeft,
-  Wallet,
-  Users,
-  Zap,
-  Lock,
-  Brain,
-  Loader2,
-  Shuffle,
-  Target,
-  Lightbulb,
-  Clock,
-  Droplets,
-  LinkIcon,
-} from "lucide-react"
+import { ArrowLeft, BarChart3, Wallet, Users, Zap, Lock, AlertCircle, Eye, Brain } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CyberButton from "@/components/cyber-button"
 import MatrixBackground from "@/components/matrix-background"
@@ -25,26 +10,16 @@ import CircuitPattern from "@/components/circuit-pattern"
 import DataPulse from "@/components/data-pulse"
 import GlitchText from "@/components/glitch-text"
 import CyberCard from "@/components/cyber-card"
+import WalletModal from "@/components/wallet-modal"
+import GatedFeatures from "@/components/gated-features"
 import TokenPriceChart from "@/components/token-price-chart"
-import { useWallet } from "@/context/wallet-context"
-import WalletConnector from "@/components/wallet-connector"
 import MarketActivity from "@/components/market-activity"
 import TierProgress from "@/components/tier-progress"
+import { useWallet } from "@/context/wallet-context"
 
 export default function DashboardPage() {
   const [walletModalOpen, setWalletModalOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const { connected, address, balance, tier } = useWallet()
-  const router = useRouter()
-
-  // Simulate loading state
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1500)
-
-    return () => clearTimeout(timer)
-  }, [])
+  const { connected, address, balance, tier, disconnect } = useWallet()
 
   const openWalletModal = () => {
     setWalletModalOpen(true)
@@ -52,94 +27,6 @@ export default function DashboardPage() {
 
   // Format balance with commas
   const formattedBalance = balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-
-  const tools = [
-    {
-      name: "Whale Tracker",
-      description: "Monitor large wallet movements",
-      icon: Users,
-      href: "/dashboard/tools/whale-tracker",
-      tier: "ENTRY_LEVEL",
-    },
-    {
-      name: "MEV Extraction",
-      description: "Capture value from the mempool",
-      icon: Zap,
-      href: "/dashboard/tools/mev-extraction",
-      tier: "OPERATOR",
-    },
-    {
-      name: "AI Strategy Lab",
-      description: "Generate custom trading algorithms",
-      icon: Brain,
-      href: "/dashboard/tools/ai-strategy",
-      tier: "ENTRY_LEVEL",
-    },
-    {
-      name: "Shadow Swap",
-      description: "Private, zero-slippage token swaps",
-      icon: Shuffle,
-      href: "/dashboard/tools/shadow-swap",
-      tier: "OPERATOR",
-    },
-    {
-      name: "Quantum State Manipulator",
-      description: "Exploit parallel transaction processing",
-      icon: Zap,
-      href: "/dashboard/tools/quantum-state-manipulator",
-      tier: "SHADOW_ELITE",
-    },
-    {
-      name: "Temporal Fragmentation",
-      description: "Exploit time-based processing mechanics",
-      icon: Clock,
-      href: "/dashboard/tools/temporal-fragmentation",
-      tier: "PHANTOM_COUNCIL",
-    },
-    {
-      name: "Liquidity Mirage Creator",
-      description: "Create synthetic liquidity positions",
-      icon: Droplets,
-      href: "/dashboard/tools/liquidity-mirage",
-      tier: "OPERATOR",
-    },
-    {
-      name: "Shadow Protocol Hijacker",
-      description: "Exploit cross-chain bridge vulnerabilities",
-      icon: LinkIcon,
-      href: "/dashboard/tools/shadow-protocol",
-      tier: "PHANTOM_COUNCIL",
-    },
-    {
-      name: "Liquidation Hunter",
-      description: "Profit from market volatility",
-      icon: Target,
-      href: "/dashboard/tools/liquidation-hunter",
-      tier: "SHADOW_COUNCIL",
-    },
-    {
-      name: "Flashloan Lab",
-      description: "Create and test flashloan strategies",
-      icon: Lightbulb,
-      href: "/dashboard/tools/flashloan-lab",
-      tier: "SHADOW_COUNCIL",
-      comingSoon: true,
-    },
-  ]
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
-        <MatrixBackground />
-        <CircuitPattern />
-        <div className="flex flex-col items-center">
-          <Loader2 className="h-12 w-12 text-neon-pink animate-spin mb-4" />
-          <GlitchText text="LOADING DASHBOARD" className="text-xl font-tech-mono text-neon-cyan mb-2" />
-          <DataPulse className="w-48 mt-4" />
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
@@ -154,7 +41,20 @@ export default function DashboardPage() {
             <span className="font-tech-mono">BACK_TO_HOME</span>
           </Link>
 
-          <WalletConnector buttonSize="sm" glowColor="cyan" />
+          {connected ? (
+            <div className="flex items-center gap-2">
+              <span className="text-zinc-400 font-tech-mono text-sm">
+                {address?.slice(0, 6)}...{address?.slice(-4)}
+              </span>
+              <CyberButton size="sm" variant="outline" glowColor="pink" onClick={disconnect}>
+                DISCONNECT
+              </CyberButton>
+            </div>
+          ) : (
+            <CyberButton size="sm" glowColor="cyan" onClick={openWalletModal}>
+              CONNECT_WALLET
+            </CyberButton>
+          )}
         </div>
       </header>
 
@@ -223,81 +123,249 @@ export default function DashboardPage() {
                 </TabsList>
 
                 <TabsContent value="tools">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {tools.map((tool) => {
-                      const isAccessible =
-                        tier === "PHANTOM_COUNCIL" ||
-                        (tier === "SHADOW_ELITE" && tool.tier !== "PHANTOM_COUNCIL") ||
-                        (tier === "OPERATOR" && (tool.tier === "OPERATOR" || tool.tier === "ENTRY_LEVEL")) ||
-                        (tier === "ENTRY_LEVEL" && tool.tier === "ENTRY_LEVEL")
-
-                      return (
-                        <CyberCard key={tool.name} className="bg-black/60">
-                          <div className="flex items-start gap-4">
-                            <div
-                              className={
-                                isAccessible ? "p-3 rounded-full bg-neon-pink/10" : "p-3 rounded-full bg-zinc-800"
-                              }
-                            >
-                              <tool.icon
-                                className={isAccessible ? "h-6 w-6 text-neon-pink" : "h-6 w-6 text-zinc-400"}
-                              />
-                            </div>
-                            <div>
-                              <h3
-                                className={
-                                  isAccessible
-                                    ? "text-lg font-bold text-neon-pink mb-1"
-                                    : "text-lg font-bold text-zinc-400 mb-1"
-                                }
-                              >
-                                {tool.name}
-                              </h3>
-                              <p
-                                className={
-                                  isAccessible
-                                    ? "text-zinc-400 font-tech-mono text-sm mb-4"
-                                    : "text-zinc-500 font-tech-mono text-sm mb-4"
-                                }
-                              >
-                                {tool.description}
-                              </p>
-                              <div className="flex items-center gap-2">
-                                {!isAccessible ? (
-                                  <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
-                                    <Lock size={14} />
-                                    <span className="font-tech-mono">{tool.tier.replace("_", " ")} TIER REQUIRED</span>
-                                  </div>
-                                ) : tool.comingSoon ? (
-                                  <div className="flex items-center gap-2 bg-amber-500/10 text-amber-500 px-3 py-1 rounded text-sm">
-                                    <Clock size={14} />
-                                    <span className="font-tech-mono">COMING SOON</span>
-                                  </div>
-                                ) : (
-                                  <>
-                                    <Link href={tool.href}>
-                                      <CyberButton size="sm" glowColor="pink">
-                                        LAUNCH
-                                      </CyberButton>
-                                    </Link>
-                                    <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
-                                      {tool.tier.replace("_", " ")}
-                                    </div>
-                                  </>
-                                )}
-                              </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <CyberCard className="bg-black/60">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 rounded-full bg-neon-pink/10">
+                          <Zap className="h-6 w-6 text-neon-pink" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold text-neon-pink mb-1">Shadow Swap</h3>
+                          <p className="text-zinc-400 font-tech-mono text-sm mb-4">
+                            Route transactions through obfuscation layers to hide intent.
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <CyberButton size="sm" glowColor="pink">
+                              LAUNCH
+                            </CyberButton>
+                            <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
+                              ENTRY LEVEL
                             </div>
                           </div>
-                        </CyberCard>
-                      )
-                    })}
+                        </div>
+                      </div>
+                    </CyberCard>
+
+                    <CyberCard className="bg-black/60">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 rounded-full bg-neon-cyan/10">
+                          <Users className="h-6 w-6 text-neon-cyan" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold text-neon-cyan mb-1">Whale Tracker</h3>
+                          <p className="text-zinc-400 font-tech-mono text-sm mb-4">
+                            Track the movements of those who move markets.
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <CyberButton size="sm" glowColor="cyan">
+                              LAUNCH
+                            </CyberButton>
+                            <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
+                              ENTRY LEVEL
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CyberCard>
+
+                    <CyberCard className="bg-black/60">
+                      <div className="flex items-start gap-4">
+                        <div
+                          className={
+                            tier === "UNAUTHORIZED" || tier === "ENTRY_LEVEL"
+                              ? "p-3 rounded-full bg-zinc-800"
+                              : "p-3 rounded-full bg-neon-pink/10"
+                          }
+                        >
+                          <BarChart3
+                            className={
+                              tier === "UNAUTHORIZED" || tier === "ENTRY_LEVEL"
+                                ? "h-6 w-6 text-zinc-400"
+                                : "h-6 w-6 text-neon-pink"
+                            }
+                          />
+                        </div>
+                        <div>
+                          <h3
+                            className={
+                              tier === "UNAUTHORIZED" || tier === "ENTRY_LEVEL"
+                                ? "text-lg font-bold text-zinc-400 mb-1"
+                                : "text-lg font-bold text-neon-pink mb-1"
+                            }
+                          >
+                            MEV Extraction
+                          </h3>
+                          <p
+                            className={
+                              tier === "UNAUTHORIZED" || tier === "ENTRY_LEVEL"
+                                ? "text-zinc-500 font-tech-mono text-sm mb-4"
+                                : "text-zinc-400 font-tech-mono text-sm mb-4"
+                            }
+                          >
+                            Capture value before others even see the opportunity.
+                          </p>
+                          <div className="flex items-center gap-2">
+                            {tier === "UNAUTHORIZED" || tier === "ENTRY_LEVEL" ? (
+                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
+                                <Lock size={14} />
+                                <span className="font-tech-mono">OPERATOR TIER REQUIRED</span>
+                              </div>
+                            ) : (
+                              <>
+                                <CyberButton size="sm" glowColor="pink">
+                                  LAUNCH
+                                </CyberButton>
+                                <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
+                                  {tier.replace("_", " ")}
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </CyberCard>
+
+                    <CyberCard className="bg-black/60">
+                      <div className="flex items-start gap-4">
+                        <div
+                          className={
+                            tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                              ? "p-3 rounded-full bg-neon-cyan/10"
+                              : "p-3 rounded-full bg-zinc-800"
+                          }
+                        >
+                          <AlertCircle
+                            className={
+                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "h-6 w-6 text-neon-cyan"
+                                : "h-6 w-6 text-zinc-400"
+                            }
+                          />
+                        </div>
+                        <div>
+                          <h3
+                            className={
+                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "text-lg font-bold text-neon-cyan mb-1"
+                                : "text-lg font-bold text-zinc-400 mb-1"
+                            }
+                          >
+                            Liquidation Engine
+                          </h3>
+                          <p
+                            className={
+                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "text-zinc-400 font-tech-mono text-sm mb-4"
+                                : "text-zinc-500 font-tech-mono text-sm mb-4"
+                            }
+                          >
+                            Target vulnerable positions before they collapse.
+                          </p>
+                          <div className="flex items-center gap-2">
+                            {tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL" ? (
+                              <>
+                                <CyberButton size="sm" glowColor="cyan">
+                                  LAUNCH
+                                </CyberButton>
+                                <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
+                                  {tier.replace("_", " ")}
+                                </div>
+                              </>
+                            ) : (
+                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
+                                <Lock size={14} />
+                                <span className="font-tech-mono">SHADOW ELITE TIER REQUIRED</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </CyberCard>
+
+                    {/* New Tool Cards */}
+                    <CyberCard className="bg-black/60">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 rounded-full bg-neon-pink/10">
+                          <Brain className="h-6 w-6 text-neon-pink" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold text-neon-pink mb-1">AI Strategy Lab</h3>
+                          <p className="text-zinc-400 font-tech-mono text-sm mb-4">
+                            Generate custom trading algorithms tuned to your risk profile.
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <CyberButton size="sm" glowColor="pink">
+                              LAUNCH
+                            </CyberButton>
+                            <div className="bg-neon-pink/10 text-neon-pink text-xs font-tech-mono px-2 py-1 rounded">
+                              ENTRY LEVEL
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CyberCard>
+
+                    <CyberCard className="bg-black/60">
+                      <div className="flex items-start gap-4">
+                        <div
+                          className={
+                            tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                              ? "p-3 rounded-full bg-neon-cyan/10"
+                              : "p-3 rounded-full bg-zinc-800"
+                          }
+                        >
+                          <Eye
+                            className={
+                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "h-6 w-6 text-neon-cyan"
+                                : "h-6 w-6 text-zinc-400"
+                            }
+                          />
+                        </div>
+                        <div>
+                          <h3
+                            className={
+                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "text-lg font-bold text-neon-cyan mb-1"
+                                : "text-lg font-bold text-zinc-400 mb-1"
+                            }
+                          >
+                            Stealth Router
+                          </h3>
+                          <p
+                            className={
+                              tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL"
+                                ? "text-zinc-400 font-tech-mono text-sm mb-4"
+                                : "text-zinc-500 font-tech-mono text-sm mb-4"
+                            }
+                          >
+                            Conceal transaction routes and minimize footprint.
+                          </p>
+                          <div className="flex items-center gap-2">
+                            {tier === "SHADOW_ELITE" || tier === "PHANTOM_COUNCIL" ? (
+                              <>
+                                <CyberButton size="sm" glowColor="cyan">
+                                  LAUNCH
+                                </CyberButton>
+                                <div className="bg-neon-cyan/10 text-neon-cyan text-xs font-tech-mono px-2 py-1 rounded">
+                                  {tier.replace("_", " ")}
+                                </div>
+                              </>
+                            ) : (
+                              <div className="flex items-center gap-2 bg-zinc-800/50 text-zinc-400 px-3 py-1 rounded text-sm">
+                                <Lock size={14} />
+                                <span className="font-tech-mono">SHADOW ELITE TIER REQUIRED</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </CyberCard>
                   </div>
 
                   <div className="mt-8 text-center">
                     <p className="text-zinc-400 font-tech-mono mb-4">Upgrade your tier to unlock more powerful tools</p>
-                    <Link href="/dashboard/upgrade">
-                      <CyberButton glowColor="pink">UPGRADE TIER</CyberButton>
-                    </Link>
+                    <CyberButton glowColor="pink">UPGRADE TIER</CyberButton>
                   </div>
                 </TabsContent>
 
@@ -318,268 +386,157 @@ export default function DashboardPage() {
                           </div>
                           <div>
                             <p className="text-xs text-zinc-500 font-tech-mono">7d Change</p>
-                            <p className="text-lg font-bold text-neon-cyan">+12.3%</p>
+                            <p className="text-lg font-bold text-neon-pink">+12.3%</p>
                           </div>
-                        </div>
-                      </CyberCard>
-                    </div>
-                    <div>
-                      <CyberCard className="bg-black/60">
-                        <h3 className="text-xl font-bold text-neon-cyan mb-4">Market Stats</h3>
-                        <div className="space-y-4">
                           <div>
                             <p className="text-xs text-zinc-500 font-tech-mono">Market Cap</p>
-                            <p className="text-lg font-bold text-neon-pink">$24,700,000</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-zinc-500 font-tech-mono">24h Volume</p>
-                            <p className="text-lg font-bold text-neon-pink">$1,245,678</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-zinc-500 font-tech-mono">Circulating Supply</p>
-                            <p className="text-lg font-bold text-neon-pink">100,000,000 BLKBOX</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-zinc-500 font-tech-mono">Holders</p>
-                            <p className="text-lg font-bold text-neon-pink">2,478</p>
+                            <p className="text-lg font-bold text-neon-cyan">$24.7M</p>
                           </div>
                         </div>
                       </CyberCard>
                     </div>
-                  </div>
 
-                  <div className="mt-6">
-                    <CyberCard className="bg-black/60">
-                      <h3 className="text-xl font-bold text-neon-cyan mb-4">Recent Market Activity</h3>
+                    <div>
+                      <TierProgress currentBalance={balance} />
+                    </div>
+
+                    <div className="md:col-span-3">
                       <MarketActivity />
-                    </CyberCard>
+                    </div>
                   </div>
                 </TabsContent>
 
                 <TabsContent value="dividends">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <CyberCard className="bg-black/60">
-                      <h3 className="text-xl font-bold text-neon-cyan mb-4">Dividend History</h3>
-                      <div className="space-y-4">
-                        <div className="flex justify-between items-center p-3 border border-neon-pink/20 rounded-md bg-black/40">
-                          <div>
-                            <p className="text-neon-pink font-tech-mono">APR 15, 2024</p>
-                            <p className="text-sm text-zinc-400">Weekly Distribution</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="md:col-span-2">
+                      <CyberCard className="bg-black/60">
+                        <h3 className="text-xl font-bold text-neon-pink mb-6">Dividend History</h3>
+                        <div className="space-y-4">
+                          <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
+                            <span className="text-zinc-400 font-tech-mono">April 15, 2025</span>
+                            <span className="text-white font-tech-mono">{(balance * 0.00005).toFixed(2)} USDC</span>
                           </div>
-                          <div className="text-right">
-                            <p className="text-neon-cyan font-bold">0.75 USDC</p>
-                            <p className="text-xs text-zinc-500">From 15,000 $BLKBOX</p>
+                          <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
+                            <span className="text-zinc-400 font-tech-mono">April 8, 2025</span>
+                            <span className="text-white font-tech-mono">{(balance * 0.00005).toFixed(2)} USDC</span>
                           </div>
-                        </div>
-                        <div className="flex justify-between items-center p-3 border border-neon-pink/20 rounded-md bg-black/40">
-                          <div>
-                            <p className="text-neon-pink font-tech-mono">APR 08, 2024</p>
-                            <p className="text-sm text-zinc-400">Weekly Distribution</p>
+                          <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
+                            <span className="text-zinc-400 font-tech-mono">April 1, 2025</span>
+                            <span className="text-white font-tech-mono">{(balance * 0.00005).toFixed(2)} USDC</span>
                           </div>
-                          <div className="text-right">
-                            <p className="text-neon-cyan font-bold">0.75 USDC</p>
-                            <p className="text-xs text-zinc-500">From 15,000 $BLKBOX</p>
+                          <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
+                            <span className="text-zinc-400 font-tech-mono">March 25, 2025</span>
+                            <span className="text-white font-tech-mono">{(balance * 0.00005).toFixed(2)} USDC</span>
                           </div>
-                        </div>
-                        <div className="flex justify-between items-center p-3 border border-neon-pink/20 rounded-md bg-black/40">
-                          <div>
-                            <p className="text-neon-pink font-tech-mono">APR 01, 2024</p>
-                            <p className="text-sm text-zinc-400">Weekly Distribution</p>
+                          <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
+                            <span className="text-zinc-400 font-tech-mono">March 18, 2025</span>
+                            <span className="text-white font-tech-mono">{(balance * 0.00005).toFixed(2)} USDC</span>
                           </div>
-                          <div className="text-right">
-                            <p className="text-neon-cyan font-bold">0.75 USDC</p>
-                            <p className="text-xs text-zinc-500">From 15,000 $BLKBOX</p>
+                          <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
+                            <span className="text-zinc-400 font-tech-mono">March 11, 2025</span>
+                            <span className="text-white font-tech-mono">{(balance * 0.00005).toFixed(2)} USDC</span>
                           </div>
-                        </div>
-                        <div className="flex justify-between items-center p-3 border border-neon-pink/20 rounded-md bg-black/40">
-                          <div>
-                            <p className="text-neon-pink font-tech-mono">MAR 25, 2024</p>
-                            <p className="text-sm text-zinc-400">Weekly Distribution</p>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-neon-cyan font-bold">0.75 USDC</p>
-                            <p className="text-xs text-zinc-500">From 15,000 $BLKBOX</p>
+                          <div className="flex justify-between items-center border-b border-zinc-800 pb-2">
+                            <span className="text-zinc-400 font-tech-mono">March 4, 2025</span>
+                            <span className="text-white font-tech-mono">{(balance * 0.00005).toFixed(2)} USDC</span>
                           </div>
                         </div>
-                      </div>
-                    </CyberCard>
+                      </CyberCard>
+                    </div>
 
-                    <CyberCard className="bg-black/60">
-                      <h3 className="text-xl font-bold text-neon-cyan mb-4">Dividend Stats</h3>
-                      <div className="space-y-6">
-                        <div>
-                          <p className="text-xs text-zinc-500 font-tech-mono">Total Earned</p>
-                          <p className="text-2xl font-bold text-neon-pink">5.25 USDC</p>
+                    <div>
+                      <CyberCard className="bg-black/60 mb-6">
+                        <h3 className="text-xl font-bold text-neon-cyan mb-4">Dividend Summary</h3>
+                        <div className="space-y-4">
+                          <div className="flex justify-between items-center">
+                            <span className="text-zinc-400 font-tech-mono">Total Earned</span>
+                            <span className="text-neon-pink font-tech-mono">{(balance * 0.00035).toFixed(2)} USDC</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-zinc-400 font-tech-mono">Next Payout</span>
+                            <span className="text-neon-cyan font-tech-mono">{(balance * 0.00005).toFixed(2)} USDC</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-zinc-400 font-tech-mono">Payout Date</span>
+                            <span className="text-white font-tech-mono">April 22, 2025</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-zinc-400 font-tech-mono">Payout Address</span>
+                            <span className="text-white font-tech-mono">Same as wallet</span>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-xs text-zinc-500 font-tech-mono">Next Distribution</p>
-                          <p className="text-2xl font-bold text-neon-pink">0.75 USDC</p>
-                          <p className="text-sm text-zinc-400">In 3 days</p>
+                      </CyberCard>
+
+                      <CyberCard className="bg-black/60">
+                        <h3 className="text-xl font-bold text-neon-pink mb-4">Dividend Boost</h3>
+                        <p className="text-zinc-400 font-tech-mono text-sm mb-4">
+                          Increase your holdings to earn more weekly dividends.
+                        </p>
+                        <div className="space-y-2 mb-4">
+                          <div className="flex justify-between items-center">
+                            <span className="text-zinc-400 font-tech-mono">Current Rate</span>
+                            <span className="text-neon-cyan font-tech-mono">0.005% weekly</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-zinc-400 font-tech-mono">Next Tier Rate</span>
+                            <span className="text-neon-pink font-tech-mono">0.007% weekly</span>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-xs text-zinc-500 font-tech-mono">Current APY</p>
-                          <p className="text-2xl font-bold text-neon-cyan">26.4%</p>
-                          <p className="text-sm text-zinc-400">Based on current token price</p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-zinc-500 font-tech-mono">Dividend Pool</p>
-                          <p className="text-2xl font-bold text-neon-pink">24,578 USDC</p>
-                          <p className="text-sm text-zinc-400">Total for next distribution</p>
-                        </div>
-                      </div>
-                    </CyberCard>
+                        <CyberButton glowColor="cyan" className="w-full">
+                          UPGRADE TIER
+                        </CyberButton>
+                      </CyberCard>
+                    </div>
                   </div>
                 </TabsContent>
 
                 <TabsContent value="features">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <CyberCard className="bg-black/60">
-                      <h3 className="text-xl font-bold text-neon-cyan mb-4">Your Tier Progress</h3>
-                      <TierProgress />
-                      <div className="mt-6">
-                        <h4 className="text-lg font-bold text-neon-pink mb-2">
-                          Current Tier: {tier.replace("_", " ")}
-                        </h4>
-                        <p className="text-zinc-400 mb-4">
-                          You need {tier === "ENTRY_LEVEL" ? "40,000" : tier === "OPERATOR" ? "200,000" : "750,000"}{" "}
-                          more $BLKBOX to reach the next tier.
-                        </p>
-                        <Link href="/dashboard/upgrade">
-                          <CyberButton glowColor="pink">UPGRADE TIER</CyberButton>
-                        </Link>
-                      </div>
-                    </CyberCard>
-
-                    <CyberCard className="bg-black/60">
-                      <h3 className="text-xl font-bold text-neon-cyan mb-4">Tier Benefits</h3>
-                      <div className="space-y-4">
-                        <div className="p-3 border border-neon-pink/20 rounded-md bg-black/40">
-                          <h4 className="text-neon-pink font-tech-mono">ENTRY LEVEL</h4>
-                          <p className="text-sm text-zinc-400 mb-2">10,000 $BLKBOX</p>
-                          <ul className="text-sm text-zinc-300 space-y-1">
-                            <li>• Basic toolset access</li>
-                            <li>• Weekly USDC dividends</li>
-                            <li>• Whale Tracker</li>
-                            <li>• AI Strategy Lab</li>
-                          </ul>
-                        </div>
-                        <div className="p-3 border border-neon-pink/20 rounded-md bg-black/40">
-                          <h4 className="text-neon-pink font-tech-mono">OPERATOR</h4>
-                          <p className="text-sm text-zinc-400 mb-2">50,000 $BLKBOX</p>
-                          <ul className="text-sm text-zinc-300 space-y-1">
-                            <li>• All Entry Level features</li>
-                            <li>• MEV Extraction</li>
-                            <li>• Shadow Swap</li>
-                            <li>• Liquidity Mirage Creator</li>
-                          </ul>
-                        </div>
-                        <div className="p-3 border border-neon-pink/20 rounded-md bg-black/40">
-                          <h4 className="text-neon-pink font-tech-mono">SHADOW ELITE</h4>
-                          <p className="text-sm text-zinc-400 mb-2">250,000 $BLKBOX</p>
-                          <ul className="text-sm text-zinc-300 space-y-1">
-                            <li>• All Operator features</li>
-                            <li>• Quantum State Manipulator</li>
-                            <li>• Priority execution</li>
-                            <li>• Alpha group access</li>
-                          </ul>
-                        </div>
-                        <div className="p-3 border border-neon-pink/20 rounded-md bg-black/40">
-                          <h4 className="text-neon-pink font-tech-mono">PHANTOM COUNCIL</h4>
-                          <p className="text-sm text-zinc-400 mb-2">1,000,000+ $BLKBOX</p>
-                          <ul className="text-sm text-zinc-300 space-y-1">
-                            <li>• All Shadow Elite features</li>
-                            <li>• Temporal Fragmentation</li>
-                            <li>• Shadow Protocol Hijacker</li>
-                            <li>• Governance rights</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </CyberCard>
-                  </div>
+                  <GatedFeatures userTier={tier} />
                 </TabsContent>
 
                 <TabsContent value="settings">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <CyberCard className="bg-black/60">
-                      <h3 className="text-xl font-bold text-neon-cyan mb-4">Account Settings</h3>
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-xs text-zinc-500 font-tech-mono">Connected Wallet</p>
-                          <p className="text-lg font-bold text-neon-pink truncate">{address}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-zinc-500 font-tech-mono">Notification Settings</p>
-                          <div className="flex items-center justify-between mt-2">
-                            <p className="text-zinc-300">Dividend Alerts</p>
-                            <div className="w-12 h-6 bg-neon-pink/20 rounded-full relative">
-                              <div className="absolute left-1 top-1 w-4 h-4 bg-neon-pink rounded-full"></div>
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-between mt-2">
-                            <p className="text-zinc-300">Price Alerts</p>
-                            <div className="w-12 h-6 bg-neon-pink/20 rounded-full relative">
-                              <div className="absolute left-1 top-1 w-4 h-4 bg-neon-pink rounded-full"></div>
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-between mt-2">
-                            <p className="text-zinc-300">Tool Updates</p>
-                            <div className="w-12 h-6 bg-neon-pink/20 rounded-full relative">
-                              <div className="absolute left-7 top-1 w-4 h-4 bg-neon-pink rounded-full"></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="pt-4">
-                          <CyberButton glowColor="pink" className="w-full">
-                            SAVE SETTINGS
-                          </CyberButton>
-                        </div>
+                  <CyberCard className="bg-black/60">
+                    <h3 className="text-xl font-bold text-neon-cyan mb-6">Account Settings</h3>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-zinc-400 font-tech-mono">Connected Wallet</span>
+                        <span className="text-white font-tech-mono">
+                          {address?.slice(0, 6)}...{address?.slice(-4)}
+                        </span>
                       </div>
-                    </CyberCard>
-
-                    <CyberCard className="bg-black/60">
-                      <h3 className="text-xl font-bold text-neon-cyan mb-4">Security Settings</h3>
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-xs text-zinc-500 font-tech-mono">Two-Factor Authentication</p>
-                          <div className="flex items-center justify-between mt-2">
-                            <p className="text-zinc-300">Enable 2FA</p>
-                            <div className="w-12 h-6 bg-neon-pink/20 rounded-full relative">
-                              <div className="absolute left-7 top-1 w-4 h-4 bg-neon-pink rounded-full"></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <p className="text-xs text-zinc-500 font-tech-mono">Transaction Signing</p>
-                          <div className="flex items-center justify-between mt-2">
-                            <p className="text-zinc-300">Require confirmation for all transactions</p>
-                            <div className="w-12 h-6 bg-neon-pink/20 rounded-full relative">
-                              <div className="absolute left-7 top-1 w-4 h-4 bg-neon-pink rounded-full"></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <p className="text-xs text-zinc-500 font-tech-mono">Session Timeout</p>
-                          <select className="w-full bg-black border border-neon-pink/30 text-zinc-300 rounded-md p-2 mt-2">
-                            <option>15 minutes</option>
-                            <option>30 minutes</option>
-                            <option>1 hour</option>
-                            <option>Never</option>
-                          </select>
-                        </div>
-                        <div className="pt-4">
-                          <CyberButton glowColor="pink" className="w-full">
-                            SAVE SECURITY SETTINGS
-                          </CyberButton>
-                        </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-zinc-400 font-tech-mono">Current Tier</span>
+                        <span className="text-neon-pink font-tech-mono">{tier.replace("_", " ")}</span>
                       </div>
-                    </CyberCard>
-                  </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-zinc-400 font-tech-mono">$BLKBOX Balance</span>
+                        <span className="text-white font-tech-mono">{formattedBalance}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-zinc-400 font-tech-mono">Dividend Payout Address</span>
+                        <span className="text-white font-tech-mono">Same as connected wallet</span>
+                      </div>
+                      <div className="mt-6">
+                        <CyberButton glowColor="pink" onClick={disconnect}>
+                          DISCONNECT WALLET
+                        </CyberButton>
+                      </div>
+                    </div>
+                  </CyberCard>
                 </TabsContent>
               </Tabs>
             </div>
           )}
         </div>
       </main>
+
+      <footer className="border-t border-neon-pink/30 py-6 bg-black">
+        <div className="container text-center">
+          <p className="text-sm text-zinc-500 font-tech-mono">© 2025 $BLKBOX. All rights reserved.</p>
+        </div>
+      </footer>
+
+      <WalletModal isOpen={walletModalOpen} onClose={() => setWalletModalOpen(false)} />
     </div>
   )
 }

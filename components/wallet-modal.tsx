@@ -1,9 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { X, AlertCircle, Wallet, Loader2 } from "lucide-react"
+import { X, AlertCircle } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 import CyberButton from "./cyber-button"
 import GlitchText from "./glitch-text"
 import DataPulse from "./data-pulse"
@@ -15,41 +14,23 @@ interface WalletModalProps {
   onClose: () => void
 }
 
-const WALLET_TYPES = [
-  { id: "phantom", name: "PHANTOM", icon: "👻" },
-  { id: "solflare", name: "SOLFLARE", icon: "🔆" },
-  { id: "backpack", name: "BACKPACK", icon: "🎒" },
-]
-
 export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
-  const { connecting, connect, connectionError, clearConnectionError } = useWallet()
-  const [selectedWallet, setSelectedWallet] = useState<string | null>(null)
+  const { connecting, connect } = useWallet()
+  const [error, setError] = useState<string | null>(null)
 
   const handleConnect = async (walletType: string) => {
-    clearConnectionError()
-    setSelectedWallet(walletType)
+    setError(null)
 
     try {
       await connect(walletType)
       onClose()
-      setSelectedWallet(null)
     } catch (err) {
-      // Error is handled in the wallet context
-      setSelectedWallet(null)
+      setError("Connection failed. Please try again.")
     }
   }
 
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={(open) => {
-        if (!open) {
-          clearConnectionError()
-          setSelectedWallet(null)
-          onClose()
-        }
-      }}
-    >
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="bg-black border border-neon-pink/50 p-0 max-w-md w-full">
         <DialogHeader className="p-6 border-b border-neon-pink/30">
           <div className="flex items-center justify-between">
@@ -70,48 +51,42 @@ export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
             dividends.
           </p>
 
-          {connectionError && (
-            <Alert variant="destructive" className="bg-red-900/20 border-red-500/50 mb-6">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription className="text-red-500 text-sm font-tech-mono">{connectionError}</AlertDescription>
-            </Alert>
+          {error && (
+            <div className="bg-red-900/20 border border-red-500/50 rounded-md p-3 mb-6 flex items-center gap-2">
+              <AlertCircle size={16} className="text-red-500" />
+              <p className="text-red-500 text-sm font-tech-mono">{error}</p>
+            </div>
           )}
 
           <div className="space-y-3">
-            {WALLET_TYPES.map((wallet) => (
-              <CyberButton
-                key={wallet.id}
-                onClick={() => handleConnect(wallet.id)}
-                className="w-full justify-center"
-                disabled={connecting}
-                variant={wallet.id === "phantom" ? "default" : "outline"}
-                glowColor={wallet.id === "phantom" ? "pink" : "cyan"}
-              >
-                {connecting && selectedWallet === wallet.id ? (
-                  <div className="flex items-center">
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    <TerminalText text="CONNECTING..." className="animate-pulse" />
-                  </div>
-                ) : (
-                  <div className="flex items-center">
-                    <span className="mr-2">{wallet.icon}</span>
-                    {wallet.name}
-                  </div>
-                )}
-              </CyberButton>
-            ))}
-          </div>
+            <CyberButton
+              onClick={() => handleConnect("phantom")}
+              className="w-full justify-center"
+              disabled={connecting}
+              glowColor="pink"
+            >
+              {connecting ? <TerminalText text="CONNECTING..." className="animate-pulse" /> : "PHANTOM"}
+            </CyberButton>
 
-          <div className="mt-6 p-4 border border-zinc-800 rounded-md bg-black/30">
-            <div className="flex items-start gap-3">
-              <Wallet className="h-5 w-5 text-neon-cyan mt-0.5" />
-              <div>
-                <h4 className="text-sm font-bold text-neon-cyan mb-1">New to Solana?</h4>
-                <p className="text-xs text-zinc-400 font-tech-mono">
-                  You'll need a Solana wallet to connect. We recommend Phantom for the best experience.
-                </p>
-              </div>
-            </div>
+            <CyberButton
+              onClick={() => handleConnect("solflare")}
+              className="w-full justify-center"
+              disabled={connecting}
+              variant="outline"
+              glowColor="cyan"
+            >
+              {connecting ? <TerminalText text="CONNECTING..." className="animate-pulse" /> : "SOLFLARE"}
+            </CyberButton>
+
+            <CyberButton
+              onClick={() => handleConnect("backpack")}
+              className="w-full justify-center"
+              disabled={connecting}
+              variant="outline"
+              glowColor="pink"
+            >
+              {connecting ? <TerminalText text="CONNECTING..." className="animate-pulse" /> : "BACKPACK"}
+            </CyberButton>
           </div>
 
           <p className="text-zinc-500 text-xs font-tech-mono mt-6 text-center">

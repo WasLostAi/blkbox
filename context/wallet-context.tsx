@@ -2,26 +2,14 @@
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 
-// Define tier thresholds
-export const TIER_THRESHOLDS = {
-  UNAUTHORIZED: 0,
-  ENTRY_LEVEL: 10000,
-  OPERATOR: 50000,
-  SHADOW_ELITE: 250000,
-  PHANTOM_COUNCIL: 1000000,
-}
-
-export type WalletTier = keyof typeof TIER_THRESHOLDS
-
 type WalletContextType = {
   connected: boolean
   connecting: boolean
   address: string | null
   balance: number
-  tier: WalletTier
+  tier: "UNAUTHORIZED" | "ENTRY_LEVEL" | "OPERATOR" | "SHADOW_ELITE" | "PHANTOM_COUNCIL"
   connect: (walletType: string) => Promise<void>
   disconnect: () => void
-  updateBalance: (newBalance: number) => void
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined)
@@ -31,16 +19,9 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [connecting, setConnecting] = useState(false)
   const [address, setAddress] = useState<string | null>(null)
   const [balance, setBalance] = useState(0)
-  const [tier, setTier] = useState<WalletTier>("UNAUTHORIZED")
-
-  // Calculate tier based on balance
-  const calculateTier = (balance: number): WalletTier => {
-    if (balance >= TIER_THRESHOLDS.PHANTOM_COUNCIL) return "PHANTOM_COUNCIL"
-    if (balance >= TIER_THRESHOLDS.SHADOW_ELITE) return "SHADOW_ELITE"
-    if (balance >= TIER_THRESHOLDS.OPERATOR) return "OPERATOR"
-    if (balance >= TIER_THRESHOLDS.ENTRY_LEVEL) return "ENTRY_LEVEL"
-    return "UNAUTHORIZED"
-  }
+  const [tier, setTier] = useState<"UNAUTHORIZED" | "ENTRY_LEVEL" | "OPERATOR" | "SHADOW_ELITE" | "PHANTOM_COUNCIL">(
+    "UNAUTHORIZED",
+  )
 
   // Initialize wallet state from localStorage on component mount (client-side only)
   useEffect(() => {
@@ -51,9 +32,21 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       if (storedAddress) {
         setConnected(true)
         setAddress(storedAddress)
+        setBalance(storedBalance ? Number.parseInt(storedBalance) : 0)
+
+        // Determine tier based on balance
         const balanceNum = storedBalance ? Number.parseInt(storedBalance) : 0
-        setBalance(balanceNum)
-        setTier(calculateTier(balanceNum))
+        if (balanceNum >= 1000000) {
+          setTier("PHANTOM_COUNCIL")
+        } else if (balanceNum >= 250000) {
+          setTier("SHADOW_ELITE")
+        } else if (balanceNum >= 50000) {
+          setTier("OPERATOR")
+        } else if (balanceNum >= 10000) {
+          setTier("ENTRY_LEVEL")
+        } else {
+          setTier("UNAUTHORIZED")
+        }
       }
     }
   }, [])
@@ -86,7 +79,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       // Update state
       setAddress(randomAddress)
       setBalance(randomBalance)
-      setTier(calculateTier(randomBalance))
+      setTier(selectedTier.tier as any)
       setConnected(true)
 
       // Store in localStorage
@@ -100,14 +93,6 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     } finally {
       setConnecting(false)
     }
-  }
-
-  const updateBalance = (newBalance: number) => {
-    setBalance(newBalance)
-    setTier(calculateTier(newBalance))
-
-    // Update localStorage
-    localStorage.setItem("walletBalance", newBalance.toString())
   }
 
   const disconnect = () => {
@@ -131,7 +116,6 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         tier,
         connect,
         disconnect,
-        updateBalance,
       }}
     >
       {children}

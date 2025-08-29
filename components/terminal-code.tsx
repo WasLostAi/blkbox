@@ -1,35 +1,35 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { cn } from "@/lib/utils"
+
 interface TerminalCodeProps {
-  lines: string[]
+  code: string
   className?: string
+  speed?: number
 }
 
-export default function TerminalCode({ lines, className = "" }: TerminalCodeProps) {
-  return (
-    <div className={`bg-black/70 border border-neon-cyan/30 rounded-md p-4 font-mono text-sm ${className}`}>
-      <div className="flex items-center gap-2 mb-2">
-        <div className="h-3 w-3 rounded-full bg-red-500"></div>
-        <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-        <div className="h-3 w-3 rounded-full bg-green-500"></div>
-        <span className="text-xs text-zinc-400 ml-2">terminal@$BLKBOX:~</span>
-      </div>
+export default function TerminalCode({ code, className, speed = 30 }: TerminalCodeProps) {
+  const [displayedCode, setDisplayedCode] = useState("")
+  const [currentIndex, setCurrentIndex] = useState(0)
 
-      <div className="text-neon-cyan">
-        {lines &&
-          lines.map((line, index) => (
-            <div key={index} className="py-0.5">
-              {line.startsWith("[") ? (
-                <>
-                  <span className="text-zinc-400">{line.substring(0, line.indexOf("]") + 1)}</span>
-                  <span className="text-neon-pink">{line.substring(line.indexOf("]") + 1)}</span>
-                </>
-              ) : line.toLowerCase().includes("error") ? (
-                <span className="text-red-400">{line}</span>
-              ) : (
-                <span>{line}</span>
-              )}
-            </div>
-          ))}
-      </div>
-    </div>
+  useEffect(() => {
+    if (currentIndex < code.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedCode((prev) => prev + code[currentIndex])
+        setCurrentIndex((prev) => prev + 1)
+      }, speed)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [currentIndex, code, speed])
+
+  return (
+    <pre className={cn("font-tech-mono text-xs overflow-x-auto p-4 bg-black/50 rounded-sm", className)}>
+      <code>
+        {displayedCode}
+        {currentIndex < code.length && <span className="animate-pulse">_</span>}
+      </code>
+    </pre>
   )
 }
