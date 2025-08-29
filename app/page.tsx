@@ -31,6 +31,10 @@ export default function Home() {
     setWalletModalOpen(true)
   }
 
+  const toggleMenu = () => {
+    // Implement toggle menu logic here
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
       <DashboardBackground />
@@ -54,7 +58,7 @@ export default function Home() {
               <span className="font-tech-mono">02.</span> UTILITY
             </Link>
             <Link
-              href="#tokenomics"
+              href="/tokenomics"
               className="text-sm font-medium text-zinc-400 hover:text-neon-cyan transition-colors"
             >
               <span className="font-tech-mono">03.</span> TOKENOMICS
