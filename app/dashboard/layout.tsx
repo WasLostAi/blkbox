@@ -92,12 +92,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const navItems = [
     {
       name: "Dashboard",
+      fullName: "Dashboard",
       href: "/dashboard",
       icon: <LayoutDashboard className="h-5 w-5" />,
       requiresAuth: true,
     },
     {
       name: "Swap",
+      fullName: "Shadow Swap",
       href: "/dashboard/tools/shadow-swap",
       icon: <Shuffle className="h-5 w-5" />,
       requiresAuth: true,
@@ -105,6 +107,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Whale Track",
+      fullName: "Whale Tracker",
       href: "/dashboard/tools/whale-tracker",
       icon: <Users className="h-5 w-5" />,
       requiresAuth: true,
@@ -112,6 +115,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "AI Strat",
+      fullName: "AI Strategy Lab",
       href: "/dashboard/tools/ai-strategy",
       icon: <Brain className="h-5 w-5" />,
       requiresAuth: true,
@@ -119,6 +123,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Phantom Int.",
+      fullName: "Phantom Interoperability",
       href: "/dashboard/tools/interoperability",
       icon: <Layers className="h-5 w-5" />,
       requiresAuth: true,
@@ -126,6 +131,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "MEV Extract",
+      fullName: "MEV Extraction",
       href: "/dashboard/tools/mev-extraction",
       icon: <Zap className="h-5 w-5" />,
       requiresAuth: true,
@@ -133,6 +139,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Liq. Hunter",
+      fullName: "Liquidation Hunter",
       href: "/dashboard/tools/liquidation-hunter",
       icon: <Target className="h-5 w-5" />,
       requiresAuth: true,
@@ -140,6 +147,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Flash Lab",
+      fullName: "Flashloan Laboratory",
       href: "/dashboard/tools/flashloan-lab",
       icon: <Lightbulb className="h-5 w-5" />,
       requiresAuth: true,
@@ -147,6 +155,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Stealth Rout.",
+      fullName: "Stealth Router",
       href: "/dashboard/tools/stealth-router",
       icon: <Eye className="h-5 w-5" />,
       requiresAuth: true,
@@ -154,6 +163,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Sniper",
+      fullName: "Sniper Bot",
       href: "/dashboard/tools/sniper-bot",
       icon: <Crosshair className="h-5 w-5" />,
       requiresAuth: true,
@@ -161,6 +171,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Dark Launch",
+      fullName: "Dark Launch Toolkit",
       href: "/dashboard/tools/dark-launch",
       icon: <Rocket className="h-5 w-5" />,
       requiresAuth: true,
@@ -168,6 +179,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Liquidity Mir.",
+      fullName: "Liquidity Mirage",
       href: "/dashboard/tools/liquidity-mirage",
       icon: <Eye className="h-5 w-5" />,
       requiresAuth: true,
@@ -175,6 +187,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Wash Trade",
+      fullName: "Wash Trading Engine",
       href: "/dashboard/tools/wash-trading",
       icon: <RefreshCw className="h-5 w-5" />,
       requiresAuth: true,
@@ -182,6 +195,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Detect",
+      fullName: "Manipulation Detection",
       href: "/dashboard/tools/manipulation-detection",
       icon: <AlertTriangle className="h-5 w-5" />,
       requiresAuth: true,
@@ -189,6 +203,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Quantum",
+      fullName: "Quantum Manipulator",
       href: "/dashboard/tools/quantum-manipulator",
       icon: <Zap className="h-5 w-5" />,
       requiresAuth: true,
@@ -196,6 +211,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Temporal",
+      fullName: "Temporal Fragmentation",
       href: "/dashboard/tools/temporal-fragmentation",
       icon: <Shuffle className="h-5 w-5" />,
       requiresAuth: true,
@@ -203,6 +219,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Hidden Tax",
+      fullName: "Hidden Tax Implementer",
       href: "/dashboard/tools/hidden-tax-implementer",
       icon: <Shield className="h-5 w-5" />,
       requiresAuth: true,
@@ -210,6 +227,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Phantom V.",
+      fullName: "Phantom Vault",
       href: "/dashboard/tools/phantom-vault",
       icon: <Lock className="h-5 w-5" />,
       requiresAuth: true,
@@ -217,6 +235,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Emissions",
+      fullName: "Emissions Skimming",
       href: "/dashboard/tools/emissions-skimming",
       icon: <Zap className="h-5 w-5" />,
       requiresAuth: true,
@@ -224,6 +243,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Sandwich",
+      fullName: "Sandwich Attack Engine",
       href: "/dashboard/tools/sandwich-attack",
       icon: <AlertTriangle className="h-5 w-5" />,
       requiresAuth: true,
@@ -231,6 +251,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Token Gen",
+      fullName: "Token Generation Suite",
       href: "/dashboard/tools/token-creation",
       icon: <FileCode className="h-5 w-5" />,
       requiresAuth: true,
@@ -238,6 +259,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Auto Arb",
+      fullName: "Automated Arbitrage",
       href: "/dashboard/tools/automated-arbitrage",
       icon: <Activity className="h-5 w-5" />,
       requiresAuth: true,
@@ -245,12 +267,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
     {
       name: "Upgrade",
+      fullName: "Upgrade Tier",
       href: "/dashboard/upgrade",
       icon: <Zap className="h-5 w-5" />,
       requiresAuth: true,
     },
     {
       name: "Settings",
+      fullName: "Settings",
       href: "/dashboard/settings",
       icon: <Settings className="h-5 w-5" />,
       requiresAuth: true,
@@ -291,23 +315,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     (!item.minTier || tier === item.minTier || tierLevelCheck(tier, item.minTier))),
               )
               .map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center rounded-md text-sm font-medium transition-colors",
-                    collapsed ? "justify-center py-3 px-0" : "items-start px-3 py-2",
-                    isActive(item.href)
-                      ? collapsed
-                        ? "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
-                        : "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
-                      : "text-zinc-400 hover:text-white hover:bg-zinc-900",
+                <div key={item.href} className="relative group">
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "flex items-center rounded-md text-sm font-medium transition-colors",
+                      collapsed ? "justify-center py-3 px-0" : "items-start px-3 py-2",
+                      isActive(item.href)
+                        ? collapsed
+                          ? "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
+                          : "bg-zinc-800 text-neon-cyan border-l-2 border-neon-cyan"
+                        : "text-zinc-400 hover:text-white hover:bg-zinc-900",
+                    )}
+                  >
+                    <span className={cn(collapsed ? "mr-0" : "mr-3 mt-0.5")}>{item.icon}</span>
+                    {!collapsed && <span className="font-tech-mono leading-tight">{item.name}</span>}
+                  </Link>
+                  {collapsed && (
+                    <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2 py-1 bg-black border border-neon-cyan/50 rounded text-xs font-tech-mono text-neon-cyan opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+                      {item.fullName}
+                    </div>
                   )}
-                  title={item.name}
-                >
-                  <span className={cn(collapsed ? "mr-0" : "mr-3 mt-0.5")}>{item.icon}</span>
-                  {!collapsed && <span className="font-tech-mono leading-tight">{item.name}</span>}
-                </Link>
+                </div>
               ))}
           </nav>
         </div>
