@@ -331,7 +331,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <span className={cn(collapsed ? "mr-0" : "mr-3 mt-0.5")}>{item.icon}</span>
                     {!collapsed && <span className="font-tech-mono leading-tight">{item.name}</span>}
                   </Link>
-                  {collapsed && (
+                  <div
+                    className={cn(
+                      "absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2 py-1 bg-black border border-neon-cyan/50 rounded text-xs font-tech-mono text-neon-cyan opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50",
+                      collapsed ? "block" : "hidden",
+                    )}
+                  >
+                    {item.fullName}
+                  </div>
+                  {!collapsed && (
                     <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2 py-1 bg-black border border-neon-cyan/50 rounded text-xs font-tech-mono text-neon-cyan opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
                       {item.fullName}
                     </div>
