@@ -1,0 +1,75 @@
+name: Block Unwanted Dependencies
+
+on:
+  pull_request:
+    paths:
+      - 'package*.json'
+      - 'yarn.lock'
+      - 'pnpm-lock.yaml'
+
+jobs:
+  check-dependencies:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Check for unwanted dependencies
+        run: |
+          echo "Checking for unwanted dependencies with specific versions..."
+          
+          # Define the unwanted dependencies with exact versions
+          UNWANTED_DEPS=(
+            "chalk@5.6.1"
+            "debug@4.4.2"
+            "ansi-styles@6.2.2"
+            "supports-color@10.2.1"
+            "strip-ansi@7.1.1"
+            "ansi-regex@6.2.1"
+            "wrap-ansi@9.0.1"
+            "color-convert@3.1.1"
+            "color-name@2.0.1"
+            "is-arrayish@0.3.3"
+            "slice-ansi@7.1.1"
+            "color@5.0.1"
+            "color-string@2.1.1"
+            "simple-swizzle@0.2.3"
+            "supports-hyperlinks@4.1.1"
+            "has-ansi@6.0.1"
+            "chalk-template@1.1.1"
+            "backslash@0.2.1"
+          )
+          
+          # Files to check
+          FILES_TO_CHECK=(
+            "package.json"
+            "package-lock.json"
+            "yarn.lock"
+            "pnpm-lock.yaml"
+          )
+          
+          FOUND_UNWANTED=false
+          
+          for file in "${FILES_TO_CHECK[@]}"; do
+            if [ -f "$file" ]; then
+              echo "Checking $file..."
+              for dep in "${UNWANTED_DEPS[@]}"; do
+                if grep -q "$dep" "$file"; then
+                  echo "❌ BLOCKED: Found unwanted dependency $dep in $file"
+                  echo "Matching lines:"
+                  grep -n "$dep" "$file"
+                  echo ""
+                  FOUND_UNWANTED=true
+                fi
+              done
+            fi
+          done
+          
+          if [ "$FOUND_UNWANTED" = true ]; then
+            echo "❌ Build failed: Unwanted dependencies detected!"
+            echo "Please remove or update the flagged dependencies before merging."
+            exit 1
+          else
+            echo "✅ No unwanted dependencies found."
+          fi
